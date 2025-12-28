@@ -1,5 +1,4 @@
 # HealthReport
-# HealthReport
 
 Short description
 -----------------
