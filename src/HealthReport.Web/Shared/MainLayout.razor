@@ -1,0 +1,23 @@
+@namespace HealthReport.Web.Shared
+@inherits LayoutComponentBase
+
+<div class="main-layout">
+    <header class="top-bar">
+        <h1>HealthReport</h1>
+    </header>
+
+    <div class="content">
+        @Body
+    </div>
+
+    <footer class="footer">
+        <small>© HealthReport</small>
+    </footer>
+</div>
+
+<style>
+  .main-layout { display:flex; flex-direction:column; min-height:100vh; }
+  .top-bar { background:#0b5; padding:1rem; color:#032; }
+  .content { flex:1; padding:1rem; }
+  .footer { padding:0.5rem; text-align:center; color:#666; }
+</style>

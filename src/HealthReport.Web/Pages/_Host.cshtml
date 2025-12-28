@@ -1,0 +1,30 @@
+@page "/"
+@namespace HealthReport.Web.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthReport</title>
+    <base href="~/" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="_content/Microsoft.AspNetCore.Components.Web.Extensions/whatever.css" rel="stylesheet" />
+</head>
+<body>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+        <script src="_framework/blazor.server.js" autostart="false"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (window.Blazor && typeof Blazor.start === 'function') {
+                    Blazor.start().then(function () { console.log('Blazor started'); });
+                }
+            });
+        </script>
+</body>
+</html>
