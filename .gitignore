@@ -49,3 +49,6 @@ Thumbs.db
 # JetBrains Rider caches
 /.idea/
 .idea/*
+
+# Ignore VS Code workspace files
+*.code-workspace
