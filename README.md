@@ -38,3 +38,18 @@ Run the runner:
 dotnet run --project src/HealthReport.Runners.IHealth.BloodPressureCsvImporter -- "/path/to/BP_Data.csv"
 ```
 The runner expects the CSV file path as the first argument and assumes the file contains a header row by default.
+
+DEMO Runner: Contour (blood glucose) CSV importer
+---------------------------
+A runner demonstrating import of Contour meter CSV exports into `BloodGlucoseMeasurement`.
+
+Run the Contour runner:
+```bash
+dotnet run --project src/HealthReport.Runners.Contour.BloodGlucoseCsvImporter -- "/path/to/Contour.csv"
+```
+
+Notes:
+- File path: first argument to the runner.
+- Expected datetime format in CSV: `dd.MM.yyyy HH:mm:ss` (e.g. `20.09.2025 06:54:49`).
+- Meal markers (Polish) are mapped: `Na czczo` → Fasting, `Przed posiłkiem` → BeforeMeal, `Po posiłku` → AfterMeal.
+- The runner prints imported record count and parse errors, and shows the first 10 records.
