@@ -6,6 +6,7 @@ using HealthReport.Infrastructure;
 using HealthReport.Application.Interfaces;
 using System.Linq;
 using HealthReport.Infrastructure.TempFileStorage;
+// Ensure import handlers namespace available (no-op if already present)
 using HealthReport.Application.Services.ImportHandlers;
 using HealthReport.Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
@@ -30,6 +31,7 @@ builder.Services.AddSingleton<ITempFileStorage, FileSystemTempFileStorage>();
 
 // Import handlers
 builder.Services.AddScoped<IBloodPressureImportHandler, BloodPressureImportHandler>();
+builder.Services.AddScoped<IBloodGlucoseImportHandler, BloodGlucoseImportHandler>();
 
 var app = builder.Build();
 
@@ -54,7 +56,20 @@ app.MapPost("/api/import/bloodpressure", async (HttpRequest request, IBloodPress
     if (file == null || file.Length == 0)
         return Results.BadRequest(new { message = "No file uploaded" });
 
-    using var stream = file.OpenReadStream();
+    await using var stream = file.OpenReadStream();
+    var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
+    return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
+});
+
+// Minimal API endpoint for blood glucose CSV import
+app.MapPost("/api/import/bloodglucose", async (HttpRequest request, IBloodGlucoseImportHandler handler, CancellationToken ct) =>
+{
+    var form = await request.ReadFormAsync(ct).ConfigureAwait(false);
+    var file = form.Files.GetFile("file");
+    if (file == null || file.Length == 0)
+        return Results.BadRequest(new { message = "No file uploaded" });
+
+    await using var stream = file.OpenReadStream();
     var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
     return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
 });
