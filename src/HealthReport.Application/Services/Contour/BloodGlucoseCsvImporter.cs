@@ -11,7 +11,7 @@ namespace HealthReport.Application.Services.Contour
     /// CSV importer for Contour glucose meter exports.
     /// Expected header (Polish): #,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,...
     /// </summary>
-    public static class BloodGlucoseCsvImporter
+    public static class ContourCsvImporter
     {
         /// <summary>
         /// Parses a Contour CSV stream into <see cref="BloodGlucoseMeasurement"/> objects.
@@ -83,6 +83,13 @@ namespace HealthReport.Application.Services.Contour
             }
 
             return new ParseResult<BloodGlucoseMeasurement> { Data = measurements, Errors = errors };
+        }
+
+        // Backwards-compatibility wrapper for the old class name
+        public static class BloodGlucoseCsvImporter
+        {
+            public static ParseResult<BloodGlucoseMeasurement> ParseCsv(Stream csvStream, bool hasHeader = true)
+                => ContourCsvImporter.ParseCsv(csvStream, hasHeader);
         }
 
         private static MealMarker MapMealMarker(string s)
