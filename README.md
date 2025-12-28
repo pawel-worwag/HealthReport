@@ -1,40 +1,63 @@
 # HealthReport
+# HealthReport
 
-Krótki opis:
+Short description
+-----------------
+HealthReport is a simple .NET 10 solution for collecting, importing and reporting health measurements (blood pressure, glucose, weight, etc.).
 
-- Cel: aplikacja do tworzenia raportów pomiarów zdrowotnych (ciśnienie, glukoza, waga itp.).
-- Nazwa projektu: **HealthReport**
+Architecture
+------------
+- `HealthReport.Domain` — domain entities and business logic.
+- `HealthReport.Application` — application services, parsers and use-cases.
+- `HealthReport.Infrastructure` — EF Core mappings and data access implementations.
+- `HealthReport.Web` — Blazor Server UI and minimal API endpoints.
 
-Architektura:
-
-- `HealthReport.Domain` – modele domenowe i wartość biznesowa.
-- `HealthReport.Application` – logika aplikacji, DTO i interfejsy (use-cases).
-- `HealthReport.Infrastructure` – implementacje (EF Core, repozytoria, konfiguracje dostępu do danych).
-- `HealthReport.Web` – interfejs użytkownika (Blazor Server) i minimalna konfiguracja API.
-
-Technologie:
-
+Technologies
+------------
 - .NET 10
 - Blazor Server
-- Minimal API
 
-Jak uruchomić (lokalnie):
-
+Build & run
+-----------
+General build:
 ```bash
 dotnet restore
 dotnet build HealthReport.sln
+```
+
+Run the web app (development):
+```bash
 dotnet run --project src/HealthReport.Web/HealthReport.Web.csproj
 ```
 
-Pliki warte uwagi:
+Runner: iHealth CSV importer
+---------------------------
+There is a small runner that demonstrates importing CSV files exported from iHealth.
 
-- [HealthReport.sln](HealthReport.sln#L1)
-- [src/HealthReport.Web/Program.cs](src/HealthReport.Web/Program.cs#L1)
+Run the runner:
+```bash
+dotnet run --project src/HealthReport.Runners.IHealth.BloodPressureCsvImporter -- "/path/to/BP_Data.csv"
+```
+The runner expects the CSV file path as the first argument and assumes the file contains a header row by default.
 
-DEMO Runner (iHealth CSV importer)
+Important files
+---------------
+- Solution: `HealthReport.sln`
+- Domain entity: `src/HealthReport.Domain/Entities/BloodPressureMeasurement.cs`
+- CSV importer (iHealth): `src/HealthReport.Application/Services/IHBloodPressureCsvImporter.cs` (namespace `HealthReport.Application.Services.IHealth`, class `BloodPressureCsvImporter`)
+- Runner project: `src/HealthReport.Runners.IHealth.BloodPressureCsvImporter/Program.cs`
+- Parser result: `src/HealthReport.Application/Services/ParseResult.cs`
 
-- Project: `src/HealthReport.Runners.IHealth.BloodPressureCsvImporter`
-- Purpose: simple runner that parses a CSV exported from iHealth and prints few of imported `BloodPressureMeasurement` records.
+Notes & conventions
+-------------------
+- Avoid naming classes that start with an uppercase `I` followed by another uppercase letter (that's the C# convention for interfaces). For sources like iHealth prefer placing the code in a dedicated namespace (for example `HealthReport.Application.Services.IHealth`) and keep class names without a leading `I`.
+- Domain model uses `DateOnly` and `TimeOnly` for measured date/time. If targeting older runtimes, use `DateTime` + `TimeSpan` or add EF Core converters.
+- The importer computes `WeekOfYear` (ISO week) at import time and returns a `ParseResult<T>` containing `Data` (parsed records) and `Errors` (parse errors with line numbers).
+
+If you need help
+---------------
+Provide the failing logs, `dotnet --info`, `dotnet build` output, and a small sample of CSV lines.
+
 
 Example usage:
 ```bash
