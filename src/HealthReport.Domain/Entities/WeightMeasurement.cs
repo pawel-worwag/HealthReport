@@ -7,7 +7,8 @@ namespace HealthReport.Domain.Entities
     {
         Unknown = 0,
         GarminConnect = 1,
-        Manual = 2
+        Manual = 2,
+        Professional = 3
     }
     
     /// <summary>
