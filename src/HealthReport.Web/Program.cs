@@ -32,6 +32,7 @@ builder.Services.AddSingleton<ITempFileStorage, FileSystemTempFileStorage>();
 // Import handlers
 builder.Services.AddScoped<IBloodPressureImportHandler, BloodPressureImportHandler>();
 builder.Services.AddScoped<IBloodGlucoseImportHandler, BloodGlucoseImportHandler>();
+builder.Services.AddScoped<IWeightImportHandler, WeightImportHandler>();
 
 var app = builder.Build();
 
@@ -75,6 +76,17 @@ app.MapPost("/api/import/bloodglucose", async (HttpRequest request, IBloodGlucos
 });
 
 app.MapBlazorHub();
+app.MapPost("/api/import/weight", async (HttpRequest request, IWeightImportHandler handler, CancellationToken ct) =>
+{
+    var form = await request.ReadFormAsync(ct).ConfigureAwait(false);
+    var file = form.Files.GetFile("file");
+    if (file == null || file.Length == 0)
+        return Results.BadRequest(new { message = "No file uploaded" });
+
+    using var stream = file.OpenReadStream();
+    var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
+    return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
+});
 app.MapFallbackToPage("/_Host");
 
 app.Run();
