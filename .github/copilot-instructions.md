@@ -55,7 +55,3 @@ Testing & CI
 ------------
 - Add unit tests under a `tests/` project and run via `dotnet test`.
 - Keep tasks small and focused; amend last commit only for immediate fixes, and use `--force-with-lease` when pushing rewrites.
-
-If you need more
----------------
-Provide: failing logs, `dotnet --info`, `dotnet build` output, and a small sample of CSV lines. For changes that touch secrets or external services, request placeholders or environment variable instructions instead of secrets in the repo.
