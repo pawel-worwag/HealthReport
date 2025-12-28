@@ -52,3 +52,6 @@ Thumbs.db
 
 # Ignore VS Code workspace files
 *.code-workspace
+
+appsettings.[Dd]evelopment.json
+appsettings.Local.json
