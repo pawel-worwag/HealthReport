@@ -1,0 +1,9 @@
+### Import blood pressure CSV (REST Client - VS Code)
+POST http://localhost:5000/api/import/bloodpressure
+Content-Type: multipart/form-data
+
+file=@./samples/BP.csv
+
+### Import blood pressure CSV (curl)
+# Replace /path/to/BP.csv with your local file path
+# curl -v -F "file=@/path/to/BP.csv" http://localhost:5000/api/import/bloodpressure
