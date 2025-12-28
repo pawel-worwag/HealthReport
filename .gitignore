@@ -1,0 +1,51 @@
+# Built binaries
+/bin/
+/obj/
+**/bin/
+**/obj/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+*.snupkg
+
+# dotnet local tool cache
+.dotnet_tools/
+
+# Publish output
+/publish/
+
+# Logs
+*.log
+TestResults/
+
+# Database files
+*.db
+*.sqlite
+
+# User secrets
+secrets.json
+secrets.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# JetBrains Rider caches
+/.idea/
+.idea/*
