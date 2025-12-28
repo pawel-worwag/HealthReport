@@ -43,6 +43,17 @@ Run the Contour CSV runner (demo):
 dotnet run --project src/HealthReport.Runners.Contour.BloodGlucoseCsvImporter -- "/path/to/Contour.csv"
 ```
 
+Run the Garmin weight CSV runner (demo):
+```bash
+dotnet run --project src/HealthReport.Runners.Garmin.WeightCsvImporter -- "/path/to/Weight.csv"
+```
+
+Notes for Garmin weight CSV:
+- The export may place the date on a separate line (e.g. `" 2025 Gru 28",`) followed by one or more rows with time and measurements (`10:20 AM,98.8 kg,...`). The importer remembers the last seen date and applies it to following time rows.
+- Time formats: 12h with `AM/PM` or 24h. Dates may use Polish month abbreviations (e.g. `Gru`).
+- Numeric fields may include units (`kg`, `%`) — the importer strips non-numeric suffixes when parsing.
+- Parser returns `ParseResult<WeightMeasurement>` with `Data` and `Errors`.
+
 Conventions & important notes
 -----------------------------
 - Do not name classes starting with a capital `I` followed by an uppercase letter (that denotes interfaces in C#). For source identifiers like iHealth, prefer using a namespace (e.g. `HealthReport.Application.Services.IHealth`) or suffix/prefix without leading `I` in class name.
