@@ -17,7 +17,6 @@ namespace HealthReport.Domain.Entities
 
     public class BloodGlucoseMeasurement
     {
-        [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid? PatientId { get; set; }
 
