@@ -1,8 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using HealthReport.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure DbContext (PostgreSQL)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<HealthReportDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 // Blazor Server
 builder.Services.AddRazorPages();
