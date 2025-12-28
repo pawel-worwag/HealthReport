@@ -17,6 +17,8 @@ Key locations
 - CSV runner: `src/HealthReport.Runners.IHealth.BloodPressureCsvImporter/Program.cs`
 - Parse result type: `src/HealthReport.Application/Services/ParseResult.cs`
 
+- Contour (blood glucose) runner: `src/HealthReport.Runners.Contour.BloodGlucoseCsvImporter/Program.cs`
+
 Build & run
 -----------
 General build:
@@ -35,6 +37,11 @@ Run the iHealth CSV runner (demo):
 dotnet run --project src/HealthReport.Runners.IHealth.BloodPressureCsvImporter -- "/path/to/BP.csv"
 ```
 The runner expects a path to the CSV as the first argument and assumes the file contains a header by default.
+
+Run the Contour CSV runner (demo):
+```bash
+dotnet run --project src/HealthReport.Runners.Contour.BloodGlucoseCsvImporter -- "/path/to/Contour.csv"
+```
 
 Conventions & important notes
 -----------------------------
