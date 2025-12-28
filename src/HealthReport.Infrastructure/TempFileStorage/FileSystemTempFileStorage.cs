@@ -1,0 +1,97 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using HealthReport.Application.Interfaces;
+using Microsoft.Extensions.Options;
+
+namespace HealthReport.Infrastructure.TempFileStorage
+{
+    /// <summary>
+    /// Simple implementation of <see cref="ITempFileStorage"/> backed by a filesystem folder.
+    /// </summary>
+    public class FileSystemTempFileStorage : ITempFileStorage
+    {
+        private readonly string _basePath;
+
+        public FileSystemTempFileStorage(IOptions<FileSystemTempFileStorageOptions> options)
+        {
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            var basePath = options.Value?.BasePath;
+            if (string.IsNullOrWhiteSpace(basePath))
+            {
+                basePath = Path.GetTempPath();
+            }
+
+            _basePath = basePath;
+            Directory.CreateDirectory(_basePath);
+        }
+
+        public async Task<string> SaveAsync(Stream content, string? extension = null, CancellationToken cancellationToken = default)
+        {
+            var id = Guid.NewGuid().ToString("N");
+            var ext = string.IsNullOrWhiteSpace(extension) ? ".tmp" : (extension.StartsWith(".") ? extension : "." + extension);
+            var fileName = id + ext;
+            var path = Path.Combine(_basePath, fileName);
+
+            await using var fs = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096, useAsync: true);
+            await content.CopyToAsync(fs, cancellationToken).ConfigureAwait(false);
+            await fs.FlushAsync(cancellationToken).ConfigureAwait(false);
+
+            return id;
+        }
+
+        public Task<Stream> OpenReadAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var path = ResolvePath(id);
+            if (path == null || !File.Exists(path)) throw new FileNotFoundException("Temporary file not found", id);
+            Stream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
+            return Task.FromResult(fs);
+        }
+
+        public Task DeleteAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var path = ResolvePath(id);
+            if (path != null && File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task<string?> GetPathAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var path = ResolvePath(id);
+            if (path != null && File.Exists(path)) return Task.FromResult<string?>(Path.GetFullPath(path));
+            return Task.FromResult<string?>(null);
+        }
+
+        public Task CleanupAsync(TimeSpan olderThan, CancellationToken cancellationToken = default)
+        {
+            var threshold = DateTimeOffset.UtcNow - olderThan;
+            var dir = new DirectoryInfo(_basePath);
+            if (!dir.Exists) return Task.CompletedTask;
+
+            var files = dir.GetFiles()
+                           .Where(f => f.CreationTimeUtc < threshold.UtcDateTime || f.LastWriteTimeUtc < threshold.UtcDateTime)
+                           .ToArray();
+
+            foreach (var f in files)
+            {
+                try { f.Delete(); } catch { /* best-effort cleanup */ }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private string? ResolvePath(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return null;
+            var dir = new DirectoryInfo(_basePath);
+            if (!dir.Exists) return null;
+            var match = dir.GetFiles(id + ".*").FirstOrDefault();
+            return match?.FullName;
+        }
+    }
+}

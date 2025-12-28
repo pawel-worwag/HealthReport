@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HealthReport.Infrastructure;
+using HealthReport.Application.Interfaces;
+using HealthReport.Infrastructure.TempFileStorage;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,10 @@ builder.Services.AddDbContext<HealthReportDbContext>(options =>
 // Blazor Server
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+// Temp file storage configuration and registration
+builder.Services.Configure<FileSystemTempFileStorageOptions>(builder.Configuration.GetSection("FileSystemTempFileStorage"));
+builder.Services.AddSingleton<ITempFileStorage, FileSystemTempFileStorage>();
 
 var app = builder.Build();
 
