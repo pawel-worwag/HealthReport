@@ -55,3 +55,8 @@ Testing & CI
 ------------
 - Add unit tests under a `tests/` project and run via `dotnet test`.
 - Keep tasks small and focused; amend last commit only for immediate fixes, and use `--force-with-lease` when pushing rewrites.
+
+Platform decision (ADR)
+-----------------------
+- This repository targets .NET 10 (`net10.0`). See ADR: `docs/adr/0001-use-dotnet-10.md` for rationale, alternatives and consequences.
+- Ensure CI, local SDK and Docker images use .NET 10-compatible tooling (`dotnet --info` should report .NET 10).
