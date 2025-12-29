@@ -1,7 +1,3 @@
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace HealthReport.Application.Interfaces
 {
     public interface IRepository<T> where T : class

@@ -1,5 +1,5 @@
 using HealthReport.Application.Handlers.Imports;
-using HealthReport.Application.Services.Reports;
+using HealthReport.Application.Handlers.Reports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

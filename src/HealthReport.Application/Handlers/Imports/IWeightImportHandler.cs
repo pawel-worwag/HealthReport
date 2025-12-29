@@ -1,4 +1,3 @@
-
 using HealthReport.Application.FileParsers;
 using HealthReport.Domain.Entities;
 

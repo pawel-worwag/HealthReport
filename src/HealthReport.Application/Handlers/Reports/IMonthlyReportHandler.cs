@@ -1,7 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace HealthReport.Application.Services.Reports
+namespace HealthReport.Application.Handlers.Reports
 {
     public interface IMonthlyReportHandler
     {

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using HealthReport.Application.Services;
 using HealthReport.Domain.Entities;
 
 namespace HealthReport.Application.FileParsers.Garmin

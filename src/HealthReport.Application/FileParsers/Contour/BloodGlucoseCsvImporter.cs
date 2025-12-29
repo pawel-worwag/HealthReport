@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using HealthReport.Domain.Entities;
-using HealthReport.Application.Services;
 
 namespace HealthReport.Application.FileParsers.Contour
 {

@@ -1,11 +1,7 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.Reports
+namespace HealthReport.Application.Handlers.Reports
 {
     public class MonthlyReportHandler(
         IRepository<BloodPressureMeasurement> bpRepo,

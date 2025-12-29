@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-
-namespace HealthReport.Application.Services.Reports
+namespace HealthReport.Application.Handlers.Reports
 {
     public class MonthlyReportDto
     {
