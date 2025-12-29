@@ -16,5 +16,22 @@
     <ProjectReference Include="..\HealthReport.Domain\HealthReport.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\css\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\css\bootstrap.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+  </ItemGroup>
+
+  <!-- Run LibMan restore via dotnet tool before build when libman.json is present -->
+    <Target Name="LibManToolRestore" BeforeTargets="PrepareForBuild" Condition="Exists('$(MSBuildProjectDirectory)\libman.json')">
+      <Message Importance="high" Text="Restoring dotnet tools (for libman) and running libman restore..." />
+      <Exec Command="dotnet tool restore" />
+      <Exec Command="dotnet tool run libman restore" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
 </Project>

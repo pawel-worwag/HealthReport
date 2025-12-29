@@ -55,3 +55,6 @@ Thumbs.db
 
 appsettings.[Dd]evelopment.json
 appsettings.Local.json
+
+# Vendor libraries pulled into wwwroot (managed by LibMan/npm/CI)
+**/wwwroot/lib/
