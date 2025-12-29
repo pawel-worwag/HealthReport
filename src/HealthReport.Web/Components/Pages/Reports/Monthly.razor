@@ -5,14 +5,15 @@
 <div class="row mb-3">
 	<div class="col-md-3">
 		<label class="form-label">Year</label>
-		<input class="form-control" type="number" @bind="Year" min="@MinYear" max="@MaxYear" />
+		<input class="form-control" type="number" @bind="Year" min="@MinYear" max="@MaxYear"/>
 	</div>
 	<div class="col-md-3">
 		<label class="form-label">Month</label>
 		<select class="form-select" @bind="Month">
 			@for (int m = 1; m <= 12; m++)
 			{
-				<option value="@m"> @m - @System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(m)</option>
+				<option
+					value="@m"> @m - @System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(m)</option>
 			}
 		</select>
 	</div>
@@ -23,137 +24,182 @@
 
 @if (Report is not null)
 {
+	<h3 class="pt-3">Summary</h3>
+	<table class="table table-hover table-sm" style="width:auto;">
+		<thead class="table-bordered">
+		<tr>
+			<th></th>
+			<th class="text-end ps-4">Min</th>
+			<th class="text-end ps-4">Max</th>
+			<th class="text-end ps-4">Avg</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td class="pe-4">Blood pressure - Systolic [mmHg]</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Min()</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Max()</td>
+			<td class="text-end ps-4">@Math.Round(Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Average(), 0)</td>
+		</tr>
+		<tr>
+			<td class="pe-4">Blood pressure - Diastolic [mmHg]</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Min()</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Max()</td>
+			<td class="text-end ps-4">@Math.Round(Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Average(), 0)</td>
+		</tr>
+		<tr>
+			<td class="pe-4">Pulse</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Min()</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Average(), 0)</td>
+		</tr>
+		<tr>
+			<td class="pe-4">Glucose [mg/dL]</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Glucose.Select(x => x.Value)).Min()</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Glucose.Select(x => x.Value)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.Glucose.Select(x => x.Value)).Average(), 0)</td>
+		</tr>
+		<tr>
+			<td class="pe-4">Weight [kg]</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Min()</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Average(), 2)</td>
+		</tr>
+		<tr>
+			<td class="pe-4">BMI</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.BMI)).Min()</td>
+			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.BMI)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.Weight.Select(x => x.BMI)).Average(), 2)</td>
+		</tr>
+		</tbody>
+	</table>
 
-<table class="table table-hover table-sm">
-	<thead class="table-bordered">
-	<tr>
-		<th rowspan="2">Date</th>
-		<th style="width:3em;"></th>
-		<th colspan="6" >Blood pressure</th>
-		<th style="width:3em;"></th>
-		<th colspan="3">Glucose</th>
-		<th style="width:3em;"></th>
-		<th colspan="3" >Weight</th>
-	</tr>
-	<tr>
-		<th style="width:3em;"></th>
-		<th >Time</th>
-		<th colspan="4">Pressure</th>
-		<th >Pulse</th>
-
-		<th></th>
-
-		<th>Time</th>
-		<th>Glucose</th>
-		<th>Note</th>
-
-		<th></th>
-
-		<th >Time</th>
-		<th >Weight</th>
-		<th >BMI</th>
-	</tr>
-	</thead>
-	<tbody>
-		@foreach (var d in Report.Days)
-		{
-			var bCount = d.BloodPressure.Count();
-			var gCount = d.Glucose.Count();
-			var wCount = d.Weight.Count();
-			var maxCount = Math.Max(bCount,Math.Max(gCount,wCount));
-			if (maxCount == 0)
+	<h3 class="pt-3">Details</h3>
+	<div class="table-responsive">
+		<table class="table table-hover table-sm table-borderless">
+			<thead class="table-bordered">
+			<tr>
+				<th>Date</th>
+				<th>Blood pressure / pulse</th>
+				<th>Glucose</th>
+				<th>Weight</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var d in Report.Days)
 			{
-				<tr>
-					<td>@d.Date.ToString("yyyy-MM-dd")</td>
-					<th style="width:3em;"></th>
-					<td colspan="6" ></td>
-					<th style="width:3em;"></th>
-					<td colspan="3"></td>
-					<th style="width:3em;"></th>
-					<td colspan="3" ></td>
-				</tr>
-			}
-			else
-			{
-				@for (int i = 0; i < maxCount; i++)
+				var bCount = d.BloodPressure.Count();
+				var gCount = d.Glucose.Count();
+				var wCount = d.Weight.Count();
+				var maxCount = Math.Max(bCount, Math.Max(gCount, wCount));
+				if (maxCount == 0)
 				{
+					<tr class="border-bottom">
+						<td colspan="4"></td>
+					</tr>
 					<tr>
-						@if (i == 0)
-						{
-							<td rowspan="@maxCount">@d.Date.ToString("yyyy-MM-dd")</td>
-						}
-						<td style="width:3em;"></td>
-						@if (i < bCount)
-						{
-							var m = d.BloodPressure.ElementAt(i);
-							<td class="ps-3">@m.Time</td>
-							<td class="text-end">@m.Systolic</td> 
-							<td class="ps-0 pe-0">/</td>
-							<td class="pe-0">@m.Diastolic</td>
-							<td >
-								<div class="d-inline ps-0 pe-3">
-									<span class="bi bi-activity"></span>
-								</div>
-							</td>
-							<td class="text-end">
-								@m.Pulse 
-								<div class="d-inline ps-2 pe-3">
-								<span class="bi bi-heart"></span>
-								</div>
-							</td>
-						}
-						else
-						{
-							<td ></td>
-							<td colspan="4" ></td>
-							<td ></td>
-						}
-						<td style="width:3em;"></td>
-						@if (i < gCount)
-						{
-							var m = d.Glucose.ElementAt(i);
-							<td class="ps-3">@m.Time</td>
-							<td class="text-end">@m.Value 
-								<div class="d-inline ps-2">
-								@if (m.Meal is 0 or 1 or 2)
-								{
-									<span class="bi bi-cup"></span>
-								}
-								else
-								{
-									<span class="bi bi-cup-fill"></span>
-								}
-								</div>
-							</td>
-							<td class="ps-3"><span class="fw-lighter fst-italic">@m.Note</span></td>
-						}
-						else
-						{
-							<td></td>
-							<td></td>
-							<td></td>
-						}
-						<td style="width:3em;"></td>
-						@if (i < wCount)
-						{
-							var m = d.Weight.ElementAt(i);
-							<td class="ps-3">@m.Time</td>
-							<td >@m.WeightKg</td>
-							<td >@m.BMI</td>
-						}
-						else
-						{
-							<td ></td>
-							<td ></td>
-							<td ></td>
-						}
+						<td>@d.Date.ToString("yyyy-MM-dd")</td>
+						<td colspan="3" class="text-center">no-data</td>
 					</tr>
 				}
-			}
-		}
-	</tbody>
-</table>
+				else
+				{
+					@for (int i = 0; i < maxCount; i++)
+					{
+						@if (i == 0)
+						{
+							<tr class="border-bottom">
+								<td colspan="4"></td>
+							</tr>
+						}
 
+						<tr>
+							@if (i == 0)
+							{
+								<td rowspan="@maxCount">
+									@d.Date.ToString("yyyy-MM-dd")
+								</td>
+							}
+							<td>
+								@if (i < bCount)
+								{
+									<div class="d-inline-block fs-6" style="width:6em;">
+										<span class="bi bi-clock pe-2"></span>
+										@d.BloodPressure.ElementAt(i).Time
+									</div>
+
+									<div class="d-inline-block fs-5" style="width:5em;">
+										<div class="badge rounded-pill bg-primary">
+											@(d.BloodPressure.ElementAt(i).Systolic)/@(d.BloodPressure.ElementAt(i).Diastolic)
+											<span class="bi bi-activity ps-2"></span>
+										</div>
+									</div>
+
+									<div class="d-inline-block fs-5" style="width:6em;">
+										<div class="badge rounded-pill bg-primary">
+											@(d.BloodPressure.ElementAt(i).Pulse)
+											<span class="bi bi-heart ps-2"></span>
+										</div>
+									</div>
+								}
+							</td>
+							<td>
+								@if (i < gCount)
+								{
+									<div class="d-inline-block fs-6" style="width:6em;">
+										<span class="bi bi-clock pe-2"></span>
+										@d.Glucose.ElementAt(i).Time
+									</div>
+
+									<div class="d-inline-block fs-5" style="width:5em;">
+										<div class="badge rounded-pill bg-primary">
+											@(d.Glucose.ElementAt(i).Value)
+											@if (d.Glucose.ElementAt(i).Meal is 0 or 1 or 2)
+											{
+												<span class="bi bi-cup ps-2"></span>
+											}
+											else
+											{
+												<span class="bi bi-cup-fill ps-2"></span>
+											}
+										</div>
+									</div>
+
+									<div class="d-inline-block fst-italic fst-lighter" style="font-size: 70%;">
+										@d.Glucose.ElementAt(i).Note
+									</div>
+								}
+							</td>
+							<td>
+								@if (i < wCount)
+								{
+									<div class="d-inline-block fs-6" style="width:6em;">
+										<span class="bi bi-clock pe-2"></span>
+										@d.Weight.ElementAt(i).Time
+									</div>
+
+									<div class="d-inline-block fs-5" style="width:5em;">
+										<div class="badge rounded-pill bg-primary">
+											@(d.Weight.ElementAt(i).WeightKg)
+											<span class="bi bi-speedometer2 ps-2"></span>
+										</div>
+									</div>
+
+									<div class="d-inline-block fs-5" style="width:6em;">
+										<div class="badge rounded-pill bg-primary">
+											@(d.Weight.ElementAt(i).BMI)
+											<span class="bi bi-fire ps-2"></span>
+										</div>
+									</div>
+								}
+							</td>
+						</tr>
+					}
+				}
+			}
+			</tbody>
+		</table>
+	</div>
 }
 @* Code moved to Monthly.razor.cs *@
 
