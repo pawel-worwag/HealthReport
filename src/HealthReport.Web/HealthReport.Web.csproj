@@ -15,4 +15,6 @@
     <ProjectReference Include="..\HealthReport.Application\HealthReport.Application.csproj" />
     <ProjectReference Include="..\HealthReport.Domain\HealthReport.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
 </Project>

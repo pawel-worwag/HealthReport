@@ -5,22 +5,13 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <base href="/"/>
-    <LinkPreload/>
-    <link rel="stylesheet" href="@Assets["app.css"]"/>
-    <link rel="stylesheet" href="@Assets["libs/bootstrap-5.3.8-dist/css/bootstrap.css"]"/>
-    <link rel="stylesheet" href="@Assets["PkiMaster.styles.css"]"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <ImportMap/>
     <HeadOutlet @rendermode="InteractiveServer"/>
 </head>
 
-<body class="d-flex flex-column h-100">
+<body>
 <Routes @rendermode="InteractiveServer"/>
-<ReconnectModal/>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
-<script src="@Assets["libs/jquery-3.7.1/jquery.min.js"]"></script>
-<script src="@Assets["libs/popper.min.js"]"></script>
-<script src="@Assets["libs/bootstrap-5.3.8-dist/js/bootstrap.js"]"></script>
 </body>
 
 </html>
