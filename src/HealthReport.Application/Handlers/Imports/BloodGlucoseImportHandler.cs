@@ -1,12 +1,9 @@
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using HealthReport.Application.FileParsers;
+using HealthReport.Application.FileParsers.Contour;
 using HealthReport.Application.Interfaces;
-using HealthReport.Application.Services.Contour;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.ImportHandlers
+namespace HealthReport.Application.Handlers.Imports
 {
     /// <summary>
     /// Imports blood glucose CSV data using the existing Contour parser and persists valid measurements.

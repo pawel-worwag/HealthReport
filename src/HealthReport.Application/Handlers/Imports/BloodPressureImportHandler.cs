@@ -1,12 +1,9 @@
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using HealthReport.Application.FileParsers;
+using HealthReport.Application.FileParsers.IHealth;
 using HealthReport.Application.Interfaces;
-using HealthReport.Application.Services.IHealth;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.ImportHandlers
+namespace HealthReport.Application.Handlers.Imports
 {
     /// <summary>
     /// Imports blood pressure CSV data using the existing iHealth parser and persists valid measurements.

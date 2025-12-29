@@ -5,7 +5,7 @@ using System.IO;
 using HealthReport.Domain.Entities;
 using HealthReport.Application.Services;
 
-namespace HealthReport.Application.Services.Contour
+namespace HealthReport.Application.FileParsers.Contour
 {
     /// <summary>
     /// CSV importer for Contour glucose meter exports.

@@ -1,10 +1,7 @@
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using HealthReport.Application.Services;
+using HealthReport.Application.FileParsers;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.ImportHandlers
+namespace HealthReport.Application.Handlers.Imports
 {
     /// <summary>
     /// Handler responsible for importing blood glucose measurements from a CSV stream.

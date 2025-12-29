@@ -1,12 +1,9 @@
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using HealthReport.Application.FileParsers;
+using HealthReport.Application.FileParsers.Garmin;
 using HealthReport.Application.Interfaces;
-using HealthReport.Application.Services.Garmin;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.ImportHandlers
+namespace HealthReport.Application.Handlers.Imports
 {
     /// <summary>
     /// Imports weight CSV data using the existing Garmin parser and persists valid measurements.

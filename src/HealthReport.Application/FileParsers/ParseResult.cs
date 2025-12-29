@@ -1,4 +1,4 @@
-namespace HealthReport.Application.Services;
+namespace HealthReport.Application.FileParsers;
 
 public class ParseResult<T> where T : class
 {

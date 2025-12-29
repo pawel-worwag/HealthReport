@@ -5,7 +5,7 @@ using System.IO;
 using HealthReport.Application.Services;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.Garmin
+namespace HealthReport.Application.FileParsers.Garmin
 {
     /// <summary>
     /// Simple CSV importer for Garmin Connect weight exports.

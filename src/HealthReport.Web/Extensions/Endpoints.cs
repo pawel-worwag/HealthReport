@@ -1,4 +1,4 @@
-using HealthReport.Application.Services.ImportHandlers;
+using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Services.Reports;
 
 namespace HealthReport.Web.Extensions;

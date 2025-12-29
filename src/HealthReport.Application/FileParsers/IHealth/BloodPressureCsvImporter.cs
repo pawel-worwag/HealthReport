@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Services.IHealth
+namespace HealthReport.Application.FileParsers.IHealth
 {
     /// <summary>
     /// CSV importer for iHealth-exported files with headers: Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
