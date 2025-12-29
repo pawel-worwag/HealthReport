@@ -1,5 +1,3 @@
-using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using HealthReport.Application;
 using HealthReport.Infrastructure;
 using HealthReport.Web.Components;

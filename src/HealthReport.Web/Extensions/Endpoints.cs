@@ -7,6 +7,11 @@ public static class Endpoints
 {
     public static WebApplication MapEndpoint(this WebApplication app)
     {
+        app.MapGet("/api/error-test", ()=>
+        {
+            throw new Exception("Test exception");
+        });
+        
         // Minimal API endpoint for blood pressure CSV import
         app.MapPost("/api/import/bloodpressure", async (HttpRequest request, IBloodPressureImportHandler handler, CancellationToken ct) =>
         {
