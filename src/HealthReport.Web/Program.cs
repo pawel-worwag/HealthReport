@@ -1,3 +1,4 @@
+using HealthReport.Application;
 using HealthReport.Application.Interfaces;
 using HealthReport.Infrastructure.TempFileStorage;
 using HealthReport.Application.Services.ImportHandlers;
@@ -8,19 +9,11 @@ using HealthReport.Web.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 // Blazor Server
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
-
-
-// Import handlers
-builder.Services.AddScoped<IBloodPressureImportHandler, BloodPressureImportHandler>();
-builder.Services.AddScoped<IBloodGlucoseImportHandler, BloodGlucoseImportHandler>();
-builder.Services.AddScoped<IWeightImportHandler, WeightImportHandler>();
-// Reports
-builder.Services.AddScoped<IMonthlyReportHandler, MonthlyReportHandler>();
 
 var app = builder.Build();
 
