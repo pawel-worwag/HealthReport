@@ -17,7 +17,7 @@ namespace HealthReport.Application.Handlers.Reports
 
     public class BloodPressureEntry
     {
-        public TimeSpan Time { get; init; }
+        public TimeOnly Time { get; init; }
         public int Systolic { get; init; }
         public int Diastolic { get; init; }
         public int? Pulse { get; init; }
@@ -26,7 +26,7 @@ namespace HealthReport.Application.Handlers.Reports
 
     public class GlucoseEntry
     {
-        public TimeSpan Time { get; init; }
+        public TimeOnly Time { get; init; }
         public int Value { get; init; }
         public int Meal { get; init; }
         public string? Note { get; init; }
@@ -34,7 +34,7 @@ namespace HealthReport.Application.Handlers.Reports
 
     public class WeightEntry
     {
-        public TimeSpan Time { get; init; }
+        public TimeOnly Time { get; init; }
         public decimal WeightKg { get; init; }
         public decimal? BMI { get; init; }
         public decimal? BodyFatPercentage { get; init; }

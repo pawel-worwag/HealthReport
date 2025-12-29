@@ -30,7 +30,7 @@ namespace HealthReport.Application.Handlers.Reports
                     .OrderBy(x => x.MeasuredTime)
                     .Select(x => new BloodPressureEntry
                     {
-                        Time = x.MeasuredTime.ToTimeSpan(),
+                        Time = x.MeasuredTime,
                         Systolic = x.Systolic,
                         Diastolic = x.Diastolic,
                         Pulse = x.Pulse,
@@ -42,7 +42,7 @@ namespace HealthReport.Application.Handlers.Reports
                     .OrderBy(x => x.MeasuredTime)
                     .Select(x => new GlucoseEntry
                     {
-                        Time = x.MeasuredTime.ToTimeSpan(),
+                        Time = x.MeasuredTime,
                         Value = x.BGValue,
                         Meal = (int)x.Meal,
                         Note = x.Note
@@ -53,7 +53,7 @@ namespace HealthReport.Application.Handlers.Reports
                     .OrderBy(x => x.MeasuredTime)
                     .Select(x => new WeightEntry
                     {
-                        Time = x.MeasuredTime.ToTimeSpan(),
+                        Time = x.MeasuredTime,
                         WeightKg = x.WeightKg,
                         BMI = x.BMI,
                         BodyFatPercentage = x.BodyFatPercentage

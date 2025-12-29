@@ -1,0 +1,159 @@
+@page "/reports/monthly"
+@using System.Text.RegularExpressions
+<h3>Monthly report</h3>
+
+<div class="row mb-3">
+	<div class="col-md-3">
+		<label class="form-label">Year</label>
+		<input class="form-control" type="number" @bind="Year" min="@MinYear" max="@MaxYear" />
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Month</label>
+		<select class="form-select" @bind="Month">
+			@for (int m = 1; m <= 12; m++)
+			{
+				<option value="@m"> @m - @System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(m)</option>
+			}
+		</select>
+	</div>
+	<div class="col-md-3 d-flex align-items-end">
+		<button class="btn btn-primary" @onclick="Submit">Go</button>
+	</div>
+</div>
+
+@if (Report is not null)
+{
+
+<table class="table table-hover table-sm">
+	<thead class="table-bordered">
+	<tr>
+		<th rowspan="2">Date</th>
+		<th style="width:3em;"></th>
+		<th colspan="6" >Blood pressure</th>
+		<th style="width:3em;"></th>
+		<th colspan="3">Glucose</th>
+		<th style="width:3em;"></th>
+		<th colspan="3" >Weight</th>
+	</tr>
+	<tr>
+		<th style="width:3em;"></th>
+		<th >Time</th>
+		<th colspan="4">Pressure</th>
+		<th >Pulse</th>
+
+		<th></th>
+
+		<th>Time</th>
+		<th>Glucose</th>
+		<th>Note</th>
+
+		<th></th>
+
+		<th >Time</th>
+		<th >Weight</th>
+		<th >BMI</th>
+	</tr>
+	</thead>
+	<tbody>
+		@foreach (var d in Report.Days)
+		{
+			var bCount = d.BloodPressure.Count();
+			var gCount = d.Glucose.Count();
+			var wCount = d.Weight.Count();
+			var maxCount = Math.Max(bCount,Math.Max(gCount,wCount));
+			if (maxCount == 0)
+			{
+				<tr>
+					<td>@d.Date.ToString("yyyy-MM-dd")</td>
+					<th style="width:3em;"></th>
+					<td colspan="6" ></td>
+					<th style="width:3em;"></th>
+					<td colspan="3"></td>
+					<th style="width:3em;"></th>
+					<td colspan="3" ></td>
+				</tr>
+			}
+			else
+			{
+				@for (int i = 0; i < maxCount; i++)
+				{
+					<tr>
+						@if (i == 0)
+						{
+							<td rowspan="@maxCount">@d.Date.ToString("yyyy-MM-dd")</td>
+						}
+						<td style="width:3em;"></td>
+						@if (i < bCount)
+						{
+							var m = d.BloodPressure.ElementAt(i);
+							<td class="ps-3">@m.Time</td>
+							<td class="text-end">@m.Systolic</td> 
+							<td class="ps-0 pe-0">/</td>
+							<td class="pe-0">@m.Diastolic</td>
+							<td >
+								<div class="d-inline ps-0 pe-3">
+									<span class="bi bi-activity"></span>
+								</div>
+							</td>
+							<td class="text-end">
+								@m.Pulse 
+								<div class="d-inline ps-2 pe-3">
+								<span class="bi bi-heart"></span>
+								</div>
+							</td>
+						}
+						else
+						{
+							<td ></td>
+							<td colspan="4" ></td>
+							<td ></td>
+						}
+						<td style="width:3em;"></td>
+						@if (i < gCount)
+						{
+							var m = d.Glucose.ElementAt(i);
+							<td class="ps-3">@m.Time</td>
+							<td class="text-end">@m.Value 
+								<div class="d-inline ps-2">
+								@if (m.Meal is 0 or 1 or 2)
+								{
+									<span class="bi bi-cup"></span>
+								}
+								else
+								{
+									<span class="bi bi-cup-fill"></span>
+								}
+								</div>
+							</td>
+							<td class="ps-3"><span class="fw-lighter fst-italic">@m.Note</span></td>
+						}
+						else
+						{
+							<td></td>
+							<td></td>
+							<td></td>
+						}
+						<td style="width:3em;"></td>
+						@if (i < wCount)
+						{
+							var m = d.Weight.ElementAt(i);
+							<td class="ps-3">@m.Time</td>
+							<td >@m.WeightKg</td>
+							<td >@m.BMI</td>
+						}
+						else
+						{
+							<td ></td>
+							<td ></td>
+							<td ></td>
+						}
+					</tr>
+				}
+			}
+		}
+	</tbody>
+</table>
+
+}
+@* Code moved to Monthly.razor.cs *@
+
