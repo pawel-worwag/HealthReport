@@ -29,6 +29,12 @@ Run the web app (development):
 dotnet run --project src/HealthReport.Web/HealthReport.Web.csproj
 ```
 
+Screenshots
+----------
+
+[![Base report](docs/screenshots/base-report-preview.png)](docs/screenshots/base-report.png)
+
+
 DEMO Runner: iHealth CSV importer
 ---------------------------
 There is a small runner that demonstrates importing CSV files exported from iHealth.
@@ -69,8 +75,4 @@ Notes about Garmin CSV format used in examples:
 - Numeric fields may include units/suffixes (`kg`, `%`) — the importer strips those when parsing.
 - The runner prints imported record count, parse errors (with line numbers), and shows the first 10 parsed records.
 
-Screenshots
-----------
-
-[![Base report](docs/screenshots/base-report-preview.png)](docs/screenshots/base-report.png)
 
