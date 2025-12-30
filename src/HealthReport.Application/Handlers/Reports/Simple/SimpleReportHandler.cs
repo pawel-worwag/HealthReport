@@ -54,7 +54,7 @@ namespace HealthReport.Application.Handlers.Reports.Simple
                 { Min = systolicMin, Max = systolicMax, Avg = (decimal?)systolicAvg };
 
             var diastolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Diastolic)).MinOrNull();
-            var diastolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).Max();
+            var diastolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).MaxOrNull();
             var diastolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).AverageOrNull();
             var diastolicSummary = new SummaryEntryValue()
                 { Min = diastolicMin, Max = diastolicMax, Avg = (decimal?)diastolicAvg };
