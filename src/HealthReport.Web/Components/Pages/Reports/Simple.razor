@@ -19,6 +19,7 @@
 	</div>
 	<div class="col-md-3 d-flex align-items-end">
 		<button class="btn btn-primary" @onclick="Submit">Go</button>
+		<a class="btn btn-primary ms-3" href="@($"/api/reports/simple/xlsx?year={Year}&month={Month}")" target="_blank"><span class="bi bi-filetype-xlsx"></span></a>
 	</div>
 </div>
 
@@ -48,7 +49,7 @@
 			<td class="text-end ps-4">@((Report.Summary.DiastolicSummary.Avg is null)?"":Math.Round((decimal)Report.Summary.DiastolicSummary.Avg,0))</td>
 		</tr>
 		<tr>
-			<td class="pe-4">Pulse</td>
+			<td class="pe-4">Pulse [bpm]</td>
 			<td class="text-end ps-4">@Report.Summary.PulseSummary.Min</td>
 			<td class="text-end ps-4">@Report.Summary.PulseSummary.Max</td>
 			<td class="text-end ps-4">@((Report.Summary.PulseSummary.Avg is null)?"":Math.Round((decimal)Report.Summary.PulseSummary.Avg,0))</td>
@@ -66,7 +67,7 @@
 			<td class="text-end ps-4">@((Report.Summary.WeightSummary.Avg is null)?"":Math.Round((decimal)Report.Summary.WeightSummary.Avg,2))</td>
 		</tr>
 		<tr>
-			<td class="pe-4">BMI</td>
+			<td class="pe-4">BMI [kg/m²]</td>
 			<td class="text-end ps-4">@Report.Summary.BmiSummary.Min</td>
 			<td class="text-end ps-4">@Report.Summary.BmiSummary.Max</td>
 			<td class="text-end ps-4">@((Report.Summary.BmiSummary.Avg is null)?"":Math.Round((decimal)Report.Summary.BmiSummary.Avg,2))</td>
@@ -80,9 +81,9 @@
 			<thead class="table-bordered">
 			<tr>
 				<th>Date</th>
-				<th>Blood pressure / pulse</th>
-				<th>Glucose</th>
-				<th>Weight / BMI</th>
+				<th>Blood pressure [mmHg] / pulse [bpm]</th>
+				<th>Glucose [mg/dL]</th>
+				<th>Weight [kg] / BMI [kg/m²]</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -156,11 +157,11 @@
 											@(d.Glucose.ElementAt(i).Value)
 											@if (d.Glucose.ElementAt(i).Meal is 0 or 1 or 2)
 											{
-												<span class="bi bi-cup ps-2"></span>
+												<span class="bi bi-cup-fill ps-2"></span>
 											}
 											else
 											{
-												<span class="bi bi-cup-fill ps-2"></span>
+												<span class="bi bi-cup ps-2"></span>
 											}
 										</div>
 									</div>

@@ -64,6 +64,21 @@ public static class Endpoints
             return Results.Ok(report);
         });
         
+        app.MapGet("/api/reports/simple/xlsx", async (ISimpleReportHandler handler, int? year, int? month, CancellationToken ct) =>
+        {
+            if (!year.HasValue || !month.HasValue)
+                return Results.BadRequest(new { message = "Please provide year and month query parameters, e.g. ?year=2025&month=12" });
+
+            if (month < 1 || month > 12)
+                return Results.BadRequest(new { message = "Month must be between 1 and 12" });
+
+            var report = handler.GenerateMonthlyReport(year.Value, month.Value);
+
+            return Results.File(SimpleReportToXlsx.Export(report),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{year}_{month}.xlsx");
+        });
+        
+        
         return app;
     }
 }
