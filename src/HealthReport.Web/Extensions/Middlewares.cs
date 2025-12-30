@@ -1,8 +1,5 @@
-using System.Text.Json;
 using HealthReport.Application.Errors;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace HealthReport.Web.Extensions
 {
@@ -10,6 +7,9 @@ namespace HealthReport.Web.Extensions
     {
         public static WebApplication UseCustomMiddlewares(this WebApplication app)
         {
+            var loggerFactory = app.Services.GetService<ILoggerFactory>();
+            var logger = loggerFactory?.CreateLogger("HealthReport.Web.Middlewares") ?? NullLogger.Instance;
+
             app.Use(async (context, next) =>
             {
                 await next();
@@ -32,17 +32,22 @@ namespace HealthReport.Web.Extensions
                 }
                 catch (Exception ex)
                 {
-                    if(!context.Request.Path.StartsWithSegments("/api"))
+                    // Log the exception for API requests and return JSON error
+                    if (context.Request.Path.StartsWithSegments("/api"))
                     {
-                        throw;
+                        logger.LogError(ex, "Unhandled exception while processing API request {Path}", context.Request.Path);
+                        var apiError = new ApiError()
+                        {
+                            Message = ex.Message
+                        };
+                        context.Response.ContentType = "application/json";
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsJsonAsync(apiError);
+                        return;
                     }
-                    var apiError = new ApiError()
-                    {
-                        Message = ex.Message
-                    };
-                    context.Response.ContentType = "application/json";
-                    context.Response.StatusCode = 500;
-                    await context.Response.WriteAsJsonAsync(apiError);
+
+                    // Non-API: rethrow to let upstream exception handler deal with it
+                    throw;
                 }
             });
             

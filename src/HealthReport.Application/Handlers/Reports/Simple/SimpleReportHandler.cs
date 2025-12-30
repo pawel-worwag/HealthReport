@@ -1,3 +1,4 @@
+using HealthReport.Application.Extensions;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
@@ -45,39 +46,38 @@ namespace HealthReport.Application.Handlers.Reports.Simple
                     .ToList()
                 select new DetailEntry
                     { Date = dateOnly, BloodPressure = bpEntries, Glucose = bgEntries, Weight = wEntries }).ToList();
-
-
-            var systolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).Min();
-            var systolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).Max();
-            var systolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).Average();
+            
+            var systolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).MinOrNull();
+            var systolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).MaxOrNull();
+            var systolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).AverageOrNull();
             var systolicSummary = new SummaryEntryValue()
                 { Min = systolicMin, Max = systolicMax, Avg = (decimal?)systolicAvg };
 
-            var diastolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Diastolic)).Min();
+            var diastolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Diastolic)).MinOrNull();
             var diastolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).Max();
-            var diastolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).Average();
+            var diastolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).AverageOrNull();
             var diastolicSummary = new SummaryEntryValue()
                 { Min = diastolicMin, Max = diastolicMax, Avg = (decimal?)diastolicAvg };
 
-            var pulseMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).Min();
-            var pulseMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).Max();
-            var pulseAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).Average();
+            var pulseMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).MinOrNull();
+            var pulseMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).MaxOrNull();
+            var pulseAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).AverageOrNull();
             var pulseSummary = new SummaryEntryValue() { Min = pulseMin, Max = pulseMax, Avg = (decimal?)pulseAvg };
 
-            var glucoseMin = records.SelectMany(x => x.Glucose.Select(y => y.Value)).Min();
-            var glucoseMax = records.SelectMany(x => x.Glucose.Select(y => y.Value)).Max();
-            var glucoseAvg = records.SelectMany(x => x.Glucose.Select(y => y.Value)).Average();
+            var glucoseMin = records.SelectMany(x => x.Glucose.Select(y => y.Value)).MinOrNull();
+            var glucoseMax = records.SelectMany(x => x.Glucose.Select(y => y.Value)).MaxOrNull();
+            var glucoseAvg = records.SelectMany(x => x.Glucose.Select(y => y.Value)).AverageOrNull();
             var glucoseSummary = new SummaryEntryValue()
                 { Min = glucoseMin, Max = glucoseMax, Avg = (decimal?)glucoseAvg };
 
-            var weightMin = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).Min();
-            var weightMax = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).Max();
-            var weightAvg = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).Average();
+            var weightMin = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).MinOrNull();
+            var weightMax = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).MaxOrNull();
+            var weightAvg = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).AverageOrNull();
             var weightSummary = new SummaryEntryValue() { Min = weightMin, Max = weightMax, Avg = weightAvg };
 
-            var bmiMin = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).Min();
-            var bmiMax = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).Max();
-            var bmiAvg = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).Average();
+            var bmiMin = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).MinOrNull();
+            var bmiMax = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).MaxOrNull();
+            var bmiAvg = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).AverageOrNull();
             var bmiSummary = new SummaryEntryValue() { Min = bmiMin, Max = bmiMax, Avg = bmiAvg };
 
             return new SimpleReportDto
