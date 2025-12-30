@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 
 namespace HealthReport.Web.Extensions;
 
@@ -18,6 +19,28 @@ public static class HealthChecksExtensions
 
     public static WebApplication MapHealthChecksEndpoints(this WebApplication app)
     {
+        // OpenAPI-visible wrapper endpoints
+        app.MapGet("/health/ready", async (HealthCheckService hc) =>
+        {
+            var report = await hc.CheckHealthAsync(r => r.Tags.Contains("critical"));
+            var dto = new HealthReport.Web.Contracts.HealthResponseDto(
+                report.Status.ToString(),
+                report.Entries.Select(e => new HealthReport.Web.Contracts.HealthCheckEntryDto(
+                    e.Key,
+                    e.Value.Status.ToString(),
+                    e.Value.Description)).ToList());
+
+            return dto;
+        })
+        .WithName("Health.Ready")
+        .WithTags("Health")
+        .Produces<HealthReport.Web.Contracts.HealthResponseDto>(StatusCodes.Status200OK, "application/json");
+
+        app.MapGet("/health/live", () => Results.NoContent())
+            .WithName("Health.Live")
+            .WithTags("Health")
+            .Produces(StatusCodes.Status204NoContent);
+
         app.MapHealthChecks("/health/ready", new HealthCheckOptions
         {
             Predicate = check => check.Tags.Contains("critical"),
