@@ -22,7 +22,7 @@
 	</div>
 </div>
 
-@if (Report is not null)
+@if (Report is not null && Report.Days.Count>0)
 {
 	<h3 class="pt-3">Summary</h3>
 	<table class="table table-hover table-sm" style="width:auto;">
@@ -82,7 +82,7 @@
 				<th>Date</th>
 				<th>Blood pressure / pulse</th>
 				<th>Glucose</th>
-				<th>Weight</th>
+				<th>Weight / BMI</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -123,7 +123,7 @@
 							<td style="min-width:22em;">
 								@if (i < bCount)
 								{
-									<div class="d-inline-block fs-6" style="width:6em;">
+									<div class="d-inline-block" style="width:6em; font-size: 80%;">
 										<span class="bi bi-clock pe-1"></span>
 										@d.BloodPressure.ElementAt(i).Time
 									</div>
@@ -146,7 +146,7 @@
 							<td style="min-width:15em;">
 								@if (i < gCount)
 								{
-									<div class="d-inline-block fs-6" style="width:6em;">
+									<div class="d-inline-block" style="width:6em; font-size: 80%;">
 										<span class="bi bi-clock pe-1"></span>
 										@d.Glucose.ElementAt(i).Time
 									</div>
@@ -173,7 +173,7 @@
 							<td style="min-width:23em;">
 								@if (i < wCount)
 								{
-									<div class="d-inline-block fs-6" style="width:6em;">
+									<div class="d-inline-block" style="width:6em; font-size: 80%;">
 										<span class="bi bi-clock pe-1"></span>
 										@d.Weight.ElementAt(i).Time
 									</div>
