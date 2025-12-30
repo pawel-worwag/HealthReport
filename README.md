@@ -68,3 +68,9 @@ Notes about Garmin CSV format used in examples:
 - Time may be in 12h format with `AM/PM` or 24h format. Dates may use Polish month abbreviations (e.g. `Gru` = grudzień).
 - Numeric fields may include units/suffixes (`kg`, `%`) — the importer strips those when parsing.
 - The runner prints imported record count, parse errors (with line numbers), and shows the first 10 parsed records.
+
+Screenshots
+----------
+
+[![Base report](docs/screenshots/base-report-preview.png)](docs/screenshots/base-report.png)
+
