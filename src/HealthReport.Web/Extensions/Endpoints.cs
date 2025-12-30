@@ -93,12 +93,12 @@ public static class Endpoints
             var report = handler.GenerateMonthlyReport(year.Value, month.Value);
 
             return Results.File(SimpleReportToXlsx.Export(report),
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{year}_{month}.xlsx");
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{year.Value}_{month.Value}.xlsx");
         })
         .WithTags("Reports")
         .Produces<byte[]>(StatusCodes.Status200OK ,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
-        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");;
+        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
         
         
         return app;
