@@ -19,7 +19,20 @@
 	</div>
 	<div class="col-md-3 d-flex align-items-end">
 		<button class="btn btn-primary" @onclick="Submit">Go</button>
-		<a class="btn btn-primary ms-3" href="@($"/api/reports/simple/xlsx?year={Year}&month={Month}")" target="_blank"><span class="bi bi-filetype-xlsx"></span></a>
+		<div class="dropdown ms-3">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				Download
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				<li>
+					<a class="dropdown-item" href="@($"/api/reports/simple/xlsx?year={Year}&month={Month}")" target="_blank">
+						<span class="bi bi-filetype-xlsx"></span>
+						as Spreadsheet
+					</a>
+				</li>
+				
+			</ul>
+		</div>
 	</div>
 </div>
 
