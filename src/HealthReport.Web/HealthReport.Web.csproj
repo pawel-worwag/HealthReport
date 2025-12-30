@@ -6,9 +6,11 @@
     <UserSecretsId>HealthReport.Web</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Scalar.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HealthReport.Infrastructure\HealthReport.Infrastructure.csproj" />

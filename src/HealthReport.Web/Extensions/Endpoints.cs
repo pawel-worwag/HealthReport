@@ -1,5 +1,7 @@
+using HealthReport.Application.Errors;
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;
+using Scalar.AspNetCore;
 
 namespace HealthReport.Web.Extensions;
 
@@ -22,8 +24,12 @@ public static class Endpoints
 
             await using var stream = file.OpenReadStream();
             var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
-            return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
-        });
+            return Results.Ok(new ImportResultDto(){ Imported = result.Data.Count(), Errors = result.Errors });
+        })
+        .WithTags("Imports")
+        .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
+        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
         
         // Minimal API endpoint for blood glucose CSV import
         app.MapPost("/api/import/bloodglucose", async (HttpRequest request, IBloodGlucoseImportHandler handler, CancellationToken ct) =>
@@ -35,8 +41,12 @@ public static class Endpoints
 
             await using var stream = file.OpenReadStream();
             var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
-            return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
-        });
+            return Results.Ok(new ImportResultDto(){ Imported = result.Data.Count(), Errors = result.Errors });
+        })
+        .WithTags("Imports")
+        .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
+        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
         
         // Minimal API endpoint for weight CSV import
         app.MapPost("/api/import/weight", async (HttpRequest request, IWeightImportHandler handler, CancellationToken ct) =>
@@ -48,8 +58,12 @@ public static class Endpoints
 
             using var stream = file.OpenReadStream();
             var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
-            return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
-        });
+            return Results.Ok(new ImportResultDto(){ Imported = result.Data.Count(), Errors = result.Errors });
+        })
+        .WithTags("Imports")
+        .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
+        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
 
         // Simple report endpoint
         app.MapGet("/api/reports/simple", async (ISimpleReportHandler handler, int? year, int? month, CancellationToken ct) =>
@@ -62,7 +76,11 @@ public static class Endpoints
 
             var report = handler.GenerateMonthlyReport(year.Value, month.Value);
             return Results.Ok(report);
-        });
+        })
+        .WithTags("Reports")
+        .Produces<SimpleReportDto>(StatusCodes.Status200OK,"application/json")
+        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
         
         app.MapGet("/api/reports/simple/xlsx", async (ISimpleReportHandler handler, int? year, int? month, CancellationToken ct) =>
         {
@@ -76,7 +94,11 @@ public static class Endpoints
 
             return Results.File(SimpleReportToXlsx.Export(report),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{year}_{month}.xlsx");
-        });
+        })
+        .WithTags("Reports")
+        .Produces<byte[]>(StatusCodes.Status200OK ,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");;
         
         
         return app;

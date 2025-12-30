@@ -2,12 +2,19 @@ using HealthReport.Application;
 using HealthReport.Infrastructure;
 using HealthReport.Web.Components;
 using HealthReport.Web.Extensions;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Register layers services
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddOpenApi(options =>
+{
+    // Specify the OpenAPI version to use
+    options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0;
+});
 
 // Configure Razor Components / Blazor Server
 builder.Services.AddRazorComponents(options =>
@@ -21,6 +28,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/error");
     app.UseHsts();
 }
+
+app.MapOpenApi();
+app.MapScalarApiReference("/docs");
 
 // Re-execute pipeline to '/not-found' for non-API status pages (shows NotFound component)
 // Note: keep this before static files/endpoints so that re-execute can render the Blazor component.

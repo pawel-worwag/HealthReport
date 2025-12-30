@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace HealthReport.Application.FileParsers;
 
 public class ParseResult<T> where T : class
@@ -9,6 +11,10 @@ public class ParseResult<T> where T : class
 
 public record ParseError
 {
+    
+    [JsonPropertyName("line")]
     public int Line { get; init; }
+    
+    [JsonPropertyName("message")]
     public string Message { get; init; } = string.Empty;
 }
