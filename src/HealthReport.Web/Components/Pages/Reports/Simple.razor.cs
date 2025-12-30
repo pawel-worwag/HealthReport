@@ -1,18 +1,16 @@
-using System;
-using System.Threading.Tasks;
-using HealthReport.Application.Handlers.Reports;
+using HealthReport.Application.Handlers.Reports.Simple;
 using Microsoft.AspNetCore.Components;
 
 namespace HealthReport.Web.Components.Pages.Reports;
 
-public partial class Monthly(IMonthlyReportHandler handler) : ComponentBase
+public partial class Simple(ISimpleReportHandler handler) : ComponentBase
 {
 	private int MinYear { get; } = 2000;
 	private int MaxYear { get; } = DateTime.Now.Year;
 	private int Year { get; set; }
 	private int Month { get; set; }
 	
-	private MonthlyReportDto? Report { get; set; }
+	private SimpleReportDto? Report { get; set; }
 
 	protected override void OnInitialized()
 	{

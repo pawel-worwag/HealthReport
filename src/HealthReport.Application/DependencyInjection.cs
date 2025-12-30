@@ -1,5 +1,5 @@
 using HealthReport.Application.Handlers.Imports;
-using HealthReport.Application.Handlers.Reports;
+using HealthReport.Application.Handlers.Reports.Simple;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +14,7 @@ public static class DependencyInjection
         services.AddScoped<IBloodGlucoseImportHandler, BloodGlucoseImportHandler>();
         services.AddScoped<IWeightImportHandler, WeightImportHandler>();
         // Reports handlers
-        services.AddScoped<IMonthlyReportHandler, MonthlyReportHandler>();
+        services.AddScoped<ISimpleReportHandler, SimpleReportHandler>();
         return services;
     }
 }

@@ -1,6 +1,6 @@
-namespace HealthReport.Application.Handlers.Reports
+namespace HealthReport.Application.Handlers.Reports.Simple
 {
-    public class MonthlyReportDto
+    public class SimpleReportDto
     {
         public int Year { get; init; }
         public int Month { get; init; }

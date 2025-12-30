@@ -1,5 +1,5 @@
 using HealthReport.Application.Handlers.Imports;
-using HealthReport.Application.Handlers.Reports;
+using HealthReport.Application.Handlers.Reports.Simple;
 
 namespace HealthReport.Web.Extensions;
 
@@ -51,8 +51,8 @@ public static class Endpoints
             return Results.Ok(new { imported = result.Data.Count(), errors = result.Errors });
         });
 
-        // Monthly report endpoint
-        app.MapGet("/api/reports/monthly", async (IMonthlyReportHandler handler, int? year, int? month, CancellationToken ct) =>
+        // Simple report endpoint
+        app.MapGet("/api/reports/monthly", async (ISimpleReportHandler handler, int? year, int? month, CancellationToken ct) =>
         {
             if (!year.HasValue || !month.HasValue)
                 return Results.BadRequest(new { message = "Please provide year and month query parameters, e.g. ?year=2025&month=12" });

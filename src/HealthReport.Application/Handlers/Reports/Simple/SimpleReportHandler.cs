@@ -1,15 +1,15 @@
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.Handlers.Reports
+namespace HealthReport.Application.Handlers.Reports.Simple
 {
-    public class MonthlyReportHandler(
+    public class SimpleReportHandler(
         IRepository<BloodPressureMeasurement> bpRepo,
         IRepository<BloodGlucoseMeasurement> bgRepo,
         IRepository<WeightMeasurement> wRepo)
-        : IMonthlyReportHandler
+        : ISimpleReportHandler
     {
-        public async Task<MonthlyReportDto> GenerateMonthlyReportAsync(int year, int month, CancellationToken cancellationToken = default)
+        public async Task<SimpleReportDto> GenerateMonthlyReportAsync(int year, int month, CancellationToken cancellationToken = default)
         {
 
             var from = new DateOnly(year, month, 1);
@@ -68,7 +68,7 @@ namespace HealthReport.Application.Handlers.Reports
                 });
             }
             
-            return new MonthlyReportDto
+            return new SimpleReportDto
             {
                 Year = year,
                 Month = month,
