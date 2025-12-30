@@ -1,42 +1,62 @@
+using System.Collections.Concurrent;
+using System.Text.Json.Serialization;
+
 namespace HealthReport.Application.Handlers.Reports.Simple
 {
-    public class SimpleReportDto
+    public record SimpleReportDto
     {
-        public int Year { get; init; }
-        public int Month { get; init; }
-        public IReadOnlyList<DailyReport> Days { get; init; } = Array.Empty<DailyReport>();
+        [JsonPropertyName("year")] public int Year { get; init; }
+        [JsonPropertyName("month")] public int Month { get; init; }
+
+        [JsonPropertyName("summary")] public SummaryEntry Summary { get; init; } = new();
+        [JsonPropertyName("details")] public IReadOnlyList<DetailEntry> Details { get; init; } = Array.Empty<DetailEntry>();
     }
 
-    public class DailyReport
+    public record SummaryEntry
     {
-        public DateOnly Date { get; init; }
-        public IReadOnlyList<BloodPressureEntry> BloodPressure { get; init; } = Array.Empty<BloodPressureEntry>();
-        public IReadOnlyList<GlucoseEntry> Glucose { get; init; } = Array.Empty<GlucoseEntry>();
-        public IReadOnlyList<WeightEntry> Weight { get; init; } = Array.Empty<WeightEntry>();
+        [JsonPropertyName("diastolic-summary")] public SummaryEntryValue DiastolicSummary { get; init; } = new();
+        [JsonPropertyName("systolic-summary")] public SummaryEntryValue SystolicSummary { get; init; } = new();
+        [JsonPropertyName("pulse-summary")] public SummaryEntryValue PulseSummary { get; init; } = new();
+        [JsonPropertyName("glucose-summary")] public SummaryEntryValue GlucoseSummary { get; init; } = new();
+        [JsonPropertyName("weight-summary")] public SummaryEntryValue WeightSummary { get; init; } = new();
+        [JsonPropertyName("bmi-summary")] public SummaryEntryValue BmiSummary { get; init; } = new();
+    }
+    public record SummaryEntryValue
+    {
+        [JsonPropertyName("min")] public decimal? Min { get; init; }
+        [JsonPropertyName("max")] public decimal? Max { get; init; }
+        [JsonPropertyName("avg")] public decimal? Avg { get; init; }
+    }
+    
+    public record DetailEntry
+    {
+        [JsonPropertyName("date")] public DateOnly Date { get; init; }
+        [JsonPropertyName("blood-pressure")] public IReadOnlyList<BloodPressureEntry> BloodPressure { get; init; } = Array.Empty<BloodPressureEntry>();
+        [JsonPropertyName("glucose")] public IReadOnlyList<GlucoseEntry> Glucose { get; init; } = Array.Empty<GlucoseEntry>();
+        [JsonPropertyName("weight")] public IReadOnlyList<WeightEntry> Weight { get; init; } = Array.Empty<WeightEntry>();
     }
 
-    public class BloodPressureEntry
+    public record BloodPressureEntry
     {
-        public TimeOnly Time { get; init; }
-        public int Systolic { get; init; }
-        public int Diastolic { get; init; }
-        public int? Pulse { get; init; }
-        public string? Note { get; init; }
+        [JsonPropertyName("time")] public TimeOnly Time { get; init; }
+        [JsonPropertyName("systolic")] public int Systolic { get; init; }
+        [JsonPropertyName("diastolic")] public int Diastolic { get; init; }
+        [JsonPropertyName("pulse")] public int? Pulse { get; init; }
+        [JsonPropertyName("note")] public string? Note { get; init; }
     }
 
-    public class GlucoseEntry
+    public record GlucoseEntry
     {
-        public TimeOnly Time { get; init; }
-        public int Value { get; init; }
-        public int Meal { get; init; }
-        public string? Note { get; init; }
+        [JsonPropertyName("time")] public TimeOnly Time { get; init; }
+        [JsonPropertyName("value")] public int Value { get; init; }
+        [JsonPropertyName("meal")] public int Meal { get; init; }
+        [JsonPropertyName("note")] public string? Note { get; init; }
     }
 
-    public class WeightEntry
+    public record WeightEntry
     {
-        public TimeOnly Time { get; init; }
-        public decimal WeightKg { get; init; }
-        public decimal? BMI { get; init; }
-        public decimal? BodyFatPercentage { get; init; }
+        [JsonPropertyName("time")] public TimeOnly Time { get; init; }
+        [JsonPropertyName("weight-kg")] public decimal WeightKg { get; init; }
+        [JsonPropertyName("bmi")] public decimal? Bmi { get; init; }
     }
 }

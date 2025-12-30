@@ -22,7 +22,7 @@
 	</div>
 </div>
 
-@if (Report is not null && Report.Days.Count>0)
+@if (Report is not null && Report.Details.Count>0)
 {
 	<h3 class="pt-3">Summary</h3>
 	<table class="table table-hover table-sm" style="width:auto;">
@@ -37,39 +37,39 @@
 		<tbody>
 		<tr>
 			<td class="pe-4">Blood pressure - Systolic [mmHg]</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Min()</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Max()</td>
-			<td class="text-end ps-4">@Math.Round(Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Average(), 0)</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Min()</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Max()</td>
+			<td class="text-end ps-4">@Math.Round(Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Systolic)).Average(), 0)</td>
 		</tr>
 		<tr>
 			<td class="pe-4">Blood pressure - Diastolic [mmHg]</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Min()</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Max()</td>
-			<td class="text-end ps-4">@Math.Round(Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Average(), 0)</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Min()</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Max()</td>
+			<td class="text-end ps-4">@Math.Round(Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Diastolic)).Average(), 0)</td>
 		</tr>
 		<tr>
 			<td class="pe-4">Pulse</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Min()</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Max()</td>
-			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Average(), 0)</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Min()</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Details.SelectMany(x => x.BloodPressure.Select(x => x.Pulse)).Average(), 0)</td>
 		</tr>
 		<tr>
 			<td class="pe-4">Glucose [mg/dL]</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Glucose.Select(x => x.Value)).Min()</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Glucose.Select(x => x.Value)).Max()</td>
-			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.Glucose.Select(x => x.Value)).Average(), 0)</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.Glucose.Select(x => x.Value)).Min()</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.Glucose.Select(x => x.Value)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Details.SelectMany(x => x.Glucose.Select(x => x.Value)).Average(), 0)</td>
 		</tr>
 		<tr>
 			<td class="pe-4">Weight [kg]</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Min()</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Max()</td>
-			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Average(), 2)</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Min()</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Details.SelectMany(x => x.Weight.Select(x => x.WeightKg)).Average(), 2)</td>
 		</tr>
 		<tr>
 			<td class="pe-4">BMI</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.BMI)).Min()</td>
-			<td class="text-end ps-4">@Report.Days.SelectMany(x => x.Weight.Select(x => x.BMI)).Max()</td>
-			<td class="text-end ps-4">@Math.Round((decimal)Report.Days.SelectMany(x => x.Weight.Select(x => x.BMI)).Average(), 2)</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.Weight.Select(x => x.Bmi)).Min()</td>
+			<td class="text-end ps-4">@Report.Details.SelectMany(x => x.Weight.Select(x => x.Bmi)).Max()</td>
+			<td class="text-end ps-4">@Math.Round((decimal)Report.Details.SelectMany(x => x.Weight.Select(x => x.Bmi)).Average(), 2)</td>
 		</tr>
 		</tbody>
 	</table>
@@ -86,7 +86,7 @@
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var d in Report.Days)
+			@foreach (var d in Report.Details)
 			{
 				var bCount = d.BloodPressure.Count();
 				var gCount = d.Glucose.Count();
@@ -187,7 +187,7 @@
 
 									<div class="d-inline-block fs-5" style="width:6em;">
 										<div class="badge rounded-pill bg-primary">
-											@(d.Weight.ElementAt(i).BMI)
+											@(d.Weight.ElementAt(i).Bmi)
 											<span class="bi bi-fire ps-2"></span>
 										</div>
 									</div>

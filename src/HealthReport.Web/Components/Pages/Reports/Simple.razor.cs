@@ -21,6 +21,6 @@ public partial class Simple(ISimpleReportHandler handler) : ComponentBase
 	private async Task Submit()
 	{
 		Console.WriteLine($"Submitting report for {Year}-{Month}");
-		Report = await handler.GenerateMonthlyReportAsync(Year, Month);
+		Report = handler.GenerateMonthlyReport(Year, Month);
 	}
 }
