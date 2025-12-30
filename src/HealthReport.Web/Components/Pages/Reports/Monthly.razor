@@ -116,15 +116,15 @@
 						<tr>
 							@if (i == 0)
 							{
-								<td rowspan="@maxCount">
+								<td rowspan="@maxCount" style="min-width:7em;">
 									@d.Date.ToString("yyyy-MM-dd")
 								</td>
 							}
-							<td>
+							<td style="min-width:22em;">
 								@if (i < bCount)
 								{
 									<div class="d-inline-block fs-6" style="width:6em;">
-										<span class="bi bi-clock pe-2"></span>
+										<span class="bi bi-clock pe-1"></span>
 										@d.BloodPressure.ElementAt(i).Time
 									</div>
 
@@ -143,11 +143,11 @@
 									</div>
 								}
 							</td>
-							<td>
+							<td style="min-width:15em;">
 								@if (i < gCount)
 								{
 									<div class="d-inline-block fs-6" style="width:6em;">
-										<span class="bi bi-clock pe-2"></span>
+										<span class="bi bi-clock pe-1"></span>
 										@d.Glucose.ElementAt(i).Time
 									</div>
 
@@ -170,11 +170,11 @@
 									</div>
 								}
 							</td>
-							<td>
+							<td style="min-width:23em;">
 								@if (i < wCount)
 								{
 									<div class="d-inline-block fs-6" style="width:6em;">
-										<span class="bi bi-clock pe-2"></span>
+										<span class="bi bi-clock pe-1"></span>
 										@d.Weight.ElementAt(i).Time
 									</div>
 
