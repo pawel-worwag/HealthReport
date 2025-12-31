@@ -1,3 +1,4 @@
+using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.FileParsers;
 using HealthReport.Application.FileParsers.Contour;
 using HealthReport.Application.Interfaces;
@@ -8,31 +9,26 @@ namespace HealthReport.Application.Handlers.Imports
     /// <summary>
     /// Imports blood glucose CSV data using the existing Contour parser and persists valid measurements.
     /// </summary>
-    public class BloodGlucoseImportHandler : IBloodGlucoseImportHandler
+    public class BloodGlucoseImportHandler(IRepository<BloodGlucoseMeasurement> repository) : IBloodGlucoseImportHandler
     {
-        private readonly IRepository<BloodGlucoseMeasurement> _repository;
-
-        public BloodGlucoseImportHandler(IRepository<BloodGlucoseMeasurement> repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<ParseResult<BloodGlucoseMeasurement>> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default)
+        public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default)
         {
             var result = ContourCsvImporter.ParseCsv(csvStream, hasHeader: hasHeader);
 
-            var data = result.Data?.ToList() ?? new System.Collections.Generic.List<BloodGlucoseMeasurement>();
+            var data = result.Data?.ToList() ?? [];
 
-            if (data.Any())
+
+            foreach (var m in data)
             {
-                foreach (var m in data)
-                {
-                    await _repository.AddAsync(m, cancellationToken).ConfigureAwait(false);
-                }
-                await _repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                await repository.AddAsync(m, cancellationToken);
             }
-
-            return result;
+            await repository.SaveChangesAsync(cancellationToken);
+            
+            return new ImportResultDto()
+            {
+                Imported = data.Count,
+                Errors = result.Errors
+            };
         }
     }
 }

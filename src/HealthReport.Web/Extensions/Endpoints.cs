@@ -1,3 +1,4 @@
+using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.Errors;
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;
@@ -23,8 +24,7 @@ public static class Endpoints
                 return Results.BadRequest(new { message = "No file uploaded" });
 
             await using var stream = file.OpenReadStream();
-            var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
-            return Results.Ok(new ImportResultDto(){ Imported = result.Data.Count(), Errors = result.Errors });
+            return Results.Ok(await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct));
         })
         .WithTags("Imports")
         .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
@@ -40,8 +40,7 @@ public static class Endpoints
                 return Results.BadRequest(new { message = "No file uploaded" });
 
             await using var stream = file.OpenReadStream();
-            var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
-            return Results.Ok(new ImportResultDto(){ Imported = result.Data.Count(), Errors = result.Errors });
+            return Results.Ok(await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct));
         })
         .WithTags("Imports")
         .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
@@ -56,9 +55,8 @@ public static class Endpoints
             if (file == null || file.Length == 0)
                 return Results.BadRequest(new { message = "No file uploaded" });
 
-            using var stream = file.OpenReadStream();
-            var result = await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct).ConfigureAwait(false);
-            return Results.Ok(new ImportResultDto(){ Imported = result.Data.Count(), Errors = result.Errors });
+            await using var stream = file.OpenReadStream();
+            return Results.Ok(await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct));
         })
         .WithTags("Imports")
         .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")

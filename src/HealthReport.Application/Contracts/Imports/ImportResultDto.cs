@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using HealthReport.Application.FileParsers;
 
-namespace HealthReport.Application.Handlers.Imports;
+namespace HealthReport.Application.Contracts.Imports;
 
 public record ImportResultDto
 {

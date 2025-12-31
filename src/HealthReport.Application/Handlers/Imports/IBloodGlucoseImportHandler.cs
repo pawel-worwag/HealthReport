@@ -1,3 +1,4 @@
+using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.FileParsers;
 using HealthReport.Domain.Entities;
 
@@ -8,6 +9,6 @@ namespace HealthReport.Application.Handlers.Imports
     /// </summary>
     public interface IBloodGlucoseImportHandler
     {
-        Task<ParseResult<BloodGlucoseMeasurement>> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default);
+        Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default);
     }
 }

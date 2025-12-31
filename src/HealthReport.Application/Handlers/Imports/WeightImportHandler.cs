@@ -1,3 +1,4 @@
+using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.FileParsers;
 using HealthReport.Application.FileParsers.Garmin;
 using HealthReport.Application.Interfaces;
@@ -8,31 +9,27 @@ namespace HealthReport.Application.Handlers.Imports
     /// <summary>
     /// Imports weight CSV data using the existing Garmin parser and persists valid measurements.
     /// </summary>
-    public class WeightImportHandler : IWeightImportHandler
+    public class WeightImportHandler(IRepository<WeightMeasurement> repository) : IWeightImportHandler
     {
-        private readonly IRepository<WeightMeasurement> _repository;
-
-        public WeightImportHandler(IRepository<WeightMeasurement> repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<ParseResult<WeightMeasurement>> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default)
+        public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true,
+            CancellationToken cancellationToken = default)
         {
             var result = WeightCsvImporter.ParseCsv(csvStream, hasHeader: hasHeader);
 
-            var data = result.Data?.ToList() ?? new System.Collections.Generic.List<WeightMeasurement>();
+            var data = result.Data?.ToList() ?? [];
 
-            if (data.Any())
+            foreach (var m in data)
             {
-                foreach (var m in data)
-                {
-                    await _repository.AddAsync(m, cancellationToken).ConfigureAwait(false);
-                }
-                await _repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                await repository.AddAsync(m, cancellationToken).ConfigureAwait(false);
             }
 
-            return result;
+            await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            return new ImportResultDto()
+            {
+                Imported = data.Count,
+                Errors = result.Errors
+            };
         }
     }
 }
