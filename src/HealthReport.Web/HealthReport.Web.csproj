@@ -13,6 +13,7 @@
     <PackageReference Include="Scalar.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HealthReport.Identity\HealthReport.Identity.csproj" />
     <ProjectReference Include="..\HealthReport.Infrastructure\HealthReport.Infrastructure.csproj" />
     <ProjectReference Include="..\HealthReport.Application\HealthReport.Application.csproj" />
     <ProjectReference Include="..\HealthReport.Domain\HealthReport.Domain.csproj" />

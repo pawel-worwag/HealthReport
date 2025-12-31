@@ -1,10 +1,8 @@
-using System.Linq;
 using HealthReport.Application;
+using HealthReport.Identity;
 using HealthReport.Infrastructure;
 using HealthReport.Web.Components;
 using HealthReport.Web.Extensions;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Register layers services
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddIdentityModule(builder.Configuration);
 
 // Health checks: readiness (DB) and liveness (basic)
 builder.Services.AddHealthChecksServices();

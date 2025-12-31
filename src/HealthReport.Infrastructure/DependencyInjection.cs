@@ -13,7 +13,7 @@ public static class DependencyInjection
     {
         // Configure DbContext (PostgreSQL)
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<HealthReportDbContext>(options =>
+        services.AddDbContextPool<HealthReportDbContext>(options =>
             options.UseNpgsql(connectionString));
         
         // Register generic repository implementation
