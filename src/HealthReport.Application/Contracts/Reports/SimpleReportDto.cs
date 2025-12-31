@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json.Serialization;
 
-namespace HealthReport.Application.Handlers.Reports.Simple
+namespace HealthReport.Application.Contracts.Reports
 {
     public record SimpleReportDto
     {

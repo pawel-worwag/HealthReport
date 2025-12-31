@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using HealthReport.Application.Contracts.Reports;
 
 namespace HealthReport.Application.Handlers.Reports.Simple;
 

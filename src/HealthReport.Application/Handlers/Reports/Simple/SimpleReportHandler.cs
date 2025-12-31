@@ -1,3 +1,4 @@
+using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Extensions;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;

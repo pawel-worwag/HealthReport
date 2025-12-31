@@ -1,4 +1,5 @@
 using HealthReport.Application.Contracts.Imports;
+using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Errors;
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;

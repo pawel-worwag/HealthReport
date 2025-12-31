@@ -1,3 +1,5 @@
+using HealthReport.Application.Contracts.Reports;
+
 namespace HealthReport.Application.Handlers.Reports.Simple
 {
     public interface ISimpleReportHandler
