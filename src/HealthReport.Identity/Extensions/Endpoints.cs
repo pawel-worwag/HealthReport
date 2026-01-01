@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,9 +11,11 @@ public static class Endpoints
     {
         // Account endpoints for cookie sign-in (must be full HTTP requests so Set-Cookie is written to browser)
         app.MapPost("/identity/login-submit", async (HttpContext ctx,
+            IAntiforgery antiforgery,
             UserManager<Domain.ApplicationUser> userManager,
             SignInManager<Domain.ApplicationUser> signInManager) =>
         {
+            await antiforgery.ValidateRequestAsync(ctx); 
             var form = await ctx.Request.ReadFormAsync();
             var email = form["email"].FirstOrDefault();
             var password = form["password"].FirstOrDefault();
