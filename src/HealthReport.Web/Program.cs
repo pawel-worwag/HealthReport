@@ -82,6 +82,7 @@ app.UseAuthorization();
 
 // Map minimal API endpoints
 app.MapEndpoint();
+app.MapIdentityEndpoints();
 
 // Health endpoints are mapped via extension for clarity
 app.MapHealthChecksEndpoints();
