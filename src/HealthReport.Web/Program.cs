@@ -61,6 +61,14 @@ if (!app.Environment.IsDevelopment())
 
 await app.SeedIdentityData();
 
+
+// Serve static files (wwwroot). Allow serving files without extension (e.g. `/test`).
+app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
+{
+    ServeUnknownFileTypes = true,
+    DefaultContentType = "application/octet-stream"
+});
+
 app.MapOpenApi();
 app.MapScalarApiReference("/docs");
 
@@ -75,8 +83,6 @@ app.UseHttpsRedirection();
 // CSRF protection middleware; required for endpoints that expect antiforgery tokens
 app.UseAntiforgery();
 
-// Serve static files (wwwroot)
-app.UseStaticFiles();
 
 // Add authentication/authorization middleware
 app.UseAuthentication();
