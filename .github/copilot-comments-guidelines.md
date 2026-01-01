@@ -38,17 +38,17 @@ var timestamp = DateTimeOffset.UtcNow;
 
 Bad examples (do not generate)
 -----------------------------
-Contains Polish diacritics — forbidden:
+Contains non-English or non-ASCII documentation — forbidden. Use English XML docs and comments instead.
 
 ```csharp
 /// <summary>
-/// Reprezentuje pomiar ciśnienia krwi.
+/// Represents a blood pressure measurement.
 /// </summary>
 ```
 
-Contains non-ASCII chars — forbidden:
+Inline comment example (English):
 
 ```csharp
-// Użyj czasu lokalnego dla czytelności
+// Use local time for readability
 ```
 

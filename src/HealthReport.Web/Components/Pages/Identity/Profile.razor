@@ -1,6 +1,6 @@
 @page "/identity/profile"
 
-<h3>Profil użytkownika</h3>
+<h3>User Profile</h3>
 
 <CascadingAuthenticationState>
     <AuthorizeView>
@@ -27,7 +27,7 @@
                         }
                         else
                         {
-                            <em>Brak ról</em>
+                            <em>No roles</em>
                         }
                     </dd>
                 </dl>
@@ -35,7 +35,7 @@
         </div>
     </Authorized>
     <NotAuthorized>
-        <p>Nie jesteś zalogowany. <NavLink href="/identity/login">Zaloguj się</NavLink></p>
+        <p>You are not logged in. <NavLink href="/identity/login">Log in</NavLink></p>
     </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>

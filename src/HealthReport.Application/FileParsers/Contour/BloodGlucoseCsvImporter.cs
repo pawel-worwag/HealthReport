@@ -92,12 +92,21 @@ namespace HealthReport.Application.FileParsers.Contour
         {
             if (string.IsNullOrWhiteSpace(s)) return MealMarker.Unknown;
             var t = s.Trim().ToLowerInvariant();
+
+            // Accept both Polish and English markers for robustness
             return t switch
             {
                 "na czczo" => MealMarker.Fasting,
+                "fasting" => MealMarker.Fasting,
                 "przed posiłkiem" => MealMarker.BeforeMeal,
+                "przed posilkiem" => MealMarker.BeforeMeal,
+                "before meal" => MealMarker.BeforeMeal,
                 "po posiłku" => MealMarker.AfterMeal,
+                "po posilku" => MealMarker.AfterMeal,
+                "after meal" => MealMarker.AfterMeal,
                 "bez znacznika" => MealMarker.Unknown,
+                "no marker" => MealMarker.Unknown,
+                "none" => MealMarker.Unknown,
                 _ => MealMarker.Unknown
             };
         }
