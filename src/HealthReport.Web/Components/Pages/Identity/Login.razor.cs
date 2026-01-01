@@ -1,50 +1,23 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
-using HealthReport.Identity.Contracts;
-using HealthReport.Identity.Application;
-using HealthReport.Identity.Domain;
-using Microsoft.AspNetCore.Identity;
 
 namespace HealthReport.Web.Components.Pages.Identity;
 
-public partial class Login(NavigationManager navigation, ILoginUserHandler loginHandler, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : ComponentBase
+public partial class Login() : ComponentBase
 {
-    protected LoginModel model = new();
-    protected bool isSubmitting;
-    protected string[]? errors;
+    [Parameter] 
+    [SupplyParameterFromQuery(Name = "error")]
+    public int Error { get; set; } = 0;
 
-    protected async Task HandleValidSubmit()
+    private string ErrorDescription
     {
-        isSubmitting = true;
-        errors = null;
-        var dto = new LoginUserDto(model.Email ?? string.Empty, model.Password ?? string.Empty);
-        var result = await loginHandler.LoginAsync(dto);
-        isSubmitting = false;
-
-        if (result.Succeeded)
+        get
         {
-            // sign in the user on the web layer
-            var user = await userManager.FindByEmailAsync(dto.Email);
-            if (user != null)
+            return Error switch
             {
-                await signInManager.SignInAsync(user, isPersistent: false);
-            }
-
-            navigation.NavigateTo("/");
+                0 => "No error",
+                1 => "Bad username or password",
+                _ => "Unknown error"
+            };
         }
-        else
-        {
-            errors = result.Errors;
-        }
-    }
-
-    protected class LoginModel
-    {
-        [Required]
-        [EmailAddress]
-        public string? Email { get; set; }
-
-        [Required]
-        public string? Password { get; set; }
     }
 }

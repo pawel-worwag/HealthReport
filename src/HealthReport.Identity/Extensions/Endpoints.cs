@@ -10,7 +10,6 @@ public static class Endpoints
     {
         // Account endpoints for cookie sign-in (must be full HTTP requests so Set-Cookie is written to browser)
         app.MapPost("/identity/login-submit", async (HttpContext ctx,
-            Domain.ApplicationUser? dummy,
             UserManager<Domain.ApplicationUser> userManager,
             SignInManager<Domain.ApplicationUser> signInManager) =>
         {
