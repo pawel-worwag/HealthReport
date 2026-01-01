@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+
 using HealthReport.Identity.Contracts;
 using HealthReport.Identity.Domain;
 using Microsoft.AspNetCore.Identity;

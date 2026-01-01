@@ -14,9 +14,9 @@ public static class DependencyInjection
         services.AddDbContextPool<HealthReportIdentityDbContext>(opts =>
             opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), o => o.MigrationsHistoryTable("__EFMigrationsHistory", "identity")));
         
-        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
-            .AddEntityFrameworkStores<HealthReportIdentityDbContext>()
-            .AddDefaultTokenProviders();
+        services.AddIdentityCore<ApplicationUser>()
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<HealthReportIdentityDbContext>();
 
         // Application handlers
         services.AddScoped<HealthReport.Identity.Application.IRegisterUserHandler, HealthReport.Identity.Application.RegisterUserHandler>();
