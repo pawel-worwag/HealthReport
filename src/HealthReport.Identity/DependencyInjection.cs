@@ -1,6 +1,7 @@
 using HealthReport.Identity.Domain;
 using HealthReport.Identity.Extensions;
 using HealthReport.Identity.Infrastructure;
+using HealthReport.Identity.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,4 +36,9 @@ public static class DependencyInjection
         return app;
     }
 
+    public static async Task<WebApplication> SeedIdentityData(this WebApplication app)
+    {
+        await app.SeedRolesAsync();
+        return app;
+    }
 }

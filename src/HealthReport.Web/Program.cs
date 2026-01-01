@@ -59,6 +59,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+await app.SeedIdentityData();
+
 app.MapOpenApi();
 app.MapScalarApiReference("/docs");
 
@@ -90,4 +92,4 @@ app.MapHealthChecksEndpoints();
 // Map Blazor root component in interactive server render mode
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
-app.Run();
+await app.RunAsync();
