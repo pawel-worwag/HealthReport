@@ -45,7 +45,7 @@ public static class Endpoints
             ctx.Response.Redirect(returnUrl);
         });
 
-        app.MapPost("/identity/logout",
+        app.MapPost("/identity/logout-submit",
             async (HttpContext ctx,
                 IAntiforgery antiforgery, SignInManager<Domain.ApplicationUser> signInManager) =>
             {
