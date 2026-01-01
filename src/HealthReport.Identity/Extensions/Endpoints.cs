@@ -1,3 +1,5 @@
+using HealthReport.Identity.Application;
+using HealthReport.Identity.Contracts;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,37 +13,19 @@ public static class Endpoints
     {
         // Account endpoints for cookie sign-in (must be full HTTP requests so Set-Cookie is written to browser)
         app.MapPost("/identity/login-submit", async (HttpContext ctx,
-            IAntiforgery antiforgery,
-            UserManager<Domain.ApplicationUser> userManager,
-            SignInManager<Domain.ApplicationUser> signInManager) =>
+            IAntiforgery antiforgery, ILoginUserHandler handler) =>
         {
             await antiforgery.ValidateRequestAsync(ctx); 
             var form = await ctx.Request.ReadFormAsync();
             var email = form["email"].FirstOrDefault();
             var password = form["password"].FirstOrDefault();
             var returnUrl = form["returnUrl"].FirstOrDefault() ?? "/identity/profile";
-
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            var result = await handler.LoginAsync(new LoginUserDto(email, password));
+            if (!result.Succeeded)
             {
                 ctx.Response.Redirect("/identity/login?error=1");
                 return;
             }
-
-            var user = await userManager.FindByEmailAsync(email!);
-            if (user == null)
-            {
-                ctx.Response.Redirect("/identity/login?error=1");
-                return;
-            }
-
-            var ok = await userManager.CheckPasswordAsync(user, password!);
-            if (!ok)
-            {
-                ctx.Response.Redirect("/identity/login?error=1");
-                return;
-            }
-
-            await signInManager.SignInAsync(user, isPersistent: false);
             ctx.Response.Redirect(returnUrl);
         });
 
