@@ -1,0 +1,42 @@
+<div>
+    <table>
+        <tr>
+            <td>Normalized user name</td>
+            <td>@_user?.NormalizedUserName</td>
+        </tr>
+        <tr>
+            <td>Normalized email</td>
+            <td>@_user?.NormalizedEmail</td>
+        </tr>
+        <tr>
+            <td>Normalized email</td>
+            <td>@_user?.AccessFailedCount</td>
+        </tr>
+        <tr>
+            <td>Lockout</td>
+            <td>@if (_user is not null && _user.LockoutEnabled)
+                {
+                    @_user.LockoutEnd?.ToString("u");
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Roles</td>
+            <td>
+                @if (_allRoles is not null)
+                {
+                    @foreach (var r in _allRoles)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="chk_@r" 
+                                   checked="@(_assignedRoles.Contains(r))" 
+                                   @onchange="(e) => ToggleRole(r, ((ChangeEventArgs)e).Value)" />
+                            <label class="form-check-label" for="chk_@r">@r</label>
+                        </div>
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+    
+</div>
