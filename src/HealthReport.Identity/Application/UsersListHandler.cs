@@ -5,8 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthReport.Identity.Application;
 
+/// <summary>
+/// Handles the retrieval of the users list.
+/// </summary>
+/// <param name="userManager">The ASP.NET Core Identity user manager.</param>
 public class UsersListHandler(UserManager<ApplicationUser> userManager) : IUsersListHandler
 {
+    /// <inheritdoc />
     public async Task<ICollection<UserDto>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await userManager.Users

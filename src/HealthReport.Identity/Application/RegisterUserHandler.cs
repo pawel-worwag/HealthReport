@@ -5,8 +5,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace HealthReport.Identity.Application
 {
+    /// <summary>
+    /// Handles the registration process for new users.
+    /// </summary>
+    /// <param name="userManager">The ASP.NET Core Identity user manager.</param>
     public class RegisterUserHandler(UserManager<ApplicationUser> userManager) : IRegisterUserHandler
     {
+        /// <inheritdoc />
         public async Task<RegisterUserResultDto> RegisterAsync(RegisterUserDto dto, CancellationToken cancellationToken = default)
         {
             var user = new ApplicationUser { UserName = dto.Email, Email = dto.Email };

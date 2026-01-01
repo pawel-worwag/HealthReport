@@ -4,20 +4,25 @@ using Microsoft.AspNetCore.Identity;
 
 namespace HealthReport.Identity.Application;
 
+/// <summary>
+/// Handles the login process for users.
+/// </summary>
+/// <param name="userManager">The ASP.NET Core Identity user manager.</param>
 public class LoginUserHandler(UserManager<ApplicationUser> userManager) : ILoginUserHandler
 {
+    /// <inheritdoc />
     public async Task<LoginUserResultDto> LoginAsync(LoginUserDto dto, CancellationToken cancellationToken = default)
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
         if (user == null)
         {
-            return new LoginUserResultDto(false, null, new[] { "Invalid credentials" });
+            return new LoginUserResultDto(false, null, ["Invalid credentials"]);
         }
 
         var valid = await userManager.CheckPasswordAsync(user, dto.Password);
         if (!valid)
         {
-            return new LoginUserResultDto(false, null, new[] { "Invalid credentials" });
+            return new LoginUserResultDto(false, null, ["Invalid credentials"]);
         }
 
         return new LoginUserResultDto(true, user.Id, Array.Empty<string>());
