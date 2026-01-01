@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using HealthReport.Identity.Application;
 using HealthReport.Identity.Contracts;
 
-namespace HealthReport.Web.Components.Pages.Auth;
+namespace HealthReport.Web.Components.Pages.Identity;
 
 public partial class Register(NavigationManager navigation, IRegisterUserHandler registerHandler)
 	: ComponentBase
@@ -25,7 +25,7 @@ public partial class Register(NavigationManager navigation, IRegisterUserHandler
 
 		if (result.Succeeded)
 		{
-			navigation.NavigateTo("/user/login");
+			navigation.NavigateTo("/identity/login");
 		}
 		else
 		{

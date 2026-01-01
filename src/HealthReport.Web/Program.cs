@@ -23,8 +23,8 @@ builder.Services.AddAuthentication(options =>
 })
     .AddCookie(Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme, opts =>
     {
-        opts.LoginPath = "/auth/login";
-        opts.LogoutPath = "/auth/logout";
+        opts.LoginPath = "/identity/login";
+        opts.LogoutPath = "/identity/logout";
     });
 
 builder.Services.AddScoped<Microsoft.AspNetCore.Identity.SignInManager<HealthReport.Identity.Domain.ApplicationUser>>();

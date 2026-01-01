@@ -5,7 +5,7 @@ using HealthReport.Identity.Application;
 using HealthReport.Identity.Domain;
 using Microsoft.AspNetCore.Identity;
 
-namespace HealthReport.Web.Components.Pages.Auth;
+namespace HealthReport.Web.Components.Pages.Identity;
 
 public partial class Login(NavigationManager navigation, ILoginUserHandler loginHandler, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : ComponentBase
 {

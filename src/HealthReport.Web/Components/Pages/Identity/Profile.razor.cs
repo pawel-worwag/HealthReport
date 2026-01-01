@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace HealthReport.Web.Components.Pages.Auth;
+namespace HealthReport.Web.Components.Pages.Identity;
 
 using Microsoft.AspNetCore.Components;
 
