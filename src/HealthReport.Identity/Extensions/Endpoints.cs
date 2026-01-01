@@ -46,14 +46,16 @@ public static class Endpoints
         });
 
         app.MapPost("/identity/logout",
-            async (HttpContext ctx, SignInManager<Domain.ApplicationUser> signInManager) =>
+            async (HttpContext ctx,
+                IAntiforgery antiforgery, SignInManager<Domain.ApplicationUser> signInManager) =>
             {
+                await antiforgery.ValidateRequestAsync(ctx); 
                 await signInManager.SignOutAsync();
                 ctx.Response.Redirect("/");
             });
 
         // Antiforgery token endpoint for client-side forms: sets cookie and returns request token
-        app.MapGet("/antiforgery/token", (HttpContext ctx, Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery) =>
+        app.MapGet("/antiforgery/token", (HttpContext ctx, IAntiforgery antiforgery) =>
         {
             var tokens = antiforgery.GetAndStoreTokens(ctx);
             return Results.Json(new { token = tokens.RequestToken });
