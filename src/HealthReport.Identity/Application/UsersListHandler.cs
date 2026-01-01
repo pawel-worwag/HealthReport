@@ -12,10 +12,19 @@ namespace HealthReport.Identity.Application;
 public class UsersListHandler(UserManager<ApplicationUser> userManager) : IUsersListHandler
 {
     /// <inheritdoc />
-    public async Task<ICollection<UserDto>> ListAsync(CancellationToken cancellationToken = default)
+        public async Task<ICollection<UserDto>> ListAsync(CancellationToken cancellationToken = default)
     {
+        // Order by database field first, then project to DTO so EF Core can translate the query.
         return await userManager.Users
-            .Select(u => new UserDto(u.Id, u.Email ?? string.Empty, u.UserName ?? string.Empty)).OrderBy(u => u.Email)
+            .OrderBy(u => u.Email)
+            .Select(u => new UserDto(
+                u.Id,
+                u.Email ?? string.Empty,
+                u.UserName ?? string.Empty,
+                u.AccessFailedCount,
+                u.LockoutEnabled,
+                u.LockoutEnd
+            ))
             .ToArrayAsync(cancellationToken);
     }
 }

@@ -1,0 +1,40 @@
+@page "/identity/users"
+
+<h3>Users</h3>
+
+@if (_loading)
+{
+    <p>Loading users...</p>
+}
+else if (_users is null || _users.Count == 0)
+{
+    <p>No users found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>UserName</th>
+                <th>AccessFailedCount</th>
+                <th>LockoutEnabled</th>
+                <th>LockoutEnd</th>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in _users)
+            {
+                <tr>
+                    <td>@u.Email</td>
+                    <td>@u.UserName</td>
+                    <td>@u.AccessFailedCount</td>
+                    <td>@u.LockoutEnabled</td>
+                    <td>@(u.LockoutEnd?.ToString("u") ?? "-")</td>
+                    <td>@u.Id</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
