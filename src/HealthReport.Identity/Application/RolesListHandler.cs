@@ -10,16 +10,12 @@ namespace HealthReport.Identity.Application
 {
     public class RolesListHandler(RoleManager<IdentityRole<Guid>> roleManager) : IRolesListHandler
     {
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-
         public async Task<ICollection<string>> ListAsync(CancellationToken cancellationToken = default)
         {
-            var roles = await _roleManager.Roles
+            return await roleManager.Roles
                 .OrderBy(r => r.Name)
                 .Select(r => r.Name ?? string.Empty)
                 .ToArrayAsync(cancellationToken);
-
-            return roles;
         }
     }
 }
