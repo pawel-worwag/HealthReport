@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HealthReport.Web.Components.Shared;
 
-public partial class LogoutForm(NavigationManager navigation, 
-    AuthenticationStateProvider authStateProvider,
-    IHttpContextAccessor httpContextAccessor,
+public partial class LogoutForm(IHttpContextAccessor httpContextAccessor,
     IAntiforgery antiforgery) : ComponentBase
 {
     private string? _csrfToken;
