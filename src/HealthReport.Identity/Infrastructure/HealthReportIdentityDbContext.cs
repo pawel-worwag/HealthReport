@@ -12,6 +12,6 @@ public class HealthReportIdentityDbContext(DbContextOptions<HealthReportIdentity
     {
         builder.HasDefaultSchema("identity");
         base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(typeof(HealthReportIdentityDbContext).Assembly);
+        //builder.ApplyConfigurationsFromAssembly(typeof(HealthReportIdentityDbContext).Assembly);
     }
 }
