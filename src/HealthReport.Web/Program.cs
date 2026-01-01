@@ -1,5 +1,6 @@
 using HealthReport.Application;
 using HealthReport.Identity;
+using HealthReport.Identity.Application;
 using HealthReport.Infrastructure;
 using HealthReport.Web.Components;
 using HealthReport.Web.Extensions;

@@ -17,6 +17,9 @@ public static class DependencyInjection
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<HealthReportIdentityDbContext>()
             .AddDefaultTokenProviders();
+
+        // Application handlers
+        services.AddScoped<HealthReport.Identity.Application.IRegisterUserHandler, HealthReport.Identity.Application.RegisterUserHandler>();
         return services;
     }
 

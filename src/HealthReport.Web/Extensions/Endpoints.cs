@@ -3,6 +3,8 @@ using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Errors;
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;
+using HealthReport.Identity.Application;
+using HealthReport.Identity.Contracts;
 using Scalar.AspNetCore;
 
 namespace HealthReport.Web.Extensions;
@@ -98,7 +100,6 @@ public static class Endpoints
         .Produces<byte[]>(StatusCodes.Status200OK ,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
         .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
-        
         
         return app;
     }
