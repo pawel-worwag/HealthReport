@@ -38,12 +38,6 @@ public static class Endpoints
                 ctx.Response.Redirect("/");
             });
 
-        // Antiforgery token endpoint for client-side forms: sets cookie and returns request token
-        app.MapGet("/antiforgery/token", (HttpContext ctx, IAntiforgery antiforgery) =>
-        {
-            var tokens = antiforgery.GetAndStoreTokens(ctx);
-            return Results.Json(new { token = tokens.RequestToken });
-        });
 
         // Roles list endpoint: returns all available role names
         app.MapGet("/identity/roles", async (IRolesListHandler handler) =>
