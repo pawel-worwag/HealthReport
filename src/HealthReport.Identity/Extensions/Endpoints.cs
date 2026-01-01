@@ -45,6 +45,13 @@ public static class Endpoints
             return Results.Json(new { token = tokens.RequestToken });
         });
 
+        // Roles list endpoint: returns all available role names
+        app.MapGet("/identity/roles", async (IRolesListHandler handler) =>
+        {
+            var roles = await handler.ListAsync();
+            return Results.Json(roles);
+        });
+
         return app;
     }
 }
