@@ -21,8 +21,10 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<HealthReportIdentityDbContext>();
 
         // Application handlers
-        services.AddScoped<HealthReport.Identity.Application.IRegisterUserHandler, HealthReport.Identity.Application.RegisterUserHandler>();
-        services.AddScoped<HealthReport.Identity.Application.ILoginUserHandler, HealthReport.Identity.Application.LoginUserHandler>();
+        services.AddScoped<Application.IRegisterUserHandler, Application.RegisterUserHandler>();
+        services.AddScoped<Application.ILoginUserHandler, Application.LoginUserHandler>();
+        services.AddScoped<Application.IUsersListHandler, Application.UsersListHandler>();
+
         return services;
     }
 
