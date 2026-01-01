@@ -18,6 +18,12 @@ Guidance for Copilot prompts
 - Keep comments concise and focused; avoid writing paragraphs longer than a few sentences inside code files.
 - If asked to include example usage, prefer a short `/// <example>` block or a separate `*.md` example file.
 
+UI strings and Blazor pages
+---------------------------
+- All user-facing text in Blazor pages and components (files with extension `.razor`, UI fragments, and static content) should be written in English. This includes headings, labels, button text, validation messages embedded in UI, and other visible strings.
+- Exception: localization/i18n resource files (for example `*.resx`, translation JSON files under `wwwroot/i18n` or other dedicated translation folders) may contain localized text and remain in other languages.
+- When generating or updating Blazor UI components, produce English text by default. If a translation resource exists, map visible strings to keys and place localized values in i18n files instead of hardcoding non-English text.
+
 Good examples
 -------------
 XML doc for a class:
