@@ -1,4 +1,5 @@
 @page "/identity/users"
+@using HealthReport.Web.Components.Shared
 
 <h3>Users</h3>
 
@@ -20,21 +21,45 @@ else
                 <th>AccessFailedCount</th>
                 <th>LockoutEnabled</th>
                 <th>LockoutEnd</th>
-                <th>Id</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var u in _users)
             {
                 <tr>
-                    <td>@u.Email</td>
-                    <td>@u.UserName</td>
-                    <td>@u.AccessFailedCount</td>
-                    <td>@u.LockoutEnabled</td>
-                    <td>@(u.LockoutEnd?.ToString("u") ?? "-")</td>
-                    <td>@u.Id</td>
+                    <td class="align-middle">@u.Email</td>
+                    <td class="align-middle">@u.UserName</td>
+                    <td class="align-middle">@u.AccessFailedCount</td>
+                    <td class="align-middle">@u.LockoutEnabled</td>
+                    <td class="align-middle">@(u.LockoutEnd?.ToString("u") ?? "-")</td>
+                    <td class="text-end align-middle">
+                        <button class="btn btn-link" onclick="@(() => ShowUserDetails(u.Id))">
+                            <span class="bi bi-pencil-fill"></span>
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+
+
+<div id="user-details-modal" class="modal fade" data-bs-animation="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <UserDetails User="@CurrentUser"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

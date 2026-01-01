@@ -1,42 +1,53 @@
 <div>
-    <table>
-        <tr>
-            <td>Normalized user name</td>
-            <td>@_user?.NormalizedUserName</td>
-        </tr>
-        <tr>
-            <td>Normalized email</td>
-            <td>@_user?.NormalizedEmail</td>
-        </tr>
-        <tr>
-            <td>Normalized email</td>
-            <td>@_user?.AccessFailedCount</td>
-        </tr>
-        <tr>
-            <td>Lockout</td>
-            <td>@if (_user is not null && _user.LockoutEnabled)
-                {
-                    @_user.LockoutEnd?.ToString("u");
-                }
-            </td>
-        </tr>
-        <tr>
-            <td>Roles</td>
-            <td>
-                @if (_allRoles is not null)
-                {
-                    @foreach (var r in _allRoles)
+    @if (User is null)
+    {
+        <div class="alert alert-danger" role="alert">
+            No user object.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <tr>
+                <td>Normalized user name</td>
+                <td>@User?.NormalizedUserName</td>
+            </tr>
+            <tr>
+                <td>Normalized email</td>
+                <td>@User?.NormalizedEmail</td>
+            </tr>
+            <tr>
+                <td>Access failed count </td>
+                <td>@User?.AccessFailedCount</td>
+            </tr>
+            <tr>
+                <td>Lockout</td>
+                <td>
+                    @if (User is not null && User.LockoutEnabled)
                     {
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="chk_@r" 
-                                   checked="@(_assignedRoles.Contains(r))" 
-                                   @onchange="(e) => ToggleRole(r, ((ChangeEventArgs)e).Value)" />
-                            <label class="form-check-label" for="chk_@r">@r</label>
-                        </div>
+                        @User.LockoutEnd?.ToString("u")
                     }
-                }
-            </td>
-        </tr>
-    </table>
-    
+                </td>
+            </tr>
+            <!--
+            <tr>
+                <td>Roles</td>
+                <td>
+                    @if (_allRoles is not null)
+                    {
+                        @foreach (var r in _allRoles)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="chk_@r"
+                                       checked="@(_assignedRoles.Contains(r))"
+                                       @onchange="(e) => ToggleRole(r, ((ChangeEventArgs)e).Value)"/>
+                                <label class="form-check-label" for="chk_@r">@r</label>
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>-->
+        </table>
+    }
+
 </div>
