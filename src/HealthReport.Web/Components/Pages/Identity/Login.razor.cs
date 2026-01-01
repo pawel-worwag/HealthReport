@@ -1,10 +1,16 @@
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HealthReport.Web.Components.Pages.Identity;
 
-public partial class Login(NavigationManager navigation, AuthenticationStateProvider authStateProvider) : ComponentBase
+public partial class Login(NavigationManager navigation, 
+    AuthenticationStateProvider authStateProvider,
+    IHttpContextAccessor httpContextAccessor,
+    IAntiforgery antiforgery) : ComponentBase
 {
+    private string? CsrfToken;
+    
     [Parameter] 
     [SupplyParameterFromQuery(Name = "error")]
     public int Error { get; set; } = 0;
@@ -28,6 +34,15 @@ public partial class Login(NavigationManager navigation, AuthenticationStateProv
         if (auth.User?.Identity?.IsAuthenticated == true)
         {
             navigation.NavigateTo("/identity/profile");
+        }
+        else
+        {
+            var ctx = httpContextAccessor.HttpContext;
+            if (ctx != null)
+            {
+                var tokens = antiforgery.GetAndStoreTokens(ctx);
+                CsrfToken = tokens.RequestToken;
+            }
         }
     }
 }

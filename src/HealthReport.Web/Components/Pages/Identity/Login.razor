@@ -8,7 +8,7 @@
 }
 
 <form id="loginForm" @formname="loginForm" method="post" action="/identity/login-submit">
-    <input type="hidden" name="__RequestVerificationToken" id="__RequestVerificationToken" />
+    <input type="hidden" name="__RequestVerificationToken" id="__RequestVerificationToken" value="@CsrfToken"/>
     <div class="mb-3">
         <label class="form-label">Email</label>
         <input name="email" type="email" class="form-control" required />
@@ -21,17 +21,3 @@
         <button class="btn btn-primary" type="submit">Login</button>
     </div>
 </form>
-
-
-<script>
-    (async function(){
-        try{
-            const r = await fetch('/antiforgery/token', { credentials: 'same-origin' });
-            if (!r.ok) return;
-            const obj = await r.json();
-            const token = obj.token;
-            const input = document.getElementById('__RequestVerificationToken');
-            if (input) input.value = token;
-        }catch(e){ console.error(e); }
-    })();
-</script>
