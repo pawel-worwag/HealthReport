@@ -20,6 +20,7 @@ public static class DependencyInjection
 
         // Application handlers
         services.AddScoped<HealthReport.Identity.Application.IRegisterUserHandler, HealthReport.Identity.Application.RegisterUserHandler>();
+        services.AddScoped<HealthReport.Identity.Application.ILoginUserHandler, HealthReport.Identity.Application.LoginUserHandler>();
         return services;
     }
 

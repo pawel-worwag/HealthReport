@@ -1,0 +1,36 @@
+@page "/auth/login"
+
+<h3>Login</h3>
+
+<form id="loginForm" @formname="loginForm" method="post" action="/auth/login-submit">
+    <input type="hidden" name="__RequestVerificationToken" id="__RequestVerificationToken" />
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input name="email" type="email" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input name="password" type="password" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <button class="btn btn-primary" type="submit">Login</button>
+    </div>
+
+    </form>
+
+<script>
+    (async function(){
+        try{
+            const r = await fetch('/antiforgery/token', { credentials: 'same-origin' });
+            if (!r.ok) return;
+            const obj = await r.json();
+            const token = obj.token;
+            const input = document.getElementById('__RequestVerificationToken');
+            if (input) input.value = token;
+        }catch(e){ console.error(e); }
+    })();
+
+</script>
+

@@ -1,0 +1,41 @@
+@page "/auth/profile"
+
+<h3>Profil użytkownika</h3>
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+    <Authorized>
+        <div class="card">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">@email</dd>
+
+                    <dt class="col-sm-3">UserId</dt>
+                    <dd class="col-sm-9">@userId</dd>
+
+                    <dt class="col-sm-3">Roles</dt>
+                    <dd class="col-sm-9">
+                        @if (roles?.Any() == true)
+                        {
+                            <ul>
+                                @foreach (var r in roles)
+                                {
+                                    <li>@r</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <em>Brak ról</em>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <p>Nie jesteś zalogowany. <NavLink href="/auth/login">Zaloguj się</NavLink></p>
+    </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
