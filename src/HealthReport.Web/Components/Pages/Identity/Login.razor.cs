@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HealthReport.Web.Components.Pages.Identity;
 
-public partial class Login() : ComponentBase
+public partial class Login(NavigationManager navigation, AuthenticationStateProvider authStateProvider) : ComponentBase
 {
     [Parameter] 
     [SupplyParameterFromQuery(Name = "error")]
@@ -18,6 +19,15 @@ public partial class Login() : ComponentBase
                 1 => "Bad username or password",
                 _ => "Unknown error"
             };
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var auth = await authStateProvider.GetAuthenticationStateAsync();
+        if (auth.User?.Identity?.IsAuthenticated == true)
+        {
+            navigation.NavigateTo("/identity/profile");
         }
     }
 }
