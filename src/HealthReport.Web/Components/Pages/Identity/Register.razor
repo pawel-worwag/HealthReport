@@ -2,6 +2,18 @@
 
 <h3>Register user</h3>
 
+@if (errors?.Any() == true)
+{
+	<div class="alert alert-danger">
+		<ul>
+			@foreach (var e in errors)
+			{
+				<li>@e</li>
+			}
+		</ul>
+	</div>
+}
+
 <EditForm Model="model" OnValidSubmit="HandleValidSubmit">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
@@ -23,18 +35,6 @@
 		<InputText type="password" class="form-control" @bind-Value="model.ConfirmPassword" />
 		<ValidationMessage For="() => model.ConfirmPassword" />
 	</div>
-
-	@if (errors?.Any() == true)
-	{
-		<div class="alert alert-danger">
-			<ul>
-				@foreach (var e in errors)
-				{
-					<li>@e</li>
-				}
-			</ul>
-		</div>
-	}
 
 	<button class="btn btn-primary" type="submit" disabled="@isSubmitting">Register</button>
 	@if (isSubmitting)
