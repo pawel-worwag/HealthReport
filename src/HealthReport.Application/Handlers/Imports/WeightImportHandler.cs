@@ -9,7 +9,7 @@ namespace HealthReport.Application.Handlers.Imports
     /// <summary>
     /// Imports weight CSV data using the existing Garmin parser and persists valid measurements.
     /// </summary>
-    public class WeightImportHandler(IRepository<WeightMeasurement> repository) : IWeightImportHandler
+    public class WeightImportHandler(IRepository<WeightMeasurement> repository) : IWeightImportHandler,IImportHandler
     {
         public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true,
             CancellationToken cancellationToken = default)

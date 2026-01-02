@@ -50,6 +50,14 @@ namespace HealthReport.Infrastructure.TempFileStorage
             return Task.FromResult(fs);
         }
 
+        public Task<Stream> OpenWriteAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var path = ResolvePath(id);
+            if (path == null || File.Exists(path)) throw new FileNotFoundException("File already exists", id);
+            Stream fs = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.Write, 4096, useAsync: true);
+            return Task.FromResult(fs);
+        }
+
         public Task DeleteAsync(string id, CancellationToken cancellationToken = default)
         {
             var path = ResolvePath(id);
@@ -87,11 +95,7 @@ namespace HealthReport.Infrastructure.TempFileStorage
 
         private string? ResolvePath(string id)
         {
-            if (string.IsNullOrWhiteSpace(id)) return null;
-            var dir = new DirectoryInfo(_basePath);
-            if (!dir.Exists) return null;
-            var match = dir.GetFiles(id + ".*").FirstOrDefault();
-            return match?.FullName;
+            return string.IsNullOrWhiteSpace(id) ? null : Path.Combine(_basePath, id);
         }
     }
 }

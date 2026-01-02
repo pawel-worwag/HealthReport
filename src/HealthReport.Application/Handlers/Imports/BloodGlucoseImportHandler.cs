@@ -9,7 +9,7 @@ namespace HealthReport.Application.Handlers.Imports
     /// <summary>
     /// Imports blood glucose CSV data using the existing Contour parser and persists valid measurements.
     /// </summary>
-    public class BloodGlucoseImportHandler(IRepository<BloodGlucoseMeasurement> repository) : IBloodGlucoseImportHandler
+    public class BloodGlucoseImportHandler(IRepository<BloodGlucoseMeasurement> repository) : IBloodGlucoseImportHandler,IImportHandler
     {
         public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default)
         {

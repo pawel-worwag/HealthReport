@@ -15,6 +15,7 @@ namespace HealthReport.Application.Interfaces
         /// Opens a read-only stream for the stored file identified by <paramref name="id"/>.
         /// </summary>
         Task<Stream> OpenReadAsync(string id, CancellationToken cancellationToken = default);
+        Task<Stream> OpenWriteAsync(string id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes the file with the given identifier (if it exists).

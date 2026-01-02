@@ -10,7 +10,7 @@ namespace HealthReport.Application.Handlers.Imports
     /// Imports blood pressure CSV data using the existing iHealth parser and persists valid measurements.
     /// </summary>
     public class BloodPressureImportHandler(IRepository<BloodPressureMeasurement> repository)
-        : IBloodPressureImportHandler
+        : IBloodPressureImportHandler,IImportHandler
     {
         public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true,
             CancellationToken cancellationToken = default)

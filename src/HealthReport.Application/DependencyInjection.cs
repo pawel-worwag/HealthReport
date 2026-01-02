@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IBloodPressureImportHandler, BloodPressureImportHandler>();
         services.AddScoped<IBloodGlucoseImportHandler, BloodGlucoseImportHandler>();
         services.AddScoped<IWeightImportHandler, WeightImportHandler>();
+        services.AddTransient<ImportHandlerFactory>();
         // Reports handlers
         services.AddScoped<ISimpleReportHandler, SimpleReportHandler>();
         return services;
