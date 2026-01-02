@@ -7,6 +7,15 @@
     }
     else
     {
+        @if (ErrorMessages is not null)
+        {
+            <div class="alert alert-danger mb-3" role="alert">
+                @foreach (var m in ErrorMessages)
+                {
+                    <p>@m</p>
+                }
+            </div>
+        }
         <table class="table table-striped">
             <tr>
                 <td class="text-end align-top">Normalized user name:</td>

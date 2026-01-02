@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<Application.IUsersListHandler, Application.UsersListHandler>();
         services.AddScoped<Application.IRolesListHandler, Application.RolesListHandler>();
         services.AddScoped<Application.IUserDetailsHandler, Application.UserDetailsHandler>();
+        services.AddScoped<Application.IUpdateUserHandler, Application.UpdateUserHandler>();
 
         return services;
     }

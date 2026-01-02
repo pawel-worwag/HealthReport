@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HealthReport.Identity.Application;
+using HealthReport.Identity.Contracts.UpdateUser;
 using HealthReport.Identity.Contracts.UserDetails;
 using HealthReport.Identity.Contracts.UsersList;
 using Microsoft.AspNetCore.Components;
@@ -9,7 +10,7 @@ using Microsoft.JSInterop;
 namespace HealthReport.Web.Components.Pages.Identity;
 
 public partial class Users(IUsersListHandler usersListHandler,IUserDetailsHandler detailsHandler,
-    IRolesListHandler rolesHandler, IJSRuntime JS) : ComponentBase
+    IRolesListHandler rolesHandler, IUpdateUserHandler updateHandler, IJSRuntime JS) : ComponentBase
 {
     [Inject]
     public IUsersListHandler UsersListHandler { get; set; } = usersListHandler;
@@ -20,6 +21,7 @@ public partial class Users(IUsersListHandler usersListHandler,IUserDetailsHandle
 
     private IJSObjectReference? _module;
     private UserDetailsDto? CurrentUser { get; set; }
+    private string[]? UpdateErrors { get; set; } = null;
     
     protected override async Task OnInitializedAsync()
     {
@@ -49,6 +51,31 @@ public partial class Users(IUsersListHandler usersListHandler,IUserDetailsHandle
         else
         {
             Console.WriteLine("Module is null");
+        }
+    }
+
+    private async Task UpdateUser()
+    {
+        if (CurrentUser is not null)
+        {
+            var result = await updateHandler.UpdateAsync(new UpdateUserDto(CurrentUser.Id, CurrentUser.Roles));
+            if (!result.Succeeded)
+            {
+                UpdateErrors = result.Errors;
+                StateHasChanged();
+            }
+            else
+            {
+                if (_module is not null)
+                {
+                    await _module.InvokeVoidAsync("hideModal");
+                    CurrentUser = null;
+                }
+                else
+                {
+                    Console.WriteLine("Module is null");
+                }
+            }
         }
     }
     

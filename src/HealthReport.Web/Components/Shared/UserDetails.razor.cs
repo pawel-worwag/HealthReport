@@ -14,6 +14,8 @@ public partial class UserDetails(IUserDetailsHandler loadHandler)
     [Parameter]
     public ICollection<string> AllRoles { get; set; }
     
+    [Parameter]
+    public string[]? ErrorMessages { get; set; } = null;
 
     private void ToggleRole(string role, object? value)
     {
