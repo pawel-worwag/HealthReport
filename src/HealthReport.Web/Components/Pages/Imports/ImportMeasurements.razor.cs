@@ -15,14 +15,13 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
         { ImportSource.IHealthBloodPressure , "IHealth - Blood Pressure"},
         { ImportSource.GarminWeight , "Garmin - Weight"}
     };
-    
-    private ImportSource? _selectedSource;
+
+    private ImportSource? _selectedSource = ImportSource.ContourBloodGlucose;
     private IBrowserFile? _file;
     private string? _selectedFileName;
     private long _selectedFileSize;
     private CancellationTokenSource? _cts;
     private bool _isUploading = false;
-    private int _progress;
     private ImportResultDto? _result = null;
     
     private void OnInputFileChange(InputFileChangeEventArgs e)
@@ -36,16 +35,19 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
     {
         if(_file is null || _selectedSource is null) return;
         
-        _isUploading = true;
-        _progress = 0;
-        _cts = new CancellationTokenSource();
-        
         var maxAllowed = 1024L * 1024 * 200; // 200 MB
+        if (_file.Size > maxAllowed)
+        {
+            Console.WriteLine("File too big. Max allowed is 200 MB.");
+            return;
+        }
         
-
         try
         {
-            string id = Guid.NewGuid().ToString();
+            _isUploading = true;
+            _cts = new CancellationTokenSource();
+            
+            var id = Guid.NewGuid().ToString();
             await using var sourceStream = _file.OpenReadStream(maxAllowed, _cts.Token);
             await using var output = await storage.OpenWriteAsync(id, _cts.Token);
             await sourceStream.CopyToAsync(output, 4096, _cts.Token);
@@ -64,7 +66,7 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
         finally
         {
             _isUploading = false;
-            _cts.Dispose();
+            _cts?.Dispose();
             _cts = null;
             StateHasChanged();
         }

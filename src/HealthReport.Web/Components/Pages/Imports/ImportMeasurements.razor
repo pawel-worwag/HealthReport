@@ -40,10 +40,11 @@
             @if (_result.Errors.Any())
             {
                 <div class="mb-3 pt-3">
+                    <p>Errors:</p>
                     <table>
                         @foreach (var l in _result.Errors)
                         {
-                            <tr><td>@l.Line: </td><td>@l.Message</td></tr>
+                            <tr><td>Line @l.Line: </td><td>@l.Message</td></tr>
                         }
                     </table>
                 </div>

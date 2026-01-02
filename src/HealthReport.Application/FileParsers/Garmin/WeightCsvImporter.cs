@@ -37,6 +37,12 @@ namespace HealthReport.Application.FileParsers.Garmin
                 if (string.IsNullOrWhiteSpace(line)) continue;
                 var parts = SplitCsvLine(line);
 
+                if (parts.Length != 2 && parts.Length != 9)
+                {
+                    errors.Add(new ParseError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
+                    break;
+                }
+                
                 // detect lines that contain only a date in first column and empty others
                 if (parts.Length >= 1)
                 {

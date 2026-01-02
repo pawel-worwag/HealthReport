@@ -46,7 +46,11 @@ namespace HealthReport.Application.FileParsers.IHealth
                 // naive CSV split by comma - this file quotes dates but values do not contain commas otherwise
                 var parts = SplitCsvLine(line);
                 // Expected columns: Date, Time, SYS(mmHg), DIA(mmHg), Pulse(Beats/Min), Note
-                if (parts.Length < 5) continue;
+                if (parts.Length != 6)
+                {
+                    errors.Add(new ParseError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
+                    break;
+                }
 
                 try
                 {
@@ -61,9 +65,17 @@ namespace HealthReport.Application.FileParsers.IHealth
                     var diastolic = int.Parse(parts[3]);
 
                     int? pulse = null;
-                    if (int.TryParse(parts[4], out var p)) pulse = p;
+                    if (int.TryParse(parts[4], out var p))
+                    {
+                        pulse = p;
+                    }
+                    else
+                    {
+                        errors.Add(new ParseError { Line = lineNo, Message = $"Int parse error: {parts[4]}" });
+                        break;
+                    }
 
-                    var note = parts.Length >= 6 ? parts[5].Trim() : null;
+                    var note = parts[5].Trim();
 
                     var m = new BloodPressureMeasurement
                     {

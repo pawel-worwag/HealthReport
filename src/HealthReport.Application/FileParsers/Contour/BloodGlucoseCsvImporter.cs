@@ -36,7 +36,11 @@ namespace HealthReport.Application.FileParsers.Contour
 
                 var parts = SplitCsvLine(line);
                 // Expected at least: index, datetime, value, meal marker, source, notes
-                if (parts.Length < 3) continue;
+                if (parts.Length != 10)
+                {
+                    errors.Add(new ParseError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
+                    break;
+                };
 
                 try
                 {
@@ -47,6 +51,11 @@ namespace HealthReport.Application.FileParsers.Contour
                     {
                         // Try pl-PL culture fallback
                         dt = DateTime.Parse(dateTimeStr, CultureInfo.GetCultureInfo("pl-PL"));
+                    }
+                    else
+                    {
+                        errors.Add(new ParseError { Line = lineNo, Message = $"Invalid datetime format: '{dateTimeStr}'" });
+                        break;
                     }
 
                     var date = DateOnly.FromDateTime(dt);
