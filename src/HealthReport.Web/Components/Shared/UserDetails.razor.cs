@@ -10,20 +10,24 @@ public partial class UserDetails(IUserDetailsHandler loadHandler)
 {
     [Parameter]
     public UserDetailsDto? User { get; set; }
-/*
+    
+    [Parameter]
+    public ICollection<string> AllRoles { get; set; }
+    
+
     private void ToggleRole(string role, object? value)
     {
         if (value is bool isChecked)
         {
             if (isChecked)
             {
-                _assignedRoles.Add(role);
+                User?.Roles.Add(role);
             }
             else
             {
-                _assignedRoles.Remove(role);
+                User?.Roles.Remove(role);
             }
         }
     }
-    */
+
 }

@@ -8,12 +8,14 @@ using Microsoft.JSInterop;
 
 namespace HealthReport.Web.Components.Pages.Identity;
 
-public partial class Users(IUsersListHandler usersListHandler,IUserDetailsHandler detailsHandler, IJSRuntime JS) : ComponentBase
+public partial class Users(IUsersListHandler usersListHandler,IUserDetailsHandler detailsHandler,
+    IRolesListHandler rolesHandler, IJSRuntime JS) : ComponentBase
 {
     [Inject]
     public IUsersListHandler UsersListHandler { get; set; } = usersListHandler;
 
     private ICollection<UserDto>? _users;
+    private ICollection<string>? _allRoles;
     private bool _loading = true;
 
     private IJSObjectReference? _module;
@@ -22,6 +24,7 @@ public partial class Users(IUsersListHandler usersListHandler,IUserDetailsHandle
     protected override async Task OnInitializedAsync()
     {
         _users = await UsersListHandler.ListAsync();
+        _allRoles = await rolesHandler.ListAsync();
         _loading = false;
     }
     
