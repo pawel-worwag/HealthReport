@@ -14,12 +14,19 @@ public static class CsvHelper
         var parts = new List<string>();
         var inQuotes = false;
         var cur = new StringBuilder();
-        foreach (var c in line)
+        for (var i=0; i<line.Length; i++)
         {
+            var c = line[i];
             switch (c)
             {
                 case '"':
                 {
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                    {
+                        cur.Append('"');
+                        i ++;
+                        continue;
+                    }
                     inQuotes = !inQuotes;
                     continue;
                 }
