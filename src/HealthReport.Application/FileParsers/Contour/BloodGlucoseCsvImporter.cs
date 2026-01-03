@@ -81,14 +81,15 @@ namespace HealthReport.Application.FileParsers.Contour
                     
                     note = parts[5].Trim();
 
-                    var m = new BloodGlucoseMeasurement
+                    measurements.Add(new BloodGlucoseMeasurement
                     {
                         MeasuredDate = (DateOnly)date,
                         MeasuredTime = (TimeOnly)time,
                         BGValue = (int)glucose,
                         Meal = (MealMarker)mealMarker,
                         Note = string.IsNullOrWhiteSpace(note) ? null : note
-                    };
+                    });
+                    
 
                 }
                 catch (Exception ex)
