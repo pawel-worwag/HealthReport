@@ -34,7 +34,7 @@ namespace HealthReport.Application.FileParsers.Contour
                 var line = reader.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
-                var parts = SplitCsvLine(line);
+                var parts = CsvHelper.SplitCsvLine(line);
                 // Expected at least: index, datetime, value, meal marker, source, notes
                 if (parts.Length != 10)
                 {
@@ -90,13 +90,6 @@ namespace HealthReport.Application.FileParsers.Contour
             return new ParseResult<BloodGlucoseMeasurement> { Data = measurements, Errors = errors };
         }
 
-        // Backwards-compatibility wrapper for the old class name
-        public static class BloodGlucoseCsvImporter
-        {
-            public static ParseResult<BloodGlucoseMeasurement> ParseCsv(Stream csvStream, bool hasHeader = true)
-                => ContourCsvImporter.ParseCsv(csvStream, hasHeader);
-        }
-
         private static MealMarker MapMealMarker(string s)
         {
             if (string.IsNullOrWhiteSpace(s)) return MealMarker.Unknown;
@@ -118,32 +111,6 @@ namespace HealthReport.Application.FileParsers.Contour
                 "none" => MealMarker.Unknown,
                 _ => MealMarker.Unknown
             };
-        }
-
-        // simple CSV splitter handling quoted fields
-        private static string[] SplitCsvLine(string line)
-        {
-            var parts = new List<string>();
-            bool inQuotes = false;
-            var cur = string.Empty;
-            for (int i = 0; i < line.Length; i++)
-            {
-                var c = line[i];
-                if (c == '"')
-                {
-                    inQuotes = !inQuotes;
-                    continue;
-                }
-                if (c == ',' && !inQuotes)
-                {
-                    parts.Add(cur);
-                    cur = string.Empty;
-                    continue;
-                }
-                cur += c;
-            }
-            parts.Add(cur);
-            return parts.ToArray();
         }
     }
 }

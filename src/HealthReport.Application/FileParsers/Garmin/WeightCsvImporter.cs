@@ -25,7 +25,7 @@ namespace HealthReport.Application.FileParsers.Garmin
                 headerLine = reader.ReadLine();
                 lineNo++;
                 if (headerLine != null)
-                    headers = SplitCsvLine(headerLine);
+                    headers = CsvHelper.SplitCsvLine(headerLine);
             }
 
             DateOnly? currentDate = null;
@@ -35,7 +35,7 @@ namespace HealthReport.Application.FileParsers.Garmin
                 lineNo++;
                 var line = reader.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) continue;
-                var parts = SplitCsvLine(line);
+                var parts = CsvHelper.SplitCsvLine(line);
 
                 if (parts.Length != 2 && parts.Length != 9)
                 {
@@ -303,32 +303,6 @@ namespace HealthReport.Application.FileParsers.Garmin
                 return true;
             }
             return false;
-        }
-
-        // simple CSV splitter handling quoted fields
-        private static string[] SplitCsvLine(string line)
-        {
-            var parts = new List<string>();
-            bool inQuotes = false;
-            var cur = string.Empty;
-            for (int i = 0; i < line.Length; i++)
-            {
-                var c = line[i];
-                if (c == '"')
-                {
-                    inQuotes = !inQuotes;
-                    continue;
-                }
-                if (c == ',' && !inQuotes)
-                {
-                    parts.Add(cur);
-                    cur = string.Empty;
-                    continue;
-                }
-                cur += c;
-            }
-            parts.Add(cur);
-            return parts.ToArray();
         }
     }
 }

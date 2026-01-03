@@ -44,7 +44,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
                 // naive CSV split by comma - this file quotes dates but values do not contain commas otherwise
-                var parts = SplitCsvLine(line);
+                var parts = CsvHelper.SplitCsvLine(line);
                 // Expected columns: Date, Time, SYS(mmHg), DIA(mmHg), Pulse(Beats/Min), Note
                 if (parts.Length != 6)
                 {
@@ -103,32 +103,6 @@ namespace HealthReport.Application.FileParsers.IHealth
                 Data = measurements, 
                 Errors = errors
             };
-        }
-
-        // Very small CSV splitter that handles simple quoted fields
-        private static string[] SplitCsvLine(string line)
-        {
-            var parts = new List<string>();
-            bool inQuotes = false;
-            var cur = string.Empty;
-            for (int i = 0; i < line.Length; i++)
-            {
-                var c = line[i];
-                if (c == '"')
-                {
-                    inQuotes = !inQuotes;
-                    continue;
-                }
-                if (c == ',' && !inQuotes)
-                {
-                    parts.Add(cur);
-                    cur = string.Empty;
-                    continue;
-                }
-                cur += c;
-            }
-            parts.Add(cur);
-            return parts.ToArray();
         }
     }
 }
