@@ -8,6 +8,7 @@ public class CsvHelperSplitLineTests
     [Fact]
     public void SplitLine_SimpleCommaSeparated_ReturnsFields()
     {
+        //   a,b,c
         var line = "a,b,c";
         var parts = CsvHelper.SplitCsvLine(line);
         Assert.Equal(new[] { "a", "b", "c" }, parts);
@@ -16,6 +17,7 @@ public class CsvHelperSplitLineTests
     [Fact]
     public void SplitLine_QuotedFieldContainingSeparator_PreservesSeparatorInsideQuotes()
     {
+        //   a,"b,c",d
         var line = "a,\"b,c\",d";
         var parts = CsvHelper.SplitCsvLine(line);
         Assert.Equal(new[] { "a", "b,c", "d" }, parts);
@@ -24,6 +26,7 @@ public class CsvHelperSplitLineTests
     [Fact]
     public void SplitLine_EmptyFields_AreReturnedAsEmptyStrings()
     {
+        //   a,,c,
         var line = "a,,c,";
         var parts = CsvHelper.SplitCsvLine(line);
         Assert.Equal(new[] { "a", "", "c", "" }, parts);
