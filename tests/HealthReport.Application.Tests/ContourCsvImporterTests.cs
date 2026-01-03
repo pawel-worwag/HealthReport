@@ -6,7 +6,7 @@ namespace HealthReport.Application.Tests;
 
 public class ContourCsvImporterTests
 {
-    static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
+    private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
     
     [Fact]
     public void ParseCsv_ValidLine_ParsesMeasurement()
@@ -14,8 +14,8 @@ public class ContourCsvImporterTests
         // #,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja
         // 2,"24.09.2025 06:50:04","122","Na czczo","Glukometr","","","","","Sadowa"
         
-        var csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
-                  "1,\"24.09.2025 06:50:04\",\"122\",\"Na czczo\",\"Glukometr\",\"\",\"\",\"\",\"\",\"Sadowa\"";
+        const string csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
+                           "1,\"24.09.2025 06:50:04\",\"122\",\"Na czczo\",\"Glukometr\",\"\",\"\",\"\",\"\",\"Sadowa\"";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
 
@@ -32,8 +32,8 @@ public class ContourCsvImporterTests
     [Fact]
     public void ParseCsv_InvalidColumnCount_ReportsError()
     {
-        var csv = "#,Data,BG\r\n" +
-                  "1,01.02.2025 08:30:00,120\r\n";
+        const string csv = "#,Data,BG\r\n" +
+                           "1,01.02.2025 08:30:00,120\r\n";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
 
@@ -49,9 +49,9 @@ public class ContourCsvImporterTests
         //   1,invalid-date,120,na czczo,device,,act,100,,loc
         //   2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc
         
-        var csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
-                  "1,invalid-date,120,na czczo,device,,act,100,,loc\r\n" +
-                  "2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc\r\n";
+        const string csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
+                           "1,invalid-date,120,na czczo,device,,act,100,,loc\r\n" +
+                           "2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc\r\n";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
 
@@ -67,9 +67,9 @@ public class ContourCsvImporterTests
         //   1,01.02.2025 08:30:00,not-a-number,na czczo,device,,act,100,,loc
         //   2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc
         
-        var csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
-                  "1,01.02.2025 08:30:00,not-a-number,na czczo,device,,act,100,,loc\r\n" +
-                  "2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc";
+        const string csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
+                           "1,01.02.2025 08:30:00,not-a-number,na czczo,device,,act,100,,loc\r\n" +
+                           "2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
 
@@ -86,10 +86,10 @@ public class ContourCsvImporterTests
         //   2,01.02.2025 09:30:00,110,po posiłku,device,,act,100,,loc
         //   3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc
         
-        var csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
-                  "1,01.02.2025 08:30:00,100,Przed posiłkiem,device,,act,100,,loc\r\n" +
-                  "2,01.02.2025 09:30:00,110,Po posiłku,device,,act,100,,loc\r\n" +
-                  "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
+        const string csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
+                           "1,01.02.2025 08:30:00,100,Przed posiłkiem,device,,act,100,,loc\r\n" +
+                           "2,01.02.2025 09:30:00,110,Po posiłku,device,,act,100,,loc\r\n" +
+                           "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
 
@@ -105,10 +105,10 @@ public class ContourCsvImporterTests
     [Fact]
     public void ParseCsv_MultipleValidLines_ParsesAll()
     {
-        var csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
-                  "1,01.02.2025 08:30:00,120,na czczo,device,,act,100,,loc\r\n" +
-                  "2,01.02.2025 09:00:00,115,na czczo,device,,act,100,,loc\r\n" +
-                  "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
+        const string csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
+                           "1,01.02.2025 08:30:00,120,na czczo,device,,act,100,,loc\r\n" +
+                           "2,01.02.2025 09:00:00,115,na czczo,device,,act,100,,loc\r\n" +
+                           "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
 
@@ -119,9 +119,9 @@ public class ContourCsvImporterTests
     [Fact]
     public void ParseCsv_MultipleValidLines_WithoutHeader_ParsesAll()
     {
-        var csv = "1,01.02.2025 08:30:00,120,na czczo,device,,act,100,,loc\r\n" +
-                  "2,01.02.2025 09:00:00,115,na czczo,device,,act,100,,loc\r\n" +
-                  "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
+        const string csv = "1,01.02.2025 08:30:00,120,na czczo,device,,act,100,,loc\r\n" +
+                           "2,01.02.2025 09:00:00,115,na czczo,device,,act,100,,loc\r\n" +
+                           "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
 
         var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: false);
 
