@@ -4,8 +4,13 @@ namespace HealthReport.Application.FileParsers;
 
 public static class CsvHelper
 {
-    private static string[] SplitCsvLine(string line)
+    public static string[] SplitCsvLine(string line)
     {
+        if (string.IsNullOrWhiteSpace(line))
+        {
+            return [];
+        }
+        
         var parts = new List<string>();
         var inQuotes = false;
         var cur = new StringBuilder();
@@ -14,16 +19,27 @@ public static class CsvHelper
             switch (c)
             {
                 case '"':
+                {
                     inQuotes = !inQuotes;
                     continue;
+                }
                 case ',' when !inQuotes:
+                {
                     parts.Add(cur.ToString().Trim('"'));
                     cur.Clear();
                     continue;
+                }
                 default:
+                {
                     cur.Append(c);
                     break;
+                }
             }
+        }
+
+        if (inQuotes)
+        {
+            throw new FormatException();
         }
         parts.Add(cur.ToString().Trim('"'));
         return parts.ToArray();
