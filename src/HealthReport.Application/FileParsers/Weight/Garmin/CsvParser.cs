@@ -98,7 +98,7 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                         }
                         else
                         {
-                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
+                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[2]}'" });
                             break;
                         }
 
@@ -108,36 +108,55 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                         }
                         else
                         {
-                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
+                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[3]}'" });
+                            break;
                         }
 
-                        if (decimal.TryParse(parts[4].ToUpper().Replace("%","").Trim(), CultureInfo.InvariantCulture, out var bodyFatPercentage))
+                        if (parts[4] != "--")
                         {
-                            measuredBodyFatPercentage = bodyFatPercentage;
-                        }
-                        else
-                        {
-                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
-                        }
-
-                        if (decimal.TryParse(parts[5].ToUpper().Replace("KG","").Trim(), CultureInfo.InvariantCulture, out var skeletalMuscleMassKg))
-                        {
-                            measuredSkeletalMuscleMassKg = skeletalMuscleMassKg;
-                        }
-                        else
-                        {
-                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
+                            if (decimal.TryParse(parts[4].ToUpper().Replace("%", "").Trim(),
+                                    CultureInfo.InvariantCulture, out var bodyFatPercentage))
+                            {
+                                measuredBodyFatPercentage = bodyFatPercentage;
+                            }
+                            else
+                            {
+                                errors.Add(new ParsingError
+                                    { Line = lineNo, Message = $"Invalid decimal format: value='{parts[4]}'" });
+                                break;
+                            }
                         }
 
-                        if (decimal.TryParse(parts[7].ToUpper().Replace("%","").Trim(), CultureInfo.InvariantCulture, out var bodyWaterPercentage))
+                        if (parts[5] != "--")
                         {
-                            measuredBodyWaterPercentage = bodyWaterPercentage;
+                            if (decimal.TryParse(parts[5].ToUpper().Replace("KG", "").Trim(),
+                                    CultureInfo.InvariantCulture, out var skeletalMuscleMassKg))
+                            {
+                                measuredSkeletalMuscleMassKg = skeletalMuscleMassKg;
+                            }
+                            else
+                            {
+                                errors.Add(new ParsingError
+                                    { Line = lineNo, Message = $"Invalid decimal format: value='{parts[5]}'" });
+                                break;
+                            }
                         }
-                        else
+
+                        if (parts[7] != "--")
                         {
-                            errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
+                            if (decimal.TryParse(parts[7].ToUpper().Replace("%", "").Trim(),
+                                    CultureInfo.InvariantCulture, out var bodyWaterPercentage))
+                            {
+                                measuredBodyWaterPercentage = bodyWaterPercentage;
+                            }
+                            else
+                            {
+                                errors.Add(new ParsingError
+                                    { Line = lineNo, Message = $"Invalid decimal format: value='{parts[7]}'" });
+                                break;
+                            }
                         }
-                        
+
                         measurments.Add(new WeightMeasurement()
                         {
                             MeasuredDate = (DateOnly)measuredDate,
