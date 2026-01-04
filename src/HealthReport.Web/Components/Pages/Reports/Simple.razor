@@ -1,13 +1,25 @@
 @page "/reports/simple"
-@using System.Text.RegularExpressions
 <h3>Simple report</h3>
 
 <div class="row mb-3">
-	<div class="col-md-3">
+	
+	<div class="col-1 d-flex align-items-end text-end">
+		<div class="btn-group " role="group">
+			<button type="button" class="btn btn-secondary" @onclick="Prev">
+				<span class="bi bi-caret-left-fill"></span>
+			</button>
+			<button type="button" class="btn btn-secondary" @onclick="Next">
+				<span class="bi bi-caret-right-fill"></span>
+			</button>
+		</div>
+	</div>
+
+	<div class="col-3">
 		<label class="form-label">Year</label>
 		<input class="form-control" type="number" @bind="Year" min="@MinYear" max="@MaxYear"/>
 	</div>
-	<div class="col-md-3">
+	
+	<div class="col-3">
 		<label class="form-label">Month</label>
 		<select class="form-select" @bind="Month">
 			@for (int m = 1; m <= 12; m++)
@@ -17,7 +29,8 @@
 			}
 		</select>
 	</div>
-	<div class="col-md-3 d-flex align-items-end">
+	<div class="col-3 d-flex align-items-end">
+
 		<button class="btn btn-primary" @onclick="Submit">Go</button>
 		<div class="dropdown ms-3">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,7 +43,7 @@
 						as Spreadsheet
 					</a>
 				</li>
-				
+
 			</ul>
 		</div>
 	</div>

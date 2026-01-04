@@ -19,6 +19,25 @@ public partial class Simple(ISimpleReportHandler handler) : ComponentBase
 		Month = DateTime.Now.Month;
 	}
 
+	private void Next()
+	{
+		DateOnly date = new(Year, Month, 1);
+		date = date.AddMonths(1);
+		Console.WriteLine($"Next {date}");
+		Year = date.Year;
+		Month = date.Month;
+		StateHasChanged();
+	}	
+	private void Prev()
+	{
+		DateOnly date = new(Year, Month, 1);
+		date = date.AddMonths(-1);
+		Console.WriteLine($"Prev {date}");
+		Year = date.Year;
+		Month = date.Month;
+		StateHasChanged();
+	}
+	
 	private async Task Submit()
 	{
 		Console.WriteLine($"Submitting report for {Year}-{Month}");
