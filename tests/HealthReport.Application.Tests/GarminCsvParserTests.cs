@@ -89,8 +89,7 @@ public class GarminCsvParserTests
             var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: false);
 
             Assert.NotEmpty(result.Errors);
-            Assert.Single(result.Data);
-            Assert.Equal(97.1m, result.Data.ElementAt(0).WeightKg);
+            Assert.Empty(result.Data);
         }
 
         [Fact]

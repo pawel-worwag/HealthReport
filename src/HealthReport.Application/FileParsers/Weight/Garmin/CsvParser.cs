@@ -83,8 +83,8 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                             errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid time format: value='{parts[0]}'" });
                             break;
                         }
-
-                        if (decimal.TryParse(parts[1], out var weightKg))
+                        
+                        if (decimal.TryParse(parts[1].ToUpper().Replace("KG","").Trim(), CultureInfo.InvariantCulture, out var weightKg))
                         {
                             measuredWeightKg = weightKg;
                         }
@@ -94,7 +94,7 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                             break;
                         }
                         
-                        if(decimal.TryParse(parts[2], out var weightChangeKg))
+                        if(decimal.TryParse(parts[2].ToUpper().Replace("KG","").Trim(), CultureInfo.InvariantCulture, out var weightChangeKg))
                         {
                             measuredWeightChangeKg= weightChangeKg;
                         }
@@ -104,7 +104,7 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                             break;
                         }
 
-                        if (decimal.TryParse(parts[3], out var bmi))
+                        if (decimal.TryParse(parts[3], CultureInfo.InvariantCulture, out var bmi))
                         {
                             measuredBmi = bmi;
                         }
@@ -113,7 +113,7 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                             errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
                         }
 
-                        if (decimal.TryParse(parts[4], out var bodyFatPercentage))
+                        if (decimal.TryParse(parts[4].ToUpper().Replace("%","").Trim(), CultureInfo.InvariantCulture, out var bodyFatPercentage))
                         {
                             measuredBodyFatPercentage = bodyFatPercentage;
                         }
@@ -122,7 +122,7 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                             errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
                         }
 
-                        if (decimal.TryParse(parts[5], out var skeletalMuscleMassKg))
+                        if (decimal.TryParse(parts[5].ToUpper().Replace("KG","").Trim(), CultureInfo.InvariantCulture, out var skeletalMuscleMassKg))
                         {
                             measuredSkeletalMuscleMassKg = skeletalMuscleMassKg;
                         }
@@ -131,7 +131,7 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                             errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid decimal format: value='{parts[1]}'" });
                         }
 
-                        if (decimal.TryParse(parts[7], out var bodyWaterPercentage))
+                        if (decimal.TryParse(parts[7].ToUpper().Replace("%","").Trim(), CultureInfo.InvariantCulture, out var bodyWaterPercentage))
                         {
                             measuredBodyWaterPercentage = bodyWaterPercentage;
                         }
