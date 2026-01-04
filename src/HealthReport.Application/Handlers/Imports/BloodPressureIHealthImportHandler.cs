@@ -27,9 +27,21 @@ namespace HealthReport.Application.Handlers.Imports
             }
             
             var data = result.Data?.ToList() ?? [];
-            
+            var imported = 0;
             foreach (var m in data)
             {
+                var exists = repository.Query().Any(x =>
+                    x.PatientId == m.PatientId
+                    && x.MeasuredDate == m.MeasuredDate
+                    && x.MeasuredTime == m.MeasuredTime
+                    && x.Systolic == m.Systolic
+                    && x.Diastolic == m.Diastolic);
+
+                if (!exists)
+                {
+                    await repository.AddAsync(m, cancellationToken);
+                    imported++;
+                }
                 await repository.AddAsync(m, cancellationToken);
             }
 
@@ -37,7 +49,7 @@ namespace HealthReport.Application.Handlers.Imports
 
             return new ImportResultDto()
             {
-                Imported = data.Count,
+                Imported = imported,
                 Errors = result.Errors
             };
         }
