@@ -10,6 +10,12 @@
             <div class="btn menuButton text-start" role="button"
                  data-bs-dismiss="offcanvas" 
                  aria-label="Close"
+                 @onclick="@(async () => { await NavigateToElement("/reports/simple-avg"); })">
+                <span class="bi bi-speedometer2 me-2"></span> Simple AVG report
+            </div>
+            <div class="btn menuButton text-start" role="button"
+                 data-bs-dismiss="offcanvas" 
+                 aria-label="Close"
                  @onclick="@(async () => { await NavigateToElement("/import-measurements"); })">
                 <span class="bi bi-cloud-upload me-2"></span> Import measurements from CSV
             </div>
