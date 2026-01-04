@@ -22,16 +22,30 @@
 
             <div class="mb-3">
                 <label class="form-label">File</label>
-                <InputFile class="form-control" OnChange="OnInputFileChange"
-                           disabled="@(_isUploading ? "disabled" : null)"/>
+                <div>
+                    <label for="file-upload" class="btn btn-secondary">
+                        Select file
+                    </label>
+                    @if (_file is not null)
+                    {
+                        <div class="mt-2 mb-2 ps-3 fst-italic">
+                            <div>Name: @_selectedFileName</div>
+                            <div>Size: @(Math.Round((decimal)(_selectedFileSize) / 1024, 0)) KB</div>
+                        </div>
+                    }
+                </div>
+                <div style="display: none;">
+                    <InputFile id="file-upload" class="inputFile" OnChange="OnInputFileChange"
+                               disabled="@(_isUploading ? "disabled" : null)"/>
+                </div>
             </div>
+
 
             <div class="mb-3 pt-3 text-end">
                 <button class="btn btn-primary" @onclick="async () => { await HandleValidSubmit(); }"
                         disabled="@(_isUploading ? "disabled" : null)">Import
                 </button>
             </div>
-            
         }
         else
         {
@@ -48,7 +62,10 @@
                     <table>
                         @foreach (var l in _result.Errors)
                         {
-                            <tr><td>Line @l.Line: </td><td>@l.Message</td></tr>
+                            <tr>
+                                <td>Line @l.Line:</td>
+                                <td>@l.Message</td>
+                            </tr>
                         }
                     </table>
                 </div>
@@ -58,7 +75,8 @@
     else
     {
         <div class="mb-3 pt-3">
-            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="100"
+                 aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
             </div>
             <div class="mt-1 ps-1">File: @_selectedFileName</div>

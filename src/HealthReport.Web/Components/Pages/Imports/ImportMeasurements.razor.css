@@ -1,3 +1,8 @@
 .importForm {
     max-width: 40em;
+    margin:auto;
+}
+
+::deep .importFile {
+    display: none !important;  
 }
