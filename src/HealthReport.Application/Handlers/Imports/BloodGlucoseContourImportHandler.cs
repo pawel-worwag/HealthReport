@@ -20,12 +20,14 @@ namespace HealthReport.Application.Handlers.Imports
                 return new ImportResultDto()
                 {
                     Imported = 0,
+                    Duplicates = 0,
                     Errors = result.Errors
                 };
             }
             
             var data = result.Data?.ToList() ?? [];
             var imported = 0;
+            var duplicates = 0;
             foreach (var m in data)
             {
                 var exists = repository.Query().Any(x =>
@@ -38,6 +40,11 @@ namespace HealthReport.Application.Handlers.Imports
                 if (!exists)
                 {
                     await repository.AddAsync(m, cancellationToken);
+                    imported++;
+                }
+                else
+                {
+                    duplicates++;
                 }
             }
             await repository.SaveChangesAsync(cancellationToken);
@@ -45,6 +52,7 @@ namespace HealthReport.Application.Handlers.Imports
             return new ImportResultDto()
             {
                 Imported = imported,
+                Duplicates = duplicates,
                 Errors = result.Errors
             };
         }
