@@ -9,6 +9,7 @@ Architecture
 - `HealthReport.Domain` — domain entities and business logic.
 - `HealthReport.Application` — application services, parsers and use-cases.
 - `HealthReport.Infrastructure` — EF Core mappings and data access implementations.
+- `HealthReport.Identity` — identity & authentication module (ASP.NET Core Identity). Provides DB context, Identity endpoints and seeding.
 - `HealthReport.Web` — Blazor Server UI and minimal API endpoints.
 
 Technologies
@@ -38,6 +39,21 @@ Screenshots
 
 [![Import measurements](docs/screenshots/import-measurements-preview.png)](docs/screenshots/import-measurements.png)
 
+TESTS — HealthReport.Application.Tests
+-----------
+
+- **Purpose:** Unit tests for the application layer parsers and helpers (CSV parsers, parser helpers and corner cases).
+- **Key files:**
+    - `tests/HealthReport.Application.Tests/ContourCsvParserTests.cs`
+    - `tests/HealthReport.Application.Tests/GarminCsvParserTests.cs`
+    - `tests/HealthReport.Application.Tests/HealthCsvParserTests.cs`
+    - `tests/HealthReport.Application.Tests/ParserHelperTests.cs`
+
+- **Run tests:**
+
+```bash
+dotnet test tests/HealthReport.Application.Tests/HealthReport.Application.Tests.csproj
+```
 
 DEMO Runner: iHealth CSV importer
 ---------------------------
