@@ -3,7 +3,7 @@ using HealthReport.Application.FileParsers;
 
 namespace HealthReport.Application.Tests;
 
-public class CsvHelperSplitLineTests
+public class ParserHelperTests
 {
     [Fact]
     public void SplitLine_SimpleCommaSeparated_ReturnsFields()
