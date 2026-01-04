@@ -25,16 +25,26 @@ namespace HealthReport.Application.Handlers.Imports
             }
             
             var data = result.Data?.ToList() ?? [];
-            
+            var imported = 0;
             foreach (var m in data)
             {
-                await repository.AddAsync(m, cancellationToken);
+                var exists = repository.Query().Any(x =>
+                    x.PatientId == m.PatientId
+                    && x.MeasuredDate == m.MeasuredDate
+                    && x.MeasuredTime == m.MeasuredTime
+                    && x.BGValue == m.BGValue
+                    && x.Meal == m.Meal
+                    && x.Note == m.Note);
+                if (!exists)
+                {
+                    await repository.AddAsync(m, cancellationToken);
+                }
             }
             await repository.SaveChangesAsync(cancellationToken);
             
             return new ImportResultDto()
             {
-                Imported = data.Count,
+                Imported = imported,
                 Errors = result.Errors
             };
         }
