@@ -37,6 +37,8 @@ Screenshots
 
 [![Base report](docs/screenshots/base-report-preview.png)](docs/screenshots/base-report.png)
 
+[![Base AVG report](docs/screenshots/base-avg-report-preview.png)](docs/screenshots/base-avg-report.png)
+
 [![Import measurements](docs/screenshots/import-measurements-preview.png)](docs/screenshots/import-measurements.png)
 
 TESTS — HealthReport.Application.Tests
