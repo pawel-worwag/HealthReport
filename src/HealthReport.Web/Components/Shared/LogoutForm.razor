@@ -1,4 +1,4 @@
-<form method="post" action="/identity/logout-submit">
+<form method="post" action="/identity/logout-submit" class="ms-0">
     <input type="hidden" name="__RequestVerificationToken" value="@_csrfToken" />
     @if (ChildContent is not null)
     {
@@ -6,7 +6,7 @@
     }
     else
     {
-        <button type="submit" class="btn btn-link">Logout</button>
+        <button type="submit" class="btn btn-danger">Logout</button>
     }
 </form>
 

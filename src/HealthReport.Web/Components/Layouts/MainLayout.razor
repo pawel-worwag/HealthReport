@@ -1,16 +1,22 @@
 @namespace HealthReport.Web.Components.Layouts
+@using HealthReport.Web.Components.Shared
 @inherits LayoutComponentBase
 
 <nav class="navbar sticky-top bg-body-tertiary border-bottom">
         <div class="container">
-                <button class="navbar-toggler" type="button" 
-                        data-bs-toggle="offcanvas" 
-                        data-bs-target="#offcanvasMainMenu" 
-                        aria-controls="offcanvasMainMenu" 
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                </button>
-                <span class="navbar-brand mb-0 h1">{{ <span style="color: #da27da;">Health</span> Report }}</span>
+                <div>
+                        <button class="navbar-toggler" type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasMainMenu"
+                                aria-controls="offcanvasMainMenu"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <span class="navbar-brand ms-4 mb-0 h1">{{ <span style="color: #da27da;">Health</span> Report }}</span>
+                </div>
+                <div>
+                        <UserNavbarButton/>
+                </div>
         </div>
 </nav>
 

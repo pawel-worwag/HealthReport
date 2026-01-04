@@ -1,5 +1,6 @@
 @page "/identity/profile"
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 <h3>User Profile</h3>
 
 <CascadingAuthenticationState>

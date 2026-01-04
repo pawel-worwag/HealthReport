@@ -1,0 +1,18 @@
+@using System.Security.Claims
+<AuthorizeView Context="auth">
+    <Authorized>
+        @{
+            var user = auth.User;
+            var name = user.Identity?.Name
+                       ?? user.FindFirst("name")?.Value
+                       ?? user.FindFirst(ClaimTypes.Email)?.Value
+                       ?? "User";
+        }
+        <div class="user-status">
+            <div><strong>@name</strong></div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NavLink class="btn btn-link" href="/identity/login">LogIn</NavLink>
+    </NotAuthorized>
+</AuthorizeView>

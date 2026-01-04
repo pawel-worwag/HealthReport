@@ -14,6 +14,11 @@ public partial class Login(NavigationManager navigation,
     [Parameter] 
     [SupplyParameterFromQuery(Name = "error")]
     public int Error { get; set; } = 0;
+    
+    
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "ReturnUrl")]
+    public string? ReturnUrl { get; set; }
 
     private string ErrorDescription
     {
