@@ -1,0 +1,140 @@
+@page "/reports/simple-avg"
+<h3 class="display-5 mb-3">Simple avg report</h3>
+
+<div class="row mb-3">
+    <div class="col-3 align-items-end">
+        <label class="form-label">From</label>
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" placeholder="Year" min="@MinYear" max="@MaxYear" @bind="FromYear">
+            <select class="form-control" @bind="FromMonth">
+                @for (int m = 1; m <= 12; m++)
+                {
+                    <option
+                        value="@m"> @m - @System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(m)</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-3 align-items-end">
+        <label class="form-label">To</label>
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" placeholder="Year" min="@MinYear" max="@MaxYear" @bind="ToYear">
+            <select class="form-control" @bind="ToMonth">
+                @for (int m = 1; m <= 12; m++)
+                {
+                    <option
+                        value="@m"> @m - @System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(m)</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-3 d-flex align-items-end pb-3">
+        <button class="btn btn-primary" @onclick="Submit">Go</button>
+        <div class="dropdown ms-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Download
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                    <a class="dropdown-item" href="@($"/api/reports/simple-avg/xlsx?fromYear={FromYear}&fromMonth={FromMonth}&toYear={ToYear}&toMonth={ToMonth}")" target="_blank">
+                        <span class="bi bi-filetype-xlsx"></span>
+                        as Spreadsheet
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@if (report is not null)
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-sm table-borderless">
+            <thead class="table-bordered align-top">
+            <tr>
+                <th rowspan="3" class="border">Month</th>
+                <th colspan="6" class="border">Blood pressure [mmHg]</th>
+                <th rowspan="2" colspan="3" class="border">Pulse [bpm]</th>
+                <th rowspan="2" colspan="3" class="border">Glucose [mg/dL]</th>
+                <th rowspan="2" colspan="3" class="border">Weight [kg]</th>
+                <th rowspan="2" colspan="3" class="border">BMI [kg/m²]</th>
+            </tr>
+            <tr>
+                <th colspan="3" class="border">Systolic</th>
+                <th colspan="3" class="border">Diastolic</th>
+            </tr>
+            <tr>
+                <th class="border">Min</th>
+                <th class="border">Max</th>
+                <th class="border">Avg</th>
+                <th class="border">Min</th>
+                <th class="border">Max</th>
+                <th class="border">Avg</th>
+                <th class="border">Min</th>
+                <th class="border">Max</th>
+                <th class="border">Avg</th>
+                <th class="border">Min</th>
+                <th class="border">Max</th>
+                <th class="border">Avg</th>
+                <th class="border">Min</th>
+                <th class="border">Max</th>
+                <th class="border">Avg</th>
+                <th class="border">Min</th>
+                <th class="border">Max</th>
+                <th class="border">Avg</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var r in report.Records)
+            {
+                <tr class="border-bottom">
+                    <td class="border">@r.Year.ToString("0000") - @r.Month.ToString("00")</td>
+                    <td>@r.Summary.SystolicSummary.Min</td>
+                    <td>@r.Summary.SystolicSummary.Max</td>
+                    <td class="border-end">@if (r.Summary.SystolicSummary.Avg is not null)
+                        {
+                            @Math.Round((decimal)r.Summary.SystolicSummary.Avg, 2)
+                        }
+                    </td>
+                    <td>@r.Summary.DiastolicSummary.Min</td>
+                    <td>@r.Summary.DiastolicSummary.Max</td>
+                    <td class="border-end">@if (r.Summary.DiastolicSummary.Avg is not null)
+                        {
+                            @Math.Round((decimal)r.Summary.DiastolicSummary.Avg, 2)
+                        }
+                    </td>
+                    <td>@r.Summary.PulseSummary.Min</td>
+                    <td>@r.Summary.PulseSummary.Max</td>
+                    <td class="border-end">@if (r.Summary.PulseSummary.Avg is not null)
+                        {
+                            @Math.Round((decimal)r.Summary.PulseSummary.Avg, 2)
+                        }
+                    </td>
+                    <td>@r.Summary.GlucoseSummary.Min</td>
+                    <td>@r.Summary.GlucoseSummary.Max</td>
+                    <td class="border-end">@if (r.Summary.GlucoseSummary.Avg is not null)
+                        {
+                            @Math.Round((decimal)r.Summary.GlucoseSummary.Avg, 2)
+                        }
+                    </td>
+                    <td>@r.Summary.WeightSummary.Min</td>
+                    <td>@r.Summary.WeightSummary.Max</td>
+                    <td class="border-end">@if (r.Summary.WeightSummary.Avg is not null)
+                        {
+                            @Math.Round((decimal)r.Summary.WeightSummary.Avg, 2)
+                        }
+                    </td>
+                    <td>@r.Summary.BmiSummary.Min</td>
+                    <td>@r.Summary.BmiSummary.Max</td>
+                    <td class="border-end">@if (r.Summary.BmiSummary.Avg is not null)
+                        {
+                            @Math.Round((decimal)r.Summary.BmiSummary.Avg, 2)
+                        }
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

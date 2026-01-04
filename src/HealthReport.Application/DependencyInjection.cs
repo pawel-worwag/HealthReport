@@ -1,5 +1,6 @@
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;
+using HealthReport.Application.Handlers.Reports.SimpleAvg;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddTransient<ImportHandlerFactory>();
         // Reports handlers
         services.AddScoped<ISimpleReportHandler, SimpleReportHandler>();
+        services.AddScoped<ISimpleAvhReportHandler, SimpleAvhReportHandler>();
         return services;
     }
 }

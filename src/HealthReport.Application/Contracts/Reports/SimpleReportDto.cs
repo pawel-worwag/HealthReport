@@ -11,22 +11,7 @@ namespace HealthReport.Application.Contracts.Reports
         [JsonPropertyName("summary")] public SummaryEntry Summary { get; init; } = new();
         [JsonPropertyName("details")] public IReadOnlyList<DetailEntry> Details { get; init; } = Array.Empty<DetailEntry>();
     }
-
-    public record SummaryEntry
-    {
-        [JsonPropertyName("diastolic-summary")] public SummaryEntryValue DiastolicSummary { get; init; } = new();
-        [JsonPropertyName("systolic-summary")] public SummaryEntryValue SystolicSummary { get; init; } = new();
-        [JsonPropertyName("pulse-summary")] public SummaryEntryValue PulseSummary { get; init; } = new();
-        [JsonPropertyName("glucose-summary")] public SummaryEntryValue GlucoseSummary { get; init; } = new();
-        [JsonPropertyName("weight-summary")] public SummaryEntryValue WeightSummary { get; init; } = new();
-        [JsonPropertyName("bmi-summary")] public SummaryEntryValue BmiSummary { get; init; } = new();
-    }
-    public record SummaryEntryValue
-    {
-        [JsonPropertyName("min")] public decimal? Min { get; init; }
-        [JsonPropertyName("max")] public decimal? Max { get; init; }
-        [JsonPropertyName("avg")] public decimal? Avg { get; init; }
-    }
+    
     
     public record DetailEntry
     {

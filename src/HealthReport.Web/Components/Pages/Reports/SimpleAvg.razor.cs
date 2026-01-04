@@ -1,8 +1,10 @@
+using HealthReport.Application.Contracts.Reports;
+using HealthReport.Application.Handlers.Reports.SimpleAvg;
 using Microsoft.AspNetCore.Components;
 
 namespace HealthReport.Web.Components.Pages.Reports;
 
-public partial class SimpleSvg : ComponentBase
+public partial class SimpleAvg(ISimpleAvhReportHandler handler) : ComponentBase
 {
     private int MinYear { get; } = 2000;
     private int MaxYear { get; } = DateTime.Now.Year;
@@ -10,6 +12,8 @@ public partial class SimpleSvg : ComponentBase
     private int FromMonth { get; set; }
     private int ToYear { get; set; }
     private int ToMonth { get; set; }
+    
+    private SimpleAvgReportDto? report = null;
 
     protected override void OnInitialized()
     {
@@ -20,5 +24,10 @@ public partial class SimpleSvg : ComponentBase
         nDate=nDate.AddMonths(-4);
         FromYear = nDate.Year;
         FromMonth = nDate.Month;
+    }
+    
+    private async Task Submit()
+    {
+        report = handler.GenerateReport(FromYear, FromMonth, ToYear, ToMonth);
     }
 }
