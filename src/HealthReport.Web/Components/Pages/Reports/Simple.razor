@@ -6,7 +6,7 @@
 <div class="row mb-3">
 	
 	<div class="col-1 d-flex align-items-end text-end">
-		<div class="btn-group " role="group">
+		<div class="btn-group no-print" role="group">
 			<button type="button" class="btn btn-secondary" @onclick="Prev">
 				<span class="bi bi-caret-left-fill"></span>
 			</button>
@@ -33,8 +33,8 @@
 	</div>
 	<div class="col-3 d-flex align-items-end">
 
-		<button class="btn btn-primary" @onclick="Submit">Go</button>
-		<div class="dropdown ms-3">
+		<button class="btn btn-primary no-print" @onclick="Submit">Go</button>
+		<div class="dropdown ms-3 no-print">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 				Download
 			</button>
