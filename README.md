@@ -32,7 +32,11 @@ dotnet run --project src/HealthReport.Web/HealthReport.Web.csproj
 Screenshots
 ----------
 
+[![Login](docs/screenshots/login-preview.png)](docs/screenshots/login.png)
+
 [![Base report](docs/screenshots/base-report-preview.png)](docs/screenshots/base-report.png)
+
+[![Import measurements](docs/screenshots/import-measurements-preview.png)](docs/screenshots/import-measurements.png)
 
 
 DEMO Runner: iHealth CSV importer
