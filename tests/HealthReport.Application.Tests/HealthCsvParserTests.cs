@@ -3,7 +3,7 @@ using HealthReport.Application.FileParsers.BloodPresure.iHealth;
 
 namespace HealthReport.Application.Tests;
 
-public class HealthCsvImporterTests
+public class HealthCsvParserTests
 {
     private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
     

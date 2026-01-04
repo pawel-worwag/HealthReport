@@ -4,7 +4,7 @@ using HealthReport.Domain.Entities;
 
 namespace HealthReport.Application.Tests;
 
-public class ContourCsvImporterTests
+public class ContourCsvParserTests
 {
     private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
     
