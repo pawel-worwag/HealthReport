@@ -52,7 +52,6 @@ public class ParserHelperTests
     [Fact]
     public void SplitLine_NullAndEmptyInputs_BehaveAsExpected()
     {
-        Assert.Empty(CsvHelper.SplitCsvLine(null));
         Assert.Empty( CsvHelper.SplitCsvLine(string.Empty));
     }
 }

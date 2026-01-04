@@ -18,7 +18,9 @@ public static class Endpoints
             await antiforgery.ValidateRequestAsync(ctx); 
             var form = await ctx.Request.ReadFormAsync();
             var email = form["email"].FirstOrDefault();
+            if(email is null) {throw new Exception("No email provided");}
             var password = form["password"].FirstOrDefault();
+            if(password is null) {throw new Exception("No password provided");}
             var returnUrl = form["returnUrl"].FirstOrDefault() ?? "/identity/profile";
             var result = await handler.LoginAsync(new LoginUserDto(email, password));
             if (!result.Succeeded)

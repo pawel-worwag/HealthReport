@@ -5,14 +5,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace HealthReport.Web.Components.Shared;
 
-public partial class UserDetails(IUserDetailsHandler loadHandler)
-    : ComponentBase
+public partial class UserDetails : ComponentBase
 {
     [Parameter]
     public UserDetailsDto? User { get; set; }
     
     [Parameter]
-    public ICollection<string> AllRoles { get; set; }
+    public required ICollection<string> AllRoles { get; set; }
     
     [Parameter]
     public string[]? ErrorMessages { get; set; } = null;

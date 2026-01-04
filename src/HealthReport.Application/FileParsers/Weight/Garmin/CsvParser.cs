@@ -61,8 +61,6 @@ namespace HealthReport.Application.FileParsers.Weight.Garmin
                     decimal? measuredBodyFatPercentage = null;
                     decimal? measuredSkeletalMuscleMassKg = null;
                     decimal? measuredBodyWaterPercentage = null;
-                    MeasurementSource? source = null;
-                    string? sourceDetails = null;
                     string? note = null;
 
                     if (parts.Length == 9) // Record
