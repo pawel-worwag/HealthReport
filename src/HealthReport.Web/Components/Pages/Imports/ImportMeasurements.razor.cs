@@ -1,5 +1,4 @@
 using HealthReport.Application.Contracts.Imports;
-using HealthReport.Application.FileParsers;
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -11,12 +10,12 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
 {
     private readonly Dictionary<ImportSource, string> _allowedImports = new()
     {
-        { ImportSource.ContourBloodGlucose , "Contour - Blood Glucose"},
-        { ImportSource.IHealthBloodPressure , "IHealth - Blood Pressure"},
-        { ImportSource.GarminWeight , "Garmin - Weight"}
+        { ImportSource.BloodGlucoseContour , "Contour - Blood Glucose"},
+        { ImportSource.BloodPressureIHealth , "IHealth - Blood Pressure"},
+        { ImportSource.WeightGarmin , "Garmin - Weight"}
     };
 
-    private ImportSource? _selectedSource = ImportSource.ContourBloodGlucose;
+    private ImportSource? _selectedSource = ImportSource.BloodGlucoseContour;
     private IBrowserFile? _file;
     private string? _selectedFileName;
     private long _selectedFileSize;

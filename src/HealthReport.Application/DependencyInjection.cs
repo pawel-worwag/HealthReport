@@ -10,9 +10,9 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         // Import handlers
-        services.AddScoped<IBloodPressureImportHandler, BloodPressureImportHandler>();
-        services.AddScoped<IBloodGlucoseImportHandler, BloodGlucoseImportHandler>();
-        services.AddScoped<IWeightImportHandler, WeightImportHandler>();
+        services.AddScoped<BloodPressureIHealthImportHandler>();
+        services.AddScoped<BloodGlucoseContourImportHandler>();
+        services.AddScoped<WeightGarminImportHandler>();
         services.AddTransient<ImportHandlerFactory>();
         // Reports handlers
         services.AddScoped<ISimpleReportHandler, SimpleReportHandler>();

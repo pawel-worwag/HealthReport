@@ -6,7 +6,7 @@ namespace HealthReport.Application.Handlers.Imports;
 /// </summary>
 public enum ImportSource
 {
-    IHealthBloodPressure,
-    ContourBloodGlucose,
-    GarminWeight
+    BloodPressureIHealth,
+    BloodGlucoseContour,
+    WeightGarmin
 }
