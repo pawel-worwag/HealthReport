@@ -14,59 +14,6 @@ public static class Endpoints
 {
     public static WebApplication MapEndpoint(this WebApplication app)
     {
-        app.MapGet("/api/error-test", ()=>
-        {
-            throw new Exception("Test exception");
-        });
-        
-        // Minimal API endpoint for blood pressure CSV import
-        app.MapPost("/api/import/bloodpressure", async (HttpRequest request, IBloodPressureImportHandler handler, CancellationToken ct) =>
-        {
-            var form = await request.ReadFormAsync(ct).ConfigureAwait(false);
-            var file = form.Files.GetFile("file");
-            if (file == null || file.Length == 0)
-                return Results.BadRequest(new { message = "No file uploaded" });
-
-            await using var stream = file.OpenReadStream();
-            return Results.Ok(await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct));
-        })
-        .WithTags("Imports")
-        .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
-        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
-        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
-        
-        // Minimal API endpoint for blood glucose CSV import
-        app.MapPost("/api/import/bloodglucose", async (HttpRequest request, IBloodGlucoseImportHandler handler, CancellationToken ct) =>
-        {
-            var form = await request.ReadFormAsync(ct).ConfigureAwait(false);
-            var file = form.Files.GetFile("file");
-            if (file == null || file.Length == 0)
-                return Results.BadRequest(new { message = "No file uploaded" });
-
-            await using var stream = file.OpenReadStream();
-            return Results.Ok(await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct));
-        })
-        .WithTags("Imports")
-        .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
-        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
-        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
-        
-        // Minimal API endpoint for weight CSV import
-        app.MapPost("/api/import/weight", async (HttpRequest request, IWeightImportHandler handler, CancellationToken ct) =>
-        {
-            var form = await request.ReadFormAsync(ct).ConfigureAwait(false);
-            var file = form.Files.GetFile("file");
-            if (file == null || file.Length == 0)
-                return Results.BadRequest(new { message = "No file uploaded" });
-
-            await using var stream = file.OpenReadStream();
-            return Results.Ok(await handler.ImportAsync(stream, hasHeader: true, cancellationToken: ct));
-        })
-        .WithTags("Imports")
-        .Produces<ImportResultDto>(StatusCodes.Status200OK,"application/json")
-        .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
-        .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json");
-
         // Simple report endpoint
         app.MapGet("/api/reports/simple", async (ISimpleReportHandler handler, int? year, int? month, CancellationToken ct) =>
         {
