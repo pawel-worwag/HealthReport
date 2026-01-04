@@ -1,5 +1,5 @@
 using System.Text;
-using HealthReport.Application.FileParsers.IHealth;
+using HealthReport.Application.FileParsers.BloodPresure.iHealth;
 
 namespace HealthReport.Application.Tests;
 
@@ -16,7 +16,7 @@ public class HealthCsvImporterTests
         const string csv = "Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note\r\n" +
                            "\"Dec 31, 2025\",07:04,111,81,68,\r\n";
 
-        var result = BloodPressureCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Errors);
         Assert.Single(result.Data);
@@ -39,7 +39,7 @@ public class HealthCsvImporterTests
                            "\"Dec 31, 2025\",07:04,111,81,68,note 123\r\n" +
                            "\"Dec 31, 2025\",07:03,117,85,77,";
 
-        var result = BloodPressureCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Errors);
         Assert.Equal(2, result.Data.Count());
@@ -52,7 +52,7 @@ public class HealthCsvImporterTests
                            "\"Dec 31, 2025\",07:04,not-a-number,81,68,\r\n" +
                            "\"Dec 30, 2025\",06:53,119,81,57,\r\n";
 
-        var result = BloodPressureCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Single(result.Errors);
         Assert.Empty(result.Data);
@@ -62,7 +62,7 @@ public class HealthCsvImporterTests
     public void ParseCsv_NoHeader_ParsesWhenHasHeaderFalse()
     {
         var csv = "\"Dec 31, 2025\",07:04,111,81,68,\r\n";
-        var result = BloodPressureCsvImporter.ParseCsv(ToStream(csv), hasHeader: false);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: false);
 
         Assert.Empty(result.Errors);
         Assert.Single(result.Data);
@@ -74,7 +74,7 @@ public class HealthCsvImporterTests
     public void ParseCsv_EmptyStream_ReturnsEmptyResult()
     {
         var csv = string.Empty;
-        var result = BloodPressureCsvImporter.ParseCsv(ToStream(csv), hasHeader: false);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: false);
 
         Assert.Empty(result.Errors);
         Assert.Empty(result.Data);

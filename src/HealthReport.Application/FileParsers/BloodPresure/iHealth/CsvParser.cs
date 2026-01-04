@@ -1,31 +1,31 @@
 using System.Globalization;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.FileParsers.IHealth
+namespace HealthReport.Application.FileParsers.BloodPresure.iHealth
 {
     /// <summary>
     /// CSV importer for iHealth-exported files with headers: Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
     /// Date format in sample: "Dec 28, 2025" (en-US)
     /// </summary>
-    public static class BloodPressureCsvImporter
+    public static class CsvParser
     {
         /// <summary>
         /// Parses a CSV file containing blood pressure measurements.
         /// Supports files with or without a header, controlled by the <c>hasHeader</c> parameter.
         /// </summary>
         /// <remarks>
-        /// Returns a <see cref="ParseResult{T}"/>, where the <c>Data</c> property contains successfully
+        /// Returns a <see cref="CsvParsingResult{T}"/>, where the <c>Data</c> property contains successfully
         /// parsed records and the <c>Errors</c> property contains parsing errors (line number and message).
         /// Malformed rows are skipped but recorded in <c>Errors</c>.
         /// </remarks>
         /// <param name="csvStream">Stream containing the CSV content.</param>
         /// <param name="hasHeader">Whether the first line is a header (default <c>true</c>).</param>
-        /// <returns>A <see cref="ParseResult{BloodPressureMeasurement}"/> containing parsed measurements and any parse errors.</returns>
-        public static ParseResult<BloodPressureMeasurement> ParseCsv(Stream csvStream, bool hasHeader = true)
+        /// <returns>A <see cref="CsvParsingResult{T}"/> containing parsed measurements and any parse errors.</returns>
+        public static CsvParsingResult<BloodPressureMeasurement> ParseCsv(Stream csvStream, bool hasHeader = true)
         {
             
             var measurements = new List<BloodPressureMeasurement>();
-            var errors = new List<ParseError>();
+            var errors = new List<ParsingError>();
             
             using var reader = new StreamReader(csvStream);
             string? header = null;
@@ -48,7 +48,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                 // Expected columns: Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
                 if (parts.Length != 6)
                 {
-                    errors.Add(new ParseError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
+                    errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
                     break;
                 }
 
@@ -68,7 +68,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Invalid date format: value='{parts[0]}'" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid date format: value='{parts[0]}'" });
                         break;
                     }
                     
@@ -78,7 +78,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Invalid time format: value='{parts[1]}'" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid time format: value='{parts[1]}'" });
                         break;
                     }
 
@@ -88,7 +88,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Int parse error: value={parts[2]}" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Int parse error: value={parts[2]}" });
                         break;
                     }
 
@@ -98,7 +98,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Int parse error: value={parts[2]}" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Int parse error: value={parts[2]}" });
                         break;
                     }
                     
@@ -108,7 +108,7 @@ namespace HealthReport.Application.FileParsers.IHealth
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Int parse error: value={parts[2]}" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Int parse error: value={parts[2]}" });
                         break;
                     }
 
@@ -128,11 +128,11 @@ namespace HealthReport.Application.FileParsers.IHealth
                 }
                 catch (Exception ex)
                 {
-                    errors.Add(new ParseError { Line = lineNo, Message = ex.Message });
+                    errors.Add(new ParsingError { Line = lineNo, Message = ex.Message });
                 }
             }
 
-            return new ParseResult<BloodPressureMeasurement> { Data = measurements, Errors = errors };
+            return new CsvParsingResult<BloodPressureMeasurement> { Data = measurements, Errors = errors };
         }
     }
 }

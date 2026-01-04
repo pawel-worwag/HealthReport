@@ -8,5 +8,5 @@ public record ImportResultDto
     [JsonPropertyName("imported")]
     public required int Imported { get; init; }
     [JsonPropertyName("errors")]
-    public IEnumerable<ParseError> Errors { get; init; } = Enumerable.Empty<ParseError>();
+    public IEnumerable<ParsingError> Errors { get; init; } = Enumerable.Empty<ParsingError>();
 }

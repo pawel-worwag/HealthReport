@@ -1,10 +1,10 @@
 using System.Text;
-using HealthReport.Application.FileParsers.Contour;
+using HealthReport.Application.FileParsers.BloodGlucose.Contour;
 using HealthReport.Domain.Entities;
 
 namespace HealthReport.Application.Tests;
 
-public class ContourCsvImporterTests
+public class CsvParserTests
 {
     private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
     
@@ -17,7 +17,7 @@ public class ContourCsvImporterTests
         const string csv = "#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja\r\n" +
                            "1,\"24.09.2025 06:50:04\",\"122\",\"Na czczo\",\"Glukometr\",\"\",\"\",\"\",\"\",\"Sadowa\"";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Errors);
         Assert.Single(result.Data);
@@ -35,7 +35,7 @@ public class ContourCsvImporterTests
         const string csv = "#,Data,BG\r\n" +
                            "1,01.02.2025 08:30:00,120\r\n";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Data);
         Assert.Single(result.Errors);
@@ -53,7 +53,7 @@ public class ContourCsvImporterTests
                            "1,invalid-date,120,na czczo,device,,act,100,,loc\r\n" +
                            "2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc\r\n";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Data); // importer breaks on parse error
         Assert.Single(result.Errors);
@@ -71,7 +71,7 @@ public class ContourCsvImporterTests
                            "1,01.02.2025 08:30:00,not-a-number,na czczo,device,,act,100,,loc\r\n" +
                            "2,01.02.2025 09:00:00,110,na czczo,device,,act,100,,loc";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Data);
         Assert.Single(result.Errors);
@@ -91,7 +91,7 @@ public class ContourCsvImporterTests
                            "2,01.02.2025 09:30:00,110,Po posiłku,device,,act,100,,loc\r\n" +
                            "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         // depending on current implementation behavior (it may stop on first error),
         // the test asserts intended behaviour: both lines parsed successfully.
@@ -110,7 +110,7 @@ public class ContourCsvImporterTests
                            "2,01.02.2025 09:00:00,115,na czczo,device,,act,100,,loc\r\n" +
                            "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: true);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
 
         Assert.Empty(result.Errors);
         Assert.Equal(3, result.Data.Count());
@@ -123,7 +123,7 @@ public class ContourCsvImporterTests
                            "2,01.02.2025 09:00:00,115,na czczo,device,,act,100,,loc\r\n" +
                            "3,01.02.2025 09:30:00,110,Na czczo,device,,act,100,,loc";
 
-        var result = ContourCsvImporter.ParseCsv(ToStream(csv), hasHeader: false);
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: false);
 
         Assert.Empty(result.Errors);
         Assert.Equal(3, result.Data.Count());

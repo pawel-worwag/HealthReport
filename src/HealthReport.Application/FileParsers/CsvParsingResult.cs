@@ -2,14 +2,14 @@ using System.Text.Json.Serialization;
 
 namespace HealthReport.Application.FileParsers;
 
-public class ParseResult<T> where T : class
+public class CsvParsingResult<T> where T : class
 {
     public IEnumerable<T> Data { get; set; } = Enumerable.Empty<T>();
-    public IEnumerable<ParseError> Errors { get; set; } = Enumerable.Empty<ParseError>();
+    public IEnumerable<ParsingError> Errors { get; set; } = Enumerable.Empty<ParsingError>();
     
 }
 
-public record ParseError
+public record ParsingError
 {
     
     [JsonPropertyName("line")]

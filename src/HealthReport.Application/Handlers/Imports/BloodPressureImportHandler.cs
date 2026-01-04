@@ -1,6 +1,6 @@
 using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.FileParsers;
-using HealthReport.Application.FileParsers.IHealth;
+using HealthReport.Application.FileParsers.BloodPresure.iHealth;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
@@ -17,7 +17,7 @@ namespace HealthReport.Application.Handlers.Imports
         public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true,
             CancellationToken cancellationToken = default)
         {
-            var result = BloodPressureCsvImporter.ParseCsv(csvStream, hasHeader: hasHeader);
+            var result = CsvParser.ParseCsv(csvStream, hasHeader: hasHeader);
 
             var data = result.Data?.ToList() ?? [];
             

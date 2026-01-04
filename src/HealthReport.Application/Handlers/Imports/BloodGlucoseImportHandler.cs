@@ -1,6 +1,6 @@
 using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.FileParsers;
-using HealthReport.Application.FileParsers.Contour;
+using HealthReport.Application.FileParsers.BloodGlucose.Contour;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
@@ -15,7 +15,7 @@ namespace HealthReport.Application.Handlers.Imports
     {
         public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true, CancellationToken cancellationToken = default)
         {
-            var result = ContourCsvImporter.ParseCsv(csvStream, hasHeader: hasHeader);
+            var result = CsvParser.ParseCsv(csvStream, hasHeader: hasHeader);
 
             var data = result.Data?.ToList() ?? [];
 

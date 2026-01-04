@@ -1,23 +1,23 @@
 using System.Globalization;
 using HealthReport.Domain.Entities;
 
-namespace HealthReport.Application.FileParsers.Contour
+namespace HealthReport.Application.FileParsers.BloodGlucose.Contour
 {
     /// <summary>
     /// CSV importer for Contour glucose meter exports.
     /// Expected header (Polish): #,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,...
     /// </summary>
-    public static class ContourCsvImporter
+    public static class CsvParser
     {
         /// <summary>
         /// Parses a Contour CSV stream into <see cref="BloodGlucoseMeasurement"/> objects.
         /// </summary>
         /// <param name="csvStream">CSV stream.</param>
         /// <param name="hasHeader">Whether the file contains a header row (default true).</param>
-        public static ParseResult<BloodGlucoseMeasurement> ParseCsv(Stream csvStream, bool hasHeader = true)
+        public static CsvParsingResult<BloodGlucoseMeasurement> ParseCsv(Stream csvStream, bool hasHeader = true)
         {
             var measurements = new List<BloodGlucoseMeasurement>();
-            var errors = new List<ParseError>();
+            var errors = new List<ParsingError>();
 
             using var reader = new StreamReader(csvStream);
             
@@ -38,7 +38,7 @@ namespace HealthReport.Application.FileParsers.Contour
                 // Expected: #,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja
                 if (parts.Length != 10)
                 {
-                    errors.Add(new ParseError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
+                    errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
                     continue;
                 }
 
@@ -59,7 +59,7 @@ namespace HealthReport.Application.FileParsers.Contour
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Invalid datetime format: '{dateTimeStr}'" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid datetime format: '{dateTimeStr}'" });
                         break;
                     }
                     
@@ -70,7 +70,7 @@ namespace HealthReport.Application.FileParsers.Contour
                     }
                     else
                     {
-                        errors.Add(new ParseError { Line = lineNo, Message = $"Invalid BGValue format: '{parts[2]}'" });
+                        errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid BGValue format: '{parts[2]}'" });
                         break;
                     }
                     
@@ -94,13 +94,13 @@ namespace HealthReport.Application.FileParsers.Contour
                 }
                 catch (Exception ex)
                 {
-                    errors.Add(new ParseError { Line = lineNo, Message = ex.Message });
+                    errors.Add(new ParsingError { Line = lineNo, Message = ex.Message });
                 }
 
 
             }
 
-            return new ParseResult<BloodGlucoseMeasurement> { Data = measurements, Errors = errors };
+            return new CsvParsingResult<BloodGlucoseMeasurement> { Data = measurements, Errors = errors };
 
         }
 

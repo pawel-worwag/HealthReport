@@ -1,6 +1,6 @@
 using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.FileParsers;
-using HealthReport.Application.FileParsers.Garmin;
+using HealthReport.Application.FileParsers.Weight.Garmin;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
@@ -16,7 +16,7 @@ namespace HealthReport.Application.Handlers.Imports
         public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true,
             CancellationToken cancellationToken = default)
         {
-            var result = WeightCsvImporter.ParseCsv(csvStream, hasHeader: hasHeader);
+            var result = CsvParser.ParseCsv(csvStream, hasHeader: hasHeader);
 
             var data = result.Data?.ToList() ?? [];
 
