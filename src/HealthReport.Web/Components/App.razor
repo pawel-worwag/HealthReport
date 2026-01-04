@@ -1,3 +1,4 @@
+@using HealthReport.Web.Components.Shared
 <!DOCTYPE html>
 <html lang="en" class="h-100" data-bs-theme="dark">
 
@@ -15,6 +16,7 @@
 <body>
 <CascadingAuthenticationState>
     <Routes @rendermode="InteractiveServer"/>
+    <ReconnectModal/>
 </CascadingAuthenticationState>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
 <script src="@Assets["lib/bootstrap/dist/js/bootstrap.bundle.min.js"]"></script>
