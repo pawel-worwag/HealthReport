@@ -21,7 +21,13 @@ public static class Endpoints
             if(email is null) {throw new Exception("No email provided");}
             var password = form["password"].FirstOrDefault();
             if(password is null) {throw new Exception("No password provided");}
-            var returnUrl = form["returnUrl"].FirstOrDefault() ?? "/identity/profile";
+            
+            var returnUrl = form["returnUrl"].FirstOrDefault() ;
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl ="/identity/profile";
+            }
+            
             var result = await handler.LoginAsync(new LoginUserDto(email, password));
             if (!result.Succeeded)
             {
