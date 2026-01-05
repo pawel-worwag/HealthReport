@@ -1,13 +1,16 @@
+using System.Security.Claims;
 using HealthReport.Application.Contracts.Imports;
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace HealthReport.Web.Components.Pages.Imports;
 
-public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITempFileStorage storage) : ComponentBase
+public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITempFileStorage storage,AuthenticationStateProvider authStateProvider) : ComponentBase
 {
+    protected string? userId;
     private readonly Dictionary<ImportSource, string> _allowedImports = new()
     {
         { ImportSource.BloodGlucoseContour , "Contour - Blood Glucose"},
@@ -22,7 +25,18 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
     private CancellationTokenSource? _cts;
     private bool _isUploading = false;
     private ImportResultDto? _result = null;
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var state = await authStateProvider.GetAuthenticationStateAsync();
+        var user = state.User;
+        if (user?.Identity?.IsAuthenticated == true)
+        {
+            userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value;
+        }
+    }
+
     private void OnInputFileChange(InputFileChangeEventArgs e)
     {
         _file = e.File;
@@ -32,7 +46,7 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
 
     private async Task HandleValidSubmit()
     {
-        if(_file is null || _selectedSource is null) return;
+        if(_file is null || _selectedSource is null || userId is null) return;
         
         var maxAllowed = 1024L * 1024 * 200; // 200 MB
         if (_file.Size > maxAllowed)
@@ -56,7 +70,7 @@ public partial class ImportMeasurements(ImportHandlerFactory importFactory, ITem
             await using var uploaded = await storage.OpenReadAsync(id, _cts.Token);
             
             var handler =  importFactory.Create(_selectedSource.Value);
-            _result = await handler.ImportAsync(uploaded,true, _cts.Token);
+            _result = await handler.ImportAsync(uploaded,Guid.Parse(userId),true, _cts.Token);
         }
         catch (Exception ex)
         {

@@ -7,6 +7,6 @@ namespace HealthReport.Application.Handlers.Imports;
 /// </summary>
 public interface IImportHandler
 {
-    Task<ImportResultDto> ImportAsync(Stream stream, bool hasHeader = true,
+    Task<ImportResultDto> ImportAsync(Stream stream,Guid userId , bool hasHeader = true,
         CancellationToken cancellationToken = default);
 }

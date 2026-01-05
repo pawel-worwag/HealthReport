@@ -12,7 +12,7 @@ namespace HealthReport.Application.Handlers.Imports
     public class BloodPressureIHealthImportHandler(IRepository<BloodPressureMeasurement> repository)
         : IImportHandler
     {
-        public async Task<ImportResultDto> ImportAsync(Stream csvStream, bool hasHeader = true,
+        public async Task<ImportResultDto> ImportAsync(Stream csvStream,Guid userId , bool hasHeader = true,
             CancellationToken cancellationToken = default)
         {
             var result = CsvParser.ParseCsv(csvStream, hasHeader: hasHeader);
@@ -32,6 +32,7 @@ namespace HealthReport.Application.Handlers.Imports
             var duplicates = 0;
             foreach (var m in data)
             {
+                m.PatientId = userId;
                 var exists = repository.Query().Any(x =>
                     x.PatientId == m.PatientId
                     && x.MeasuredDate == m.MeasuredDate
