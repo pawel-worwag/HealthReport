@@ -33,9 +33,9 @@ public class SimpleAvhReportHandler (
                     DiastolicMin = g.MinOrNull(x => x.Diastolic),
                     DiastolicMax = g.MaxOrNull(x => x.Diastolic),
                     DiastolicAvg = g.AverageOrNull(x => x.Diastolic),
-                    PulseMin = g.MinOrNull(x => (int)x.Pulse),
-                    PulseMax = g.MaxOrNull(x => (int)x.Pulse),
-                    PulseAvg = g.AverageOrNull(x => (int)x.Pulse)
+                    PulseMin = g.Where(x=>x.Pulse.HasValue).MinOrNull(x => (int)(x.Pulse??0)),
+                    PulseMax = g.Where(x=>x.Pulse.HasValue).MaxOrNull(x => (int)(x.Pulse??0)),
+                    PulseAvg = g.Where(x=>x.Pulse.HasValue).AverageOrNull(x => (int)(x.Pulse??0))
                 }).ToList();;
 
         var bgList = bgRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to)
