@@ -1,4 +1,5 @@
 @page "/reports/simple-avg"
+@using HealthReport.Web.Components.Shared.Charts
 <h3 class="display-5 mb-3">Simple avg report</h3>
 
 <div class="row mb-3">
@@ -48,6 +49,12 @@
 
 @if (report is not null)
 {
+    <!--
+    <TimePointSeriesGraph Width="800" Height="400" Title="Blood pressure" XAxeTitle="Month" YAxeTitle="Pressure [mmHg]"
+                          class="mb-5 rounded-3"/>
+                          -->
+    
+    
     <div class="table-responsive">
         <table class="table table-hover table-sm table-borderless">
             <thead class="table-bordered align-top">
