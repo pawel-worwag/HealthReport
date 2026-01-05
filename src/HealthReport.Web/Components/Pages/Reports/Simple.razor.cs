@@ -8,7 +8,7 @@ namespace HealthReport.Web.Components.Pages.Reports;
 
 public partial class Simple(ISimpleReportHandler handler,AuthenticationStateProvider authStateProvider) : ComponentBase
 {
-	protected string? userId;
+	private string? _userId;
 	private int MinYear { get; } = 2000;
 	private int MaxYear { get; } = DateTime.Now.Year;
 	private int Year { get; set; }
@@ -22,7 +22,7 @@ public partial class Simple(ISimpleReportHandler handler,AuthenticationStateProv
 		var user = state.User;
 		if (user?.Identity?.IsAuthenticated == true)
 		{
-			userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value;
+			_userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value;
 		}
 		
 		Year = MaxYear;
@@ -51,9 +51,9 @@ public partial class Simple(ISimpleReportHandler handler,AuthenticationStateProv
 	private async Task Submit()
 	{
 		Console.WriteLine($"Submitting report for {Year}-{Month}");
-		if (!string.IsNullOrEmpty(userId))
+		if (!string.IsNullOrEmpty(_userId))
 		{
-			Report = handler.GenerateMonthlyReport(Year, Month, Guid.Parse(userId));
+			Report = handler.GenerateMonthlyReport(Year, Month, Guid.Parse(_userId));
 		}
 	}
 }
