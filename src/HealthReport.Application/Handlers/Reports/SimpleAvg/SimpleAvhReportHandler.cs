@@ -11,7 +11,7 @@ public class SimpleAvhReportHandler (
     IRepository<WeightMeasurement> wRepo)
     :ISimpleAvhReportHandler
 {
-    public SimpleAvgReportDto GenerateReport(int yearFrom, int monthFrom, int yearTo, int monthTo)
+    public SimpleAvgReportDto GenerateReport(int yearFrom, int monthFrom, int yearTo, int monthTo, Guid userId)
     {
         var from = new DateOnly(yearFrom, monthFrom, 1);
         var to = new DateOnly(yearTo, monthTo, DateTime.DaysInMonth(yearTo, monthTo));
@@ -20,7 +20,7 @@ public class SimpleAvhReportHandler (
             throw new ArgumentException("'To' date must be after 'from' date");
         }
 
-        var bpList = bpRepo.Query().Where(x => x.MeasuredDate >= from && x.MeasuredDate <= to)
+        var bpList = bpRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to)
             .GroupBy(x => new { x.MeasuredDate.Year, x.MeasuredDate.Month }).ToList()
             .Select(g =>
                 new
@@ -38,7 +38,7 @@ public class SimpleAvhReportHandler (
                     PulseAvg = g.AverageOrNull(x => (int)x.Pulse)
                 }).ToList();;
 
-        var bgList = bgRepo.Query().Where(x => x.MeasuredDate >= from && x.MeasuredDate <= to)
+        var bgList = bgRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to)
             .GroupBy(x => new { x.MeasuredDate.Year, x.MeasuredDate.Month }).ToList()
             .Select(g => new
             {
@@ -49,7 +49,7 @@ public class SimpleAvhReportHandler (
                 GlucoseAvg = g.AverageOrNull(x => x.BGValue)
             }).ToList();;
 
-        var wList = wRepo.Query().Where(x => x.MeasuredDate >= from && x.MeasuredDate <= to)
+        var wList = wRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to)
             .GroupBy(x => new { x.MeasuredDate.Year, x.MeasuredDate.Month }).ToList()
             .Select(g => new
             {
@@ -120,6 +120,8 @@ public class SimpleAvhReportHandler (
 
         return new SimpleAvgReportDto()
         {
+            DateFrom = from.ToString("yyyy-MM"),
+            DateTo = to.ToString("yyyy-MM"),
             Records = records
         };
     }

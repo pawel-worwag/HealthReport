@@ -1,11 +1,14 @@
+using System.Security.Claims;
 using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Handlers.Reports.Simple;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HealthReport.Web.Components.Pages.Reports;
 
-public partial class Simple(ISimpleReportHandler handler) : ComponentBase
+public partial class Simple(ISimpleReportHandler handler,AuthenticationStateProvider authStateProvider) : ComponentBase
 {
+	protected string? userId;
 	private int MinYear { get; } = 2000;
 	private int MaxYear { get; } = DateTime.Now.Year;
 	private int Year { get; set; }
@@ -13,8 +16,15 @@ public partial class Simple(ISimpleReportHandler handler) : ComponentBase
 	
 	private SimpleReportDto? Report { get; set; }
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		var state = await authStateProvider.GetAuthenticationStateAsync();
+		var user = state.User;
+		if (user?.Identity?.IsAuthenticated == true)
+		{
+			userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value;
+		}
+		
 		Year = MaxYear;
 		Month = DateTime.Now.Month;
 	}
@@ -41,6 +51,9 @@ public partial class Simple(ISimpleReportHandler handler) : ComponentBase
 	private async Task Submit()
 	{
 		Console.WriteLine($"Submitting report for {Year}-{Month}");
-		Report = handler.GenerateMonthlyReport(Year, Month);
+		if (!string.IsNullOrEmpty(userId))
+		{
+			Report = handler.GenerateMonthlyReport(Year, Month, Guid.Parse(userId));
+		}
 	}
 }

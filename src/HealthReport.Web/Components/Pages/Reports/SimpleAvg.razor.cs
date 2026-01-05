@@ -1,11 +1,14 @@
+using System.Security.Claims;
 using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Handlers.Reports.SimpleAvg;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HealthReport.Web.Components.Pages.Reports;
 
-public partial class SimpleAvg(ISimpleAvhReportHandler handler) : ComponentBase
+public partial class SimpleAvg(ISimpleAvhReportHandler handler,AuthenticationStateProvider authStateProvider) : ComponentBase
 {
+    protected string? userId;
     private int MinYear { get; } = 2000;
     private int MaxYear { get; } = DateTime.Now.Year;
     private int FromYear { get; set; }
@@ -15,9 +18,16 @@ public partial class SimpleAvg(ISimpleAvhReportHandler handler) : ComponentBase
     
     private SimpleAvgReportDto? report = null;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
+        var state = await authStateProvider.GetAuthenticationStateAsync();
+        var user = state.User;
+        if (user?.Identity?.IsAuthenticated == true)
+        {
+            userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub")?.Value;
+        }
+        
         var nDate = DateTime.Now;
         ToYear = nDate.Year;
         ToMonth = nDate.Month;
@@ -28,6 +38,9 @@ public partial class SimpleAvg(ISimpleAvhReportHandler handler) : ComponentBase
     
     private async Task Submit()
     {
-        report = handler.GenerateReport(FromYear, FromMonth, ToYear, ToMonth);
+        if (!string.IsNullOrEmpty(userId))
+        {
+            report = handler.GenerateReport(FromYear, FromMonth, ToYear, ToMonth, Guid.Parse(userId));
+        }
     }
 }

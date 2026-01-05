@@ -4,6 +4,8 @@ namespace HealthReport.Application.Contracts.Reports;
 
 public class SimpleAvgReportDto
 {
+    [JsonPropertyName("from")] public string DateFrom { get; init; }
+    [JsonPropertyName("to")] public string DateTo { get; init; }
     [JsonPropertyName("records")] 
     public ICollection<SimpleAvgReportEntry> Records { get; init; } = new List<SimpleAvgReportEntry>();
 }

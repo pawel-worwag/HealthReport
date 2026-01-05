@@ -11,14 +11,14 @@ namespace HealthReport.Application.Handlers.Reports.Simple
         IRepository<WeightMeasurement> wRepo)
         : ISimpleReportHandler
     {
-        public SimpleReportDto GenerateMonthlyReport(int year, int month)
+        public SimpleReportDto GenerateMonthlyReport(int year, int month, Guid userId)
         {
             var from = new DateOnly(year, month, 1);
             var to = new DateOnly(year, month, DateTime.DaysInMonth(year, month));
 
-            var bpList = bpRepo.Query().Where(x => x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
-            var bgList = bgRepo.Query().Where(x => x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
-            var wList = wRepo.Query().Where(x => x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
+            var bpList = bpRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
+            var bgList = bgRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
+            var wList = wRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
 
             var days = Enumerable.Range(1, DateTime.DaysInMonth(year, month));
 

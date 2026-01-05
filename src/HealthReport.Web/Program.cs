@@ -26,6 +26,7 @@ builder.Services.AddAuthentication(options =>
         opts.LoginPath = "/identity/login";
         opts.LogoutPath = "/identity/logout";
     });
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<Microsoft.AspNetCore.Identity.SignInManager<HealthReport.Identity.Domain.ApplicationUser>>();
 // Supply AuthenticationState to Blazor components from the current HttpContext
