@@ -53,7 +53,7 @@ public partial class Simple(ISimpleReportHandler handler,AuthenticationStateProv
 		Console.WriteLine($"Submitting report for {Year}-{Month}");
 		if (!string.IsNullOrEmpty(_userId))
 		{
-			Report = handler.GenerateMonthlyReport(Year, Month, Guid.Parse(_userId));
+			Report = await handler.GenerateMonthlyReport(Year, Month, Guid.Parse(_userId));
 		}
 	}
 }

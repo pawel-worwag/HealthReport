@@ -1,3 +1,4 @@
+using HealthReport.Application.Contracts.RawReports;
 using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Extensions;
 using HealthReport.Application.Interfaces;
@@ -9,97 +10,93 @@ namespace HealthReport.Application.Handlers.Reports.Simple
     ///
     /// TODO: Refactoring required (ugly code)
     /// 
-    public class SimpleReportHandler(
-        IRepository<BloodPressureMeasurement> bpRepo,
-        IRepository<BloodGlucoseMeasurement> bgRepo,
-        IRepository<WeightMeasurement> wRepo)
+    public class SimpleReportHandler(IRawReportDataRepository repo)
         : ISimpleReportHandler
     {
-        public SimpleReportDto GenerateMonthlyReport(int year, int month, Guid userId)
+        public async Task<SimpleReportDto> GenerateMonthlyReport(int year, int month, Guid userId,
+            CancellationToken cancellationToken = default)
         {
             var from = new DateOnly(year, month, 1);
             var to = new DateOnly(year, month, DateTime.DaysInMonth(year, month));
 
-            var bpList = bpRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
-            var bgList = bgRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
-            var wList = wRepo.Query().Where(x => x.PatientId == userId && x.MeasuredDate >= from && x.MeasuredDate <= to).ToList();
+            var data = await repo.GetRawReportDataAsync(userId, from, to, cancellationToken);
 
-            var days = Enumerable.Range(1, DateTime.DaysInMonth(year, month));
 
-            var records = (from day in days
-                select new DateOnly(year, month, day)
-                into dateOnly
-                let bpEntries = bpList.Where(x => x.MeasuredDate == dateOnly)
-                    .OrderBy(x => x.MeasuredTime)
-                    .Select(x => new BloodPressureEntry
-                    {
-                        Time = x.MeasuredTime,
-                        Systolic = x.Systolic,
-                        Diastolic = x.Diastolic,
-                        Pulse = x.Pulse,
-                        Note = x.Note
-                    })
-                    .ToList()
-                let bgEntries = bgList.Where(x => x.MeasuredDate == dateOnly)
-                    .OrderBy(x => x.MeasuredTime)
-                    .Select(x => new GlucoseEntry
-                        { Time = x.MeasuredTime, Value = x.BGValue, Meal = (int)x.Meal, Note = x.Note })
-                    .ToList()
-                let wEntries = wList.Where(x => x.MeasuredDate == dateOnly)
-                    .OrderBy(x => x.MeasuredTime)
-                    .Select(x => new WeightEntry { Time = x.MeasuredTime, WeightKg = x.WeightKg, Bmi = x.BMI })
-                    .ToList()
-                select new DetailEntry
-                    { Date = dateOnly, BloodPressure = bpEntries, Glucose = bgEntries, Weight = wEntries }).ToList();
-            
-            var systolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).MinOrNull();
-            var systolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).MaxOrNull();
-            var systolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Systolic)).AverageOrNull();
-            var systolicSummary = new SummaryEntryValue()
-                { Min = systolicMin, Max = systolicMax, Avg = (decimal?)systolicAvg };
-
-            var diastolicMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Diastolic)).MinOrNull();
-            var diastolicMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Diastolic)).MaxOrNull();
-            var diastolicAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Diastolic)).AverageOrNull();
-            var diastolicSummary = new SummaryEntryValue()
-                { Min = diastolicMin, Max = diastolicMax, Avg = (decimal?)diastolicAvg };
-
-            var pulseMin = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).MinOrNull();
-            var pulseMax = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).MaxOrNull();
-            var pulseAvg = records.SelectMany(x => x.BloodPressure.Select(y => y.Pulse)).AverageOrNull();
-            var pulseSummary = new SummaryEntryValue() { Min = pulseMin, Max = pulseMax, Avg = (decimal?)pulseAvg };
-
-            var glucoseMin = records.SelectMany(x => x.Glucose.Select(y => y.Value)).MinOrNull();
-            var glucoseMax = records.SelectMany(x => x.Glucose.Select(y => y.Value)).MaxOrNull();
-            var glucoseAvg = records.SelectMany(x => x.Glucose.Select(y => y.Value)).AverageOrNull();
-            var glucoseSummary = new SummaryEntryValue()
-                { Min = glucoseMin, Max = glucoseMax, Avg = (decimal?)glucoseAvg };
-
-            var weightMin = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).MinOrNull();
-            var weightMax = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).MaxOrNull();
-            var weightAvg = records.SelectMany(x => x.Weight.Select(y => y.WeightKg)).AverageOrNull();
-            var weightSummary = new SummaryEntryValue() { Min = weightMin, Max = weightMax, Avg = weightAvg };
-
-            var bmiMin = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).MinOrNull();
-            var bmiMax = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).MaxOrNull();
-            var bmiAvg = records.SelectMany(x => x.Weight.Select(y => y.Bmi)).AverageOrNull();
-            var bmiSummary = new SummaryEntryValue() { Min = bmiMin, Max = bmiMax, Avg = bmiAvg };
-
-            return new SimpleReportDto
+            return new SimpleReportDto()
             {
                 Year = year,
                 Month = month,
-                Details = records,
+                Details = data.Select(x => new DetailEntry()
+                {
+                    Date = x.Date,
+                    BloodPressure = x.BloodPressure.OrderBy(p => p.MeasuredTime).Select(Map).ToList(),
+                    Glucose = x.BloodGlucose.OrderBy(p => p.MeasuredTime).Select(Map).ToList(),
+                    Weight = x.Weight.OrderBy(p => p.MeasuredTime).Select(Map).ToList(),
+                }).ToList(),
                 Summary = new SummaryEntry()
                 {
-                    DiastolicSummary = diastolicSummary,
-                    SystolicSummary = systolicSummary,
-                    PulseSummary = pulseSummary,
-                    GlucoseSummary = glucoseSummary,
-                    WeightSummary = weightSummary,
-                    BmiSummary = bmiSummary
+                    SystolicSummary = new SummaryEntryValue()
+                    {
+                        Min = data.SelectMany(x => x.BloodPressure).Select(p => p.Systolic).MinOrNull(),
+                        Max = data.SelectMany(x => x.BloodPressure).Select(p => p.Systolic).MaxOrNull(),
+                        Avg = data.SelectMany(x => x.BloodPressure).Select(p => p.Systolic).AverageOrNull()
+                    },
+                    DiastolicSummary = new SummaryEntryValue()
+                    {
+                        Min = data.SelectMany(x => x.BloodPressure).Select(p => p.Diastolic).MinOrNull(),
+                        Max = data.SelectMany(x => x.BloodPressure).Select(p => p.Diastolic).MaxOrNull(),
+                        Avg = data.SelectMany(x => x.BloodPressure).Select(p => p.Diastolic).AverageOrNull()
+                    },
+                    PulseSummary = new SummaryEntryValue()
+                    {
+                        Min = data.SelectMany(x => x.BloodPressure).Select(p => p.Pulse).MinOrNull(),
+                        Max = data.SelectMany(x => x.BloodPressure).Select(p => p.Pulse).MaxOrNull(),
+                        Avg = data.SelectMany(x => x.BloodPressure).Select(p => p.Pulse).AverageOrNull()
+                    },
+                    GlucoseSummary = new SummaryEntryValue()
+                    {
+                        Min = data.SelectMany(x=>x.BloodGlucose).Select(p=>p.Glucose).MinOrNull(),
+                        Max = data.SelectMany(x=>x.BloodGlucose).Select(p=>p.Glucose).MaxOrNull(),
+                        Avg = data.SelectMany(x=>x.BloodGlucose).Select(p=>p.Glucose).AverageOrNull()
+                    },
+                    WeightSummary = new SummaryEntryValue()
+                    {
+                        Min = data.SelectMany(x=>x.Weight).Select(p=>p.Weight).MinOrNull(),
+                        Max = data.SelectMany(x=>x.Weight).Select(p=>p.Weight).MaxOrNull(),
+                        Avg = data.SelectMany(x=>x.Weight).Select(p=>p.Weight).AverageOrNull()
+                    },
+                    BmiSummary = new SummaryEntryValue()
+                    {
+                        Min = data.SelectMany(x=>x.Weight).Select(p=>p.Bmi).MinOrNull(),
+                        Max = data.SelectMany(x=>x.Weight).Select(p=>p.Bmi).MaxOrNull(),
+                        Avg = data.SelectMany(x=>x.Weight).Select(p=>p.Bmi).AverageOrNull()
+                    }
                 }
             };
         }
+
+        private static BloodPressureEntry Map(BloodPressureDto p) => new BloodPressureEntry
+        {
+            Time = p.MeasuredTime.GetValueOrDefault(),
+            Systolic = (int)p.Systolic.GetValueOrDefault(),
+            Diastolic = (int)p.Diastolic.GetValueOrDefault(),
+            Pulse = p.Pulse
+        };
+
+
+        /// TODO: add Note property
+        private static GlucoseEntry Map(BloodGlucoseDto p) => new GlucoseEntry()
+        {
+            Time = p.MeasuredTime.GetValueOrDefault(),
+            Value = p.Glucose.GetValueOrDefault(),
+            Meal = (int)p.Meal.GetValueOrDefault()
+        };
+
+        private static WeightEntry Map(WeightDto p) => new WeightEntry()
+        {
+            Time = p.MeasuredTime.GetValueOrDefault(),
+            WeightKg = p.Weight.GetValueOrDefault(),
+            Bmi = p.Bmi
+        };
     }
 }

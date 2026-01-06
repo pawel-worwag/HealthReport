@@ -4,6 +4,6 @@ namespace HealthReport.Application.Handlers.Reports.Simple
 {
     public interface ISimpleReportHandler
     {
-        SimpleReportDto GenerateMonthlyReport(int year, int month, Guid userId);
+        Task<SimpleReportDto> GenerateMonthlyReport(int year, int month, Guid userId, CancellationToken cancellationToken = default);
     }
 }

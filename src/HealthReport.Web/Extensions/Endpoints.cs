@@ -28,7 +28,7 @@ public static class Endpoints
             if (month < 1 || month > 12)
                 return Results.BadRequest(new { message = "Month must be between 1 and 12" });
 
-            var report = handler.GenerateMonthlyReport(year.Value, month.Value, Guid.Parse(userId));
+            var report = await handler.GenerateMonthlyReport(year.Value, month.Value, Guid.Parse(userId));
 
             return Results.File(SimpleReportToXlsx.Export(report),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{year.Value}_{month.Value}.xlsx");
