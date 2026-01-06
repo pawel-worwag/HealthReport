@@ -6,6 +6,8 @@ namespace HealthReport.Infrastructure.TempFileStorage
 {
     public class FileSystemTempFileStorage(IOptions<FileSystemTempFileStorageOptions> options) : ITempFileStorage
     {
+        private readonly string _basePath = options.Value.BasePath??Path.GetTempPath();
+
         public async Task<string> SaveAsync(Stream content, CancellationToken cancellationToken = default)
         {
             var id = Guid.NewGuid().ToString("N");
@@ -58,7 +60,7 @@ namespace HealthReport.Infrastructure.TempFileStorage
         public Task CleanupAsync(TimeSpan olderThan, CancellationToken cancellationToken = default)
         {
             var threshold = DateTimeOffset.UtcNow - olderThan;
-            var dir = new DirectoryInfo(options.Value.BasePath);
+            var dir = new DirectoryInfo(_basePath);
             if (!dir.Exists) return Task.CompletedTask;
 
             var files = dir.GetFiles()
@@ -94,7 +96,7 @@ namespace HealthReport.Infrastructure.TempFileStorage
                 || id.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 throw new ArgumentException("Invalid file name");
 
-            var baseFull = Path.GetFullPath(options.Value.BasePath);
+            var baseFull = Path.GetFullPath(_basePath);
             baseFull = Path.TrimEndingDirectorySeparator(baseFull);
             var candidate = Path.GetFullPath(Path.Combine(baseFull, id));
             
