@@ -18,6 +18,7 @@ public static class DependencyInjection
         
         // Register generic repository implementation
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IRawReportDataRepository,RawReportDataRepository>();
         
         // Temp file storage configuration and registration
         services.Configure<FileSystemTempFileStorageOptions>(configuration.GetSection("FileSystemTempFileStorage"));
