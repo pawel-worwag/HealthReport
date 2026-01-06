@@ -57,6 +57,19 @@ TESTS — HealthReport.Application.Tests
 dotnet test tests/HealthReport.Application.Tests/HealthReport.Application.Tests.csproj
 ```
 
+TESTS — HealthReport.Infrastructure.Tests
+-----------
+
+- **Purpose:** Unit tests for the infrastructure layer .
+- **Key files:**
+    - `tests/HealthReport.Infrastructure.Tests/FileSystemTempFileStorageTests.cs`
+
+- **Run tests:**
+
+```bash
+dotnet test tests/HealthReport.Infrastructure.Tests/HealthReport.Infrastructure.Tests.csproj
+```
+
 DEMO Runner: iHealth CSV importer
 ---------------------------
 There is a small runner that demonstrates importing CSV files exported from iHealth.
