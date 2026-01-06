@@ -5,6 +5,6 @@ namespace HealthReport.Infrastructure.TempFileStorage
         /// <summary>
         /// Base directory for temporary files. If empty, the system temporary directory is used.
         /// </summary>
-        public string? BasePath { get; set; }
+        public required string BasePath { get; set; }
     }
 }
