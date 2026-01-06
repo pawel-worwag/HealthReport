@@ -2,7 +2,7 @@ using HealthReport.Application.Contracts.Reports;
 using HealthReport.Application.Extensions;
 using HealthReport.Application.Interfaces;
 
-namespace HealthReport.Application.Handlers.Reports.SimpleSvg2;
+namespace HealthReport.Application.Handlers.Reports.SimpleAvg;
 
 public class SimpleAvgReportHandler(IRawReportDataRepository repo) : ISimpleAvgReportHandler
 {

@@ -2,7 +2,6 @@ using System.Security.Claims;
 using HealthReport.Application.Errors;
 using HealthReport.Application.Handlers.Reports.Simple;
 using HealthReport.Application.Handlers.Reports.SimpleAvg;
-using HealthReport.Application.Handlers.Reports.SimpleSvg2;
 using HealthReport.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 using HealthReport.Application.Contracts.Reports;
 
-namespace HealthReport.Application.Handlers.Reports.SimpleSvg2;
+namespace HealthReport.Application.Handlers.Reports.SimpleAvg;
 
 public interface ISimpleAvgReportHandler
 {

@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using HealthReport.Application.Contracts.Reports;
-using HealthReport.Application.Handlers.Reports.SimpleSvg2;
+using HealthReport.Application.Handlers.Reports.SimpleAvg;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
