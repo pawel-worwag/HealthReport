@@ -3,8 +3,12 @@ using HealthReport.Application.Extensions;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 
+
 namespace HealthReport.Application.Handlers.Reports.Simple
 {
+    ///
+    /// TODO: Refactoring required (ugly code)
+    /// 
     public class SimpleReportHandler(
         IRepository<BloodPressureMeasurement> bpRepo,
         IRepository<BloodGlucoseMeasurement> bgRepo,
