@@ -2,7 +2,7 @@ using HealthReport.Domain.Entities;
 
 namespace HealthReport.Application.Contracts.RawReports;
 
-public record RawSimpleJoinDataDto
+public record SimpleDataConsolidatedDto
 {
     public required DateOnly Date { get; init; }
     public required ICollection<BloodPressureDto> BloodPressure { get; init; }

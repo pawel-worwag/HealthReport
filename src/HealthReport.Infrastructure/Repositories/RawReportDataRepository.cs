@@ -9,7 +9,7 @@ namespace HealthReport.Infrastructure.Repositories;
 public class RawReportDataRepository(HealthReportDbContext db, ILogger<RawReportDataRepository> logger)
     : IRawReportDataRepository
 {
-    public async Task<ICollection<RawSimpleJoinDataDto>> GetRawReportDataAsync(Guid userId, DateOnly from, DateOnly to,
+    public async Task<ICollection<SimpleDataConsolidatedDto>> GetRawReportDataAsync(Guid userId, DateOnly from, DateOnly to,
         CancellationToken cancellationToken = default)
     {
         var bg = await db.BloodGlucoseMeasurements
@@ -28,10 +28,10 @@ public class RawReportDataRepository(HealthReportDbContext db, ILogger<RawReport
             days.Add(to.AddDays(-i));
         }
 
-        var result = new List<RawSimpleJoinDataDto>();
+        var result = new List<SimpleDataConsolidatedDto>();
         foreach (var d in days)
         {
-            result.Add(new RawSimpleJoinDataDto()
+            result.Add(new SimpleDataConsolidatedDto()
             {
                 Date = d,
                 BloodGlucose = bg.Where(p => p.MeasuredDate == d).Select(Map).ToList(),

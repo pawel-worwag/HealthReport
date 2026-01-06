@@ -4,5 +4,5 @@ namespace HealthReport.Application.Interfaces;
 
 public interface IRawReportDataRepository
 {
-    Task<ICollection<RawSimpleJoinDataDto>> GetRawReportDataAsync(Guid userId, DateOnly from, DateOnly to, CancellationToken cancellationToken = default);
+    Task<ICollection<SimpleDataConsolidatedDto>> GetRawReportDataAsync(Guid userId, DateOnly from, DateOnly to, CancellationToken cancellationToken = default);
 }
