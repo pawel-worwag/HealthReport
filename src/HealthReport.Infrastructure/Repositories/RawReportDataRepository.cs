@@ -47,7 +47,8 @@ public class RawReportDataRepository(HealthReportDbContext db)
     {
         MeasuredTime = p.MeasuredTime,
         Glucose = p.BGValue,
-        Meal = p.Meal
+        Meal = p.Meal,
+        Note = p.Note
     };
 
     private static BloodPressureDto Map(BloodPressureMeasurement p) => new()

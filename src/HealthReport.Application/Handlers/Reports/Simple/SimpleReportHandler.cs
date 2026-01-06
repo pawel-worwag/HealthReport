@@ -82,14 +82,13 @@ namespace HealthReport.Application.Handlers.Reports.Simple
             Diastolic = (int)p.Diastolic.GetValueOrDefault(),
             Pulse = p.Pulse
         };
-
-
-        /// TODO: add Note property
+        
         private static GlucoseEntry Map(BloodGlucoseDto p) => new GlucoseEntry()
         {
             Time = p.MeasuredTime.GetValueOrDefault(),
             Value = p.Glucose.GetValueOrDefault(),
-            Meal = (int)p.Meal.GetValueOrDefault()
+            Meal = (int)p.Meal.GetValueOrDefault(),
+            Note = p.Note
         };
 
         private static WeightEntry Map(WeightDto p) => new WeightEntry()

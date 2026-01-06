@@ -24,6 +24,7 @@ public record BloodGlucoseDto
     public TimeOnly? MeasuredTime { get; init; }
     public int? Glucose { get; init; }
     public MealMarker? Meal { get; init; }
+    public string? Note { get; init; }
 }
 
 public record WeightDto
