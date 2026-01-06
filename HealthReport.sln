@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F1FD8761
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthReport.Application.Tests", "tests\HealthReport.Application.Tests\HealthReport.Application.Tests.csproj", "{0C6ADC51-A15A-424F-91AF-9E6109C8E9C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthReport.Infrastructure.Tests", "tests\HealthReport.Infrastructure.Tests\HealthReport.Infrastructure.Tests.csproj", "{1546DCB9-1D3F-454C-A2CF-820D8F938F60}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 					{0C6ADC51-A15A-424F-91AF-9E6109C8E9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{0C6ADC51-A15A-424F-91AF-9E6109C8E9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{0C6ADC51-A15A-424F-91AF-9E6109C8E9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+					{1546DCB9-1D3F-454C-A2CF-820D8F938F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{1546DCB9-1D3F-454C-A2CF-820D8F938F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{1546DCB9-1D3F-454C-A2CF-820D8F938F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{1546DCB9-1D3F-454C-A2CF-820D8F938F60}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE
@@ -64,5 +70,6 @@ Global
 		{E4D4F4A5-4F5E-7D96-C16E-3D4E5F607182} = {2857DBEA-8265-4EC5-BABF-D29F5F6A293A}
 		{CE76A869-726E-41A5-B288-947BD6F880C1} = {21AE94F7-C296-428A-A56A-BA8308AF1C0D}
 		{0C6ADC51-A15A-424F-91AF-9E6109C8E9C9} = {F1FD8761-4BAD-41F6-9589-A7A0C42304DE}
+		{1546DCB9-1D3F-454C-A2CF-820D8F938F60} = {F1FD8761-4BAD-41F6-9589-A7A0C42304DE}
 	EndGlobalSection
 EndGlobal
