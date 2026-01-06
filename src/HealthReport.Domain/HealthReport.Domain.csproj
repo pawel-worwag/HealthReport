@@ -4,4 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <WarningsAsErrors>CS0618;CS0619</WarningsAsErrors>
+  </PropertyGroup>
 </Project>

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using HealthReport.Application.Errors;
 using HealthReport.Application.Handlers.Reports.Simple;
 using HealthReport.Application.Handlers.Reports.SimpleAvg;
+using HealthReport.Application.Handlers.Reports.SimpleSvg2;
 using HealthReport.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +42,7 @@ public static class Endpoints
         
         
         
-        app.MapGet("/api/reports/simple-avg/xlsx", async (ISimpleAvhReportHandler handler, int fromYear, int fromMonth, int toYear, int toMonth, ClaimsPrincipal user, CancellationToken ct) =>
+        app.MapGet("/api/reports/simple-avg/xlsx", async (ISimpleAvgReportHandler handler, int fromYear, int fromMonth, int toYear, int toMonth, ClaimsPrincipal user, CancellationToken ct) =>
             {
                 if (user?.Identity is null || !user.Identity.IsAuthenticated)
                     return Results.Unauthorized();
@@ -55,7 +56,10 @@ public static class Endpoints
                 if (fromMonth < 1 || fromMonth > 12  || toMonth < 1 || toMonth > 12)
                     return Results.BadRequest(new { message = "Month must be between 1 and 12" });
                 
-                var report = handler.GenerateReport(fromYear, fromMonth, toYear, toMonth, Guid.Parse(userId));
+                var from = new DateOnly(fromYear, fromMonth, 1);
+                var to = new DateOnly(toYear, toMonth, DateTime.DaysInMonth(toYear, toMonth));
+                
+                var report = await handler.GenerateReportAsync(from, to, Guid.Parse(userId), ct);
                 
                 return Results.File(SimpleAvgReportToXlsx.Export(report),
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{fromYear}_{fromMonth}-{toYear}_{toMonth}.xlsx");
