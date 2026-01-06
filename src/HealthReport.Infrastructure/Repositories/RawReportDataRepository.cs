@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HealthReport.Infrastructure.Repositories;
 
-public class RawReportDataRepository(HealthReportDbContext db, ILogger<RawReportDataRepository> logger)
+public class RawReportDataRepository(HealthReportDbContext db)
     : IRawReportDataRepository
 {
     public async Task<ICollection<SimpleDataConsolidatedDto>> GetRawReportDataAsync(Guid userId, DateOnly from, DateOnly to,

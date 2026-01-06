@@ -11,27 +11,6 @@ public static class Endpoints
 {
     public static WebApplication MapEndpoint(this WebApplication app)
     {
-        app.MapGet("/api/test",
-            (Func<IRawReportDataRepository, DateOnly?, DateOnly?, ClaimsPrincipal, CancellationToken, Task<IResult>>)
-            (async (repo, from, to, user, ct) =>
-            {
-                if (user?.Identity is null || !user.Identity.IsAuthenticated)
-                    return Results.Unauthorized();
-
-                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                             ?? user.FindFirst("sub")?.Value;
-
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Forbid();
-
-                if (!from.HasValue || !to.HasValue)
-                {
-                    return Results.BadRequest(new { message = "Please provide 'from' and 'to' query parameters," });
-                }
-
-                return Results.Ok(await repo.GetRawReportDataAsync(Guid.Parse(userId), (DateOnly)from, (DateOnly)to, ct));
-            }));
-        
         app.MapGet("/api/reports/simple/xlsx", async (ISimpleReportHandler handler, int? year, int? month, ClaimsPrincipal user, CancellationToken ct) =>
         {
             if (user?.Identity is null || !user.Identity.IsAuthenticated)

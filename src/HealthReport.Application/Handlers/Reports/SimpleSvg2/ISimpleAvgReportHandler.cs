@@ -4,5 +4,5 @@ namespace HealthReport.Application.Handlers.Reports.SimpleSvg2;
 
 public interface ISimpleAvgReportHandler
 {
-    SimpleAvgReportDto GenerateReport(int yearFrom, int monthFrom, int yearTo, int monthTo, Guid userId);
+    public Task<SimpleAvgReportDto> GenerateReportAsync(DateOnly from, DateOnly to, Guid userId, CancellationToken cancellationToken = default);
 }

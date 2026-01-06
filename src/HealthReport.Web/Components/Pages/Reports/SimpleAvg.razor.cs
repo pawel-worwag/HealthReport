@@ -1,12 +1,12 @@
 using System.Security.Claims;
 using HealthReport.Application.Contracts.Reports;
-using HealthReport.Application.Handlers.Reports.SimpleAvg;
+using HealthReport.Application.Handlers.Reports.SimpleSvg2;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HealthReport.Web.Components.Pages.Reports;
 
-public partial class SimpleAvg(ISimpleAvhReportHandler handler,AuthenticationStateProvider authStateProvider) : ComponentBase
+public partial class SimpleAvg(ISimpleAvgReportHandler handler,AuthenticationStateProvider authStateProvider) : ComponentBase
 {
     protected string? userId;
     private int MinYear { get; } = 2000;
@@ -40,7 +40,10 @@ public partial class SimpleAvg(ISimpleAvhReportHandler handler,AuthenticationSta
     {
         if (!string.IsNullOrEmpty(userId))
         {
-            report = handler.GenerateReport(FromYear, FromMonth, ToYear, ToMonth, Guid.Parse(userId));
+            var from = new DateOnly(FromYear, FromMonth, 1);
+            var to = new DateOnly(ToYear, ToMonth, DateTime.DaysInMonth(ToYear, ToMonth));
+            
+            report = await handler.GenerateReportAsync(from, to, Guid.Parse(userId));
         }
     }
 }
