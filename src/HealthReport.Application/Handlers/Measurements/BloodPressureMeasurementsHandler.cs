@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using HealthReport.Application.Interfaces;
 using HealthReport.Domain.Entities;
 using HealthReport.Application.Contracts.Measurements;
