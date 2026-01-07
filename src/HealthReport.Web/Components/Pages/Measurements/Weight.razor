@@ -2,4 +2,16 @@
 
 <h3 class="display-5 mb-3">Weight</h3>
 
-
+<div class="row mb-3">
+	<div class="col-md-3">
+		<label class="form-label">From</label>
+		<InputDate @bind-Value="From" class="form-control" />
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">To</label>
+		<InputDate @bind-Value="To" class="form-control" />
+	</div>
+	<div class="col-md-2 d-flex align-items-end">
+		<button class="btn btn-primary" @onclick="Apply">Go</button>
+	</div>
+</div>
