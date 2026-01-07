@@ -9,7 +9,7 @@ namespace HealthReport.Application.Handlers.Measurements
     /// Parameters: patient id and inclusive date range.
     /// Returns DTOs defined in application contracts (without PatientId).
     /// </summary>
-    public class WeightMeasurementsHandler(IRepository<WeightMeasurement> repo)
+    public class WeightMeasurementsHandler(IRepository<WeightMeasurement> repo) : IWeightMeasurementsHandler
     {
         /// <summary>
         /// Get weight measurements for a given patient in the specified date range (inclusive).

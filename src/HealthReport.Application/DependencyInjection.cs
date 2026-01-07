@@ -1,6 +1,7 @@
 using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;
 using HealthReport.Application.Handlers.Reports.SimpleAvg;
+using HealthReport.Application.Handlers.Measurements;
 using HealthReport.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,11 @@ public static class DependencyInjection
         services.AddScoped<BloodGlucoseContourImportHandler>();
         services.AddScoped<WeightGarminImportHandler>();
         services.AddTransient<ImportHandlerFactory>();
+        // Measurements handlers
+        services.AddScoped<IBloodPressureMeasurementsHandler, BloodPressureMeasurementsHandler>();
+        services.AddScoped<IBloodGlucoseMeasurementsHandler, BloodGlucoseMeasurementsHandler>();
+        services.AddScoped<IWeightMeasurementsHandler, WeightMeasurementsHandler>();
+
         // Reports handlers
         services.AddScoped<ISimpleReportHandler, SimpleReportHandler>();
         services.AddScoped<ISimpleAvgReportHandler, SimpleAvgReportHandler>();

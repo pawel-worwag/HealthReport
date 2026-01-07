@@ -14,7 +14,7 @@ namespace HealthReport.Application.Handlers.Measurements
     /// Parameters: patient id and inclusive date range.
     /// Returns DTOs defined in application contracts.
     /// </summary>
-    public class BloodPressureMeasurementsHandler(IRepository<BloodPressureMeasurement> repo)
+    public class BloodPressureMeasurementsHandler(IRepository<BloodPressureMeasurement> repo) : IBloodPressureMeasurementsHandler
     {
         /// <summary>
         /// Get blood pressure measurements for a given patient in the specified date range (inclusive).
