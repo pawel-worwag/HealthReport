@@ -1,4 +1,6 @@
 @page "/measurements/glucose"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <h3 class="display-5 mb-3">Glucose</h3>
 
@@ -15,3 +17,32 @@
 		<button class="btn btn-primary" @onclick="Apply">Go</button>
 	</div>
 </div>
+
+@if (_data is not null)
+{
+	<table class="table table-hover table-sm">
+		<thead>
+		<tr>
+			<th>MeasuredDate</th>
+			<th>MeasuredTime</th>
+			<th>Glucose</th>
+			<th>Meal</th>
+			<th>Note</th>
+			<th>CreatedAt</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var r in _data)
+		{
+			<tr>
+				<td>@r.MeasuredDate</td>
+				<td>@r.MeasuredTime</td>
+				<td>@r.Glucose</td>
+				<td>@r.Meal</td>
+				<td>@r.Note</td>
+				<td>@r.CreatedAt</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
