@@ -28,8 +28,8 @@ namespace HealthReport.Application.Handlers.Measurements
         {
             var query = repo.Query()
                 .Where(m => m.PatientId == patientId && m.MeasuredDate >= from && m.MeasuredDate <= to)
-                .OrderBy(m => m.MeasuredDate)
-                .ThenBy(m => m.MeasuredTime);
+                .OrderByDescending(m => m.MeasuredDate)
+                .ThenByDescending(m => m.MeasuredTime);
 
             var list = query.ToList();
 
