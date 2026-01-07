@@ -1,4 +1,6 @@
 @page "/measurements/blood-pressure"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <h3 class="display-5 mb-3">Blood pressure</h3>
 
@@ -15,3 +17,34 @@
 		<button class="btn btn-primary" @onclick="Apply">Go</button>
 	</div>
 </div>
+
+@if (_data is not null)
+{
+	<table class="table table-hover table-sm">
+		<thead>
+		<tr>
+			<th>MeasuredDate</th>
+			<th>MeasuredTime</th>
+			<th>Systolic</th>
+			<th>Diastolic</th>
+			<th>Pulse</th>
+			<th>Note</th>
+			<th>Source</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var r in _data)
+		{
+			<tr>
+				<td>@r.MeasuredDate</td>
+				<td>@r.MeasuredTime</td>
+				<td>@r.Systolic</td>
+				<td>@r.Diastolic</td>
+				<td>@r.Pulse</td>
+				<td>@r.Note</td>
+				<td>@r.Source</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
