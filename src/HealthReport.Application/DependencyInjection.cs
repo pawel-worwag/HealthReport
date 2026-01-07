@@ -2,7 +2,6 @@ using HealthReport.Application.Handlers.Imports;
 using HealthReport.Application.Handlers.Reports.Simple;
 using HealthReport.Application.Handlers.Reports.SimpleAvg;
 using HealthReport.Application.Handlers.Measurements;
-using HealthReport.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
