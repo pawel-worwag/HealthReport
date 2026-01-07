@@ -4,6 +4,24 @@
             <div class="btn menuButton text-start" role="button"
                  data-bs-dismiss="offcanvas" 
                  aria-label="Close"
+                 @onclick="@(async () => { await NavigateToElement("/measurements/blood-pressure"); })">
+                <span class="bi bi-speedometer2 me-2"></span> Blood pressure data
+            </div>
+            <div class="btn menuButton text-start" role="button"
+                 data-bs-dismiss="offcanvas" 
+                 aria-label="Close"
+                 @onclick="@(async () => { await NavigateToElement("/measurements/glucose"); })">
+                <span class="bi bi-speedometer2 me-2"></span> Glucose data
+            </div>
+            <div class="btn menuButton text-start" role="button"
+                 data-bs-dismiss="offcanvas" 
+                 aria-label="Close"
+                 @onclick="@(async () => { await NavigateToElement("/measurements/weight"); })">
+                <span class="bi bi-speedometer2 me-2"></span> Weight data
+            </div>
+            <div class="btn menuButton text-start" role="button"
+                 data-bs-dismiss="offcanvas" 
+                 aria-label="Close"
                  @onclick="@(async () => { await NavigateToElement("/reports/simple"); })">
                 <span class="bi bi-speedometer2 me-2"></span> Simple report
             </div>
