@@ -34,6 +34,9 @@
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Components\Shared\Charts\TimePointSeriesGraph.razor" />
+    </ItemGroup>
 
     <!-- Run LibMan restore via dotnet tool before build when libman.json is present -->
     <Target Name="LibManToolRestore" BeforeTargets="PrepareForBuild" Condition="Exists('$(MSBuildProjectDirectory)\libman.json')">
