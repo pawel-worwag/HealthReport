@@ -94,9 +94,28 @@ public static class Endpoints
             .RequireAuthorization();
         
         
-        
-        
-        
+        app.MapGet("/api/measurements/glucose/xlsx", async (IBloodGlucoseMeasurementsHandler handler, DateOnly from, DateOnly to, ClaimsPrincipal user, CancellationToken ct) =>
+            {
+                if (user?.Identity is null || !user.Identity.IsAuthenticated)
+                    return Results.Unauthorized();
+
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                             ?? user.FindFirst("sub")?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                    return Results.Forbid();
+                
+                var data = await handler.GetForPatientAsync(Guid.Parse(userId),from, to,  ct);
+                
+                return Results.File(BloodGlucoseMeasurementsToXlsxHandler.Export(data),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"glucose_{from}-{to}.xlsx");
+            })
+            .WithTags("Measurements")
+            .Produces<byte[]>(StatusCodes.Status200OK ,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+            .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json")
+            .RequireAuthorization();
+
         return app;
     }
 }
