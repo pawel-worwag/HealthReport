@@ -15,6 +15,20 @@
 	</div>
 	<div class="col-md-2 d-flex align-items-end">
 		<button class="btn btn-primary" @onclick="Apply">Go</button>
+		<div class="dropdown ms-3 no-print">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				Download
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				<li>
+					<a class="dropdown-item" href="@($"/api/measurements/blood-pressure/xlsx?from={From}&to={To}")" target="_blank">
+						<span class="bi bi-filetype-xlsx"></span>
+						as Spreadsheet
+					</a>
+				</li>
+
+			</ul>
+		</div>
 	</div>
 </div>
 
