@@ -9,6 +9,24 @@ public class ContourCsvParserTests
     private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
     
     [Fact]
+    public void ValidSingleRecordWithHeader()
+    {
+        const string csv = @"#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja
+1,""27.09.2025 08:36:03"",""108"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Empty(result.Errors);
+        Assert.Single(result.Data);
+        var m = result.Data.ElementAt(0);
+        Assert.Equal(new DateOnly(2025, 9, 27), m.MeasuredDate);
+        Assert.Equal(new TimeOnly(8, 36, 3), m.MeasuredTime);
+        Assert.Equal(108, m.BGValue);
+        Assert.Equal(MealMarker.BeforeMeal, m.Meal);
+        Assert.Null(m.Note);
+    }
+    
+    /** OLD **/
+    [Fact]
     public void ParseCsv_ValidLine_ParsesMeasurement()
     {
         // #,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja

@@ -6,7 +6,26 @@ namespace HealthReport.Application.Tests;
 public class GarminCsvParserTests
 {
     private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
+
+    [Fact]
+    public void ValidSingleRecordWithHeader()
+    {
+        const string csv = @"Czas,Ciężar,Zmiana,BMI,Tkanka tłuszczowa,Masa mięśni szkieletowych,Masa kostna,Woda w organizmie,
+"" 2026 Sty 4"",
+10:12 AM,97.8 kg,0.0 kg,33,33.7 %,36.7 kg,5.2 kg,48.4 %,";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Empty(result.Errors);
+        Assert.Single(result.Data);
+        var m = result.Data.ElementAt(0);
+        Assert.Equal(new DateOnly(2026, 1, 4), m.MeasuredDate);
+        Assert.Equal(new TimeOnly(10, 12), m.MeasuredTime);
+        Assert.Equal(97.8m, m.WeightKg);
+        Assert.Equal(0.0m, m.WeightChangeKg);
+        Assert.Equal(33, m.BMI);
+    }
     
+    /** OLD **/
     [Fact]
     public void ParseCsv_DateLineFollowedByTimeRow_AppliesDateToTimeRow()
     {

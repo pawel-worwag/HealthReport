@@ -6,7 +6,26 @@ namespace HealthReport.Application.Tests;
 public class HealthCsvParserTests
 {
     private static Stream ToStream(string s) => new MemoryStream(Encoding.UTF8.GetBytes(s));
-    
+
+    [Fact]
+    public void ValidSingleRecordWithHeader()
+    {
+        const string csv = @"Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
+""Jan 4, 2026"",09:02,124,79,67,";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+
+        Assert.Empty(result.Errors);
+        Assert.Single(result.Data);
+        var m = result.Data.ElementAt(0);
+        Assert.Equal(new DateOnly(2026, 1, 4), m.MeasuredDate);
+        Assert.Equal(new TimeOnly(9, 2), m.MeasuredTime);
+        Assert.Equal(124, m.Systolic);
+        Assert.Equal(79, m.Diastolic);
+        Assert.Equal(67, m.Pulse);
+        Assert.Null(m.Note);
+    }
+
+    /** OLD **/
     [Fact]
     public void ParseCsv_ValidSingleRow_ParsesMeasurement()
     {
