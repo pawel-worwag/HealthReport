@@ -3,7 +3,7 @@ using HealthReport.Application.Contracts.Reports;
 
 namespace HealthReport.Application.Handlers.Reports.Simple;
 
-public static class SimpleReportToXlsx
+public static class SimpleReportToXlsxHandler
 {
     public static byte[] Export(SimpleReportDto report)
     {

@@ -30,7 +30,7 @@ public static class Endpoints
 
             var report = await handler.GenerateMonthlyReport(year.Value, month.Value, Guid.Parse(userId));
 
-            return Results.File(SimpleReportToXlsx.Export(report),
+            return Results.File(SimpleReportToXlsxHandler.Export(report),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{year.Value}_{month.Value}.xlsx");
         })
         .WithTags("Reports")
@@ -60,7 +60,7 @@ public static class Endpoints
                 
                 var report = await handler.GenerateReportAsync(from, to, Guid.Parse(userId), ct);
                 
-                return Results.File(SimpleAvgReportToXlsx.Export(report),
+                return Results.File(SimpleAvgReportToXlsxHandler.Export(report),
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{fromYear}_{fromMonth}-{toYear}_{toMonth}.xlsx");
             })
             .WithTags("Reports")

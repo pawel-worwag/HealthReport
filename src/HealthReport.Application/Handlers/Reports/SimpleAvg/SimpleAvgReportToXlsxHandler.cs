@@ -3,7 +3,7 @@ using HealthReport.Application.Contracts.Reports;
 
 namespace HealthReport.Application.Handlers.Reports.SimpleAvg;
 
-public static class SimpleAvgReportToXlsx
+public static class SimpleAvgReportToXlsxHandler
 {
     public static byte[] Export(SimpleAvgReportDto report)
     {
