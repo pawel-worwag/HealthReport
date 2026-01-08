@@ -6,7 +6,7 @@ namespace HealthReport.Application.Tests;
 public class ParserHelperTests
 {
     [Fact]
-    public void SplitLine_SimpleCommaSeparated_ReturnsFields()
+    public void ValidSimpleCommaSeparated()
     {
         //   a,b,c
         var line = "a,b,c";
@@ -15,7 +15,7 @@ public class ParserHelperTests
     }
     
     [Fact]
-    public void SplitLine_QuotedFieldContainingSeparator_PreservesSeparatorInsideQuotes()
+    public void ValiQuotedFieldContainingSeparator()
     {
         //   a,"b,c",d
         var line = "a,\"b,c\",d";
@@ -24,7 +24,7 @@ public class ParserHelperTests
     }
     
     [Fact]
-    public void SplitLine_EmptyFields_AreReturnedAsEmptyStrings()
+    public void ValidEmptyField()
     {
         //   a,,c,
         var line = "a,,c,";
@@ -33,7 +33,7 @@ public class ParserHelperTests
     }
     [Fact]
     
-    public void SplitLine_EscapedQuotes_ProducesSingleQuote()
+    public void ValidEscapedQuotes()
     {
         //   "d""e",f
         var line = "\"d\"\"e\",f";
@@ -42,7 +42,7 @@ public class ParserHelperTests
     }
     
     [Fact]
-    public void SplitLine_UnclosedQuote_ThrowsFormatException()
+    public void InvalidUnclosedQuote()
     {
         //   a,"unterminated,b
         var line = "a,\"unterminated,b";
@@ -50,7 +50,7 @@ public class ParserHelperTests
     }
     
     [Fact]
-    public void SplitLine_NullAndEmptyInputs_BehaveAsExpected()
+    public void NullAndEmptyInputs()
     {
         Assert.Empty( CsvHelper.SplitCsvLine(string.Empty));
     }
