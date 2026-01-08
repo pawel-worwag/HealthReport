@@ -23,7 +23,7 @@ public class FileSystemTempFileStorageTests
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
-    public void ResolvePath_EmptyOrWhitespace_Throws(string id)
+    public void EmptyOrWhitespace(string id)
     {
         var (storage, method) = CreateResolver();
         var ex = Assert.Throws<TargetInvocationException>(() => method.Invoke(storage, [id]));
@@ -31,7 +31,7 @@ public class FileSystemTempFileStorageTests
     }
 
     [Fact]
-    public void ResolvePath_Null_Throws()
+    public void Null()
     {
         var (storage, method) = CreateResolver();
         var ex = Assert.Throws<TargetInvocationException>(() => method.Invoke(storage, [null]));
@@ -44,7 +44,7 @@ public class FileSystemTempFileStorageTests
     [InlineData("/ola.sh")]
     [InlineData("/etc/passwd")]
     [InlineData("../passwd")]
-    public void ResolvePath_PathTraversalOrSeparators_Throws(string id)
+    public void PathTraversalOrSeparators(string id)
     {
         var (storage, method) = CreateResolver();
         var ex = Assert.Throws<TargetInvocationException>(() => method.Invoke(storage, [id]));
@@ -56,7 +56,7 @@ public class FileSystemTempFileStorageTests
     [InlineData("\0" )]
     [InlineData("name\0bad")]
     [InlineData("%2e%2e/%2e%2e")]
-    public void ResolvePath_Bad_Name_Throws(string id)
+    public void BadNames(string id)
     {
         var (storage, method) = CreateResolver();
         var ex = Assert.Throws<TargetInvocationException>(() => method.Invoke(storage, [id]));
@@ -70,7 +70,7 @@ public class FileSystemTempFileStorageTests
     [InlineData("ala..txt")]
     [InlineData(".ala")]
     [InlineData("..ala")]
-    public void ResolvePath_ValidNames_ReturnsPath(string id)
+    public void ValidNames(string id)
     {
         var (instance, mi) = CreateResolver();
         var full = InvokeResolve(instance, mi, id);
