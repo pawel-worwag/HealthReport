@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HealthReport.Application.Errors;
+using HealthReport.Application.Handlers.Measurements;
 using HealthReport.Application.Handlers.Reports.Simple;
 using HealthReport.Application.Handlers.Reports.SimpleAvg;
 using HealthReport.Application.Interfaces;
@@ -64,6 +65,29 @@ public static class Endpoints
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"simple_report_{fromYear}_{fromMonth}-{toYear}_{toMonth}.xlsx");
             })
             .WithTags("Reports")
+            .Produces<byte[]>(StatusCodes.Status200OK ,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
+            .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json")
+            .RequireAuthorization();
+        
+        
+        app.MapGet("/api/measurements/weight/xlsx", async (IWeightMeasurementsHandler handler, DateOnly from, DateOnly to, ClaimsPrincipal user, CancellationToken ct) =>
+            {
+                if (user?.Identity is null || !user.Identity.IsAuthenticated)
+                    return Results.Unauthorized();
+
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                             ?? user.FindFirst("sub")?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                    return Results.Forbid();
+                
+                var data = await handler.GetForPatientAsync(Guid.Parse(userId),from, to,  ct);
+                
+                return Results.File(WeightMeasurementsToXlsxHandler.Export(data),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"weight_{from}-{to}.xlsx");
+            })
+            .WithTags("Measurements")
             .Produces<byte[]>(StatusCodes.Status200OK ,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             .Produces<ApiError>(StatusCodes.Status400BadRequest, "application/json")
             .Produces<ApiError>(StatusCodes.Status500InternalServerError, "application/json")
