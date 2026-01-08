@@ -172,4 +172,43 @@ public class GarminCsvParserTests
         Assert.Empty(result.Errors);
         Assert.Empty(result.Data);
     }
+
+    [Fact]
+    public void FailFastPolicy()
+    {
+        const string csv = @"Czas,Ciężar,Zmiana,BMI,Tkanka tłuszczowa,Masa mięśni szkieletowych,Masa kostna,Woda w organizmie,
+"" 2026 Sty 4"",
+10:12 AM,97.8 kg,0.0 kg,33,33.7 %,36.7 kg,5.2 kg,48.4 %,
+"" 2026 Sty 3"",
+10:51 AM,97.8 kg,0.6 kg,33.1,33.1 %,36.7 kg,5.3 kg,48.8 %,
+"" 2026 Sty 2"",
+5:43 PM,98.4 kg,0.1 kg,33.3,--,--,--,--,
+"" 2026 Sty 1"",
+9:17 AM,98.3 kg,0.5 kg,33?2,33.3 %,36.8 kg,5.3 kg,48.7 %,
+"" 2025 Gru 31"",
+7:11 AM,97.8 kg,0.4 kg,33.1,31.8 %,36.7 kg,5.4 kg,49.8 %,";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Equal(3,result.Data.Count());
+        Assert.NotEmpty(result.Errors);
+    }
+
+    [Fact]
+    public void ErrorLineNumber()
+    {
+        const string csv = @"Czas,Ciężar,Zmiana,BMI,Tkanka tłuszczowa,Masa mięśni szkieletowych,Masa kostna,Woda w organizmie,
+"" 2026 Sty 4"",
+10:12 AM,97.8 kg,0.0 kg,33,33.7 %,36.7 kg,5.2 kg,48.4 %,
+"" 2026 Sty 3"",
+10:51 AM,97.8 kg,0.6 kg,33.1,33.1 %,36.7 kg,5.3 kg,48.8 %,
+"" 2026 Sty 2"",
+5:43 PM,98.4 kg,0.1 kg,33.3,--,--,--,--,
+"" 2026 Sty 1"",
+9:17 AM,98.3 kg,0.5 kg,33?2,33.3 %,36.8 kg,5.3 kg,48.7 %,
+"" 2025 Gru 31"",
+7:11 AM,97.8 kg,0.4 kg,33.1,31.8 %,36.7 kg,5.4 kg,49.8 %,";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Equal(9,result.Errors.First().Line);
+    }
 }

@@ -96,4 +96,33 @@ public class HealthCsvParserTests
         Assert.Empty(result.Errors);
         Assert.Empty(result.Data);
     }
+
+    [Fact]
+    public void FailFastPolicy()
+    {
+        const string csv = @"Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
+""Jan 4, 2026"",09:02,124,79,67,
+""Jan 4, 2026"",09:01,126,78,67,
+""Jan 3, 2026"",22:38,136,79,79,
+""Jan 3, 2026"",22:36,13?5,76,76,
+""Jan 3, 2026"",10:55,131,78,67,";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Equal(3,result.Data.Count());
+        Assert.NotEmpty(result.Errors);
+    }
+
+    [Fact]
+    public void ErrorLineNumber()
+    {
+        const string csv = @"Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
+""Jan 4, 2026"",09:02,124,79,67,
+""Jan 4, 2026"",09:01,126,78,67,
+""Jan 3, 2026"",22:38,136,79,79,
+""Jan 3, 2026"",22:36,13?5,76,76,
+""Jan 3, 2026"",10:55,131,78,67,";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Equal(5,result.Errors.First().Line);
+    }
 }

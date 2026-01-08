@@ -129,4 +129,32 @@ public class ContourCsvParserTests
         Assert.Empty(result.Errors);
         Assert.Empty(result.Data);
     }
+
+    [Fact]
+    public void FailFastPolicy()
+    {
+        const string csv = @"#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja
+1,""27.09.2025 08:36:03"",""108"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""
+2,""28.09.2025 08:01:00"",""119"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""
+3,""28.09.2025 19:49:44"",""137"",""Po posiłku"",""Glukometr"","""","""","""","""",""Sadowa""
+4,""29.09.2025 06:43:35"",""xyz"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""
+5,""30.09.2025 06:53:51"",""131"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        Assert.Equal(3,result.Data.Count());
+        Assert.NotEmpty(result.Errors);
+    }
+    
+    [Fact]
+    public void ErrorLineNumber()
+    {
+        const string csv = @"#,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja
+1,""27.09.2025 08:36:03"",""108"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""
+2,""28.09.2025 08:01:00"",""119"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""
+3,""28.09.2025 19:49:44"",""137"",""Po posiłku"",""Glukometr"","""","""","""","""",""Sadowa""
+4,""29.09.2025 06:43:35"",""xyz"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""
+5,""30.09.2025 06:53:51"",""131"",""Przed posiłkiem"",""Glukometr"","""","""","""","""",""Sadowa""";
+        var result = CsvParser.ParseCsv(ToStream(csv), hasHeader: true);
+        
+        Assert.Equal(5,result.Errors.First().Line);
+    }
 }
