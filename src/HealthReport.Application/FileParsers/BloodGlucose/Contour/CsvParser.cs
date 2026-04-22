@@ -34,7 +34,10 @@ namespace HealthReport.Application.FileParsers.BloodGlucose.Contour
                 var line = reader.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
-                var parts = CsvHelper.SplitCsvLine(line);
+                try
+                {
+                    var parts = CsvHelper.SplitCsvLine(line);
+
                 // Expected: #,Data i godzina,BGValue[mg/dl],Znacznik posiłku,Źródło danych,Uwagi,Aktywność,Posiłek[g],Leki,Lokalizacja
                 if (parts.Length != 10)
                 {
@@ -96,7 +99,12 @@ namespace HealthReport.Application.FileParsers.BloodGlucose.Contour
                 {
                     errors.Add(new ParsingError { Line = lineNo, Message = ex.Message });
                 }
-
+                
+                }
+                catch (Exception ex)
+                {
+                    errors.Add(new ParsingError { Line = lineNo, Message = ex.Message });
+                }
 
             }
 

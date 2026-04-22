@@ -46,11 +46,11 @@ namespace HealthReport.Application.FileParsers.BloodPresure.iHealth
                 var parts = CsvHelper.SplitCsvLine(line);
                 
                 // Expected columns: Date,Time,SYS(mmHg),DIA(mmHg),Pulse(Beats/Min),Note
-                if (parts.Length != 6)
+                /*if (parts.Length != 6)
                 {
                     errors.Add(new ParsingError { Line = lineNo, Message = $"Invalid number of columns: {parts.Length}" });
                     break;
-                }
+                }*/
 
                 try
                 {

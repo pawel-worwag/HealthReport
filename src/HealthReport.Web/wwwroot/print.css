@@ -1,0 +1,6 @@
+@media print {
+    html, body, td, th, div.badge {
+        color: black !important;
+        background-color: white !important;
+    }
+}
